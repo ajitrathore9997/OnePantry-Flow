@@ -21,7 +21,6 @@ const Profile = () => {
             .then(function (response) {
                 setUserName(response.data.data.userName);
                 setPhoneNumber(response.data.data.phoneNumber);
-                //alert(phoneNumber);
             })
             .catch(function (error) {
                 // alert('error', error)
@@ -63,11 +62,11 @@ const Profile = () => {
                                                 <div className="text-center">
                                                     <img
                                                         className="profile-user-img img-fluid img-circle"
-                                                        src="../../dist/img/user4-128x128.jpg"
+                                                        src="http://54.201.160.69:3282/public/assets/user_media/1675321895612--user.jpg"
                                                         alt="User profile picture"
                                                     />
                                                 </div>
-                                                <h3 className="profile-username text-center">Nina Mcintire</h3>
+                                                <h3 className="profile-username text-center">Admin</h3>
                                                 {/* <p className="text-muted text-center">Software Engineer</p> */}
                                                 <a href="#" className="btn btn-primary btn-block">
                                                     <b>Upload image</b>
@@ -114,7 +113,7 @@ const Profile = () => {
                                                                         id="inputNumber"
                                                                         placeholder="Phone Number"
                                                                         value={phoneNumber}
-                                                                        onChange={(e)=>setPhoneNumber(e.target.value)}
+                                                                        onChange={(e) => setPhoneNumber(e.target.value)}
                                                                     />
                                                                 </div>
                                                             </div>

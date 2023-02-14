@@ -11,13 +11,14 @@ const ChangePassword = () => {
 
     const token = localStorage.getItem('userToken');
     const handlePasswordChange = () => {
+        const config = {
+            headers: { Authorization: token }
+        };
+
         axios.post('http://54.201.160.69:3282/api/v1/admin/changepassword', {
-            headers: {
-                Authorization: token
-            },
             password: newPassword,
             old_password: oldPassword
-        })
+        }, config)
             .then(function (response) {
                 alert("Success");
             })
@@ -64,7 +65,8 @@ const ChangePassword = () => {
                                                                 >Old Password</label>
                                                                 <div className="col-sm-4">
                                                                     <input
-                                                                        type="text"
+                                                                        style={{ 'text-align': 'left' }}
+                                                                        type="password"
                                                                         className="form-control"
                                                                         id="inputOldPassword"
                                                                         placeholder="Old Password"
@@ -81,7 +83,8 @@ const ChangePassword = () => {
                                                                 </label>
                                                                 <div className="col-sm-4">
                                                                     <input
-                                                                        type="text"
+                                                                        style={{ 'text-align': 'left' }}
+                                                                        type="password"
                                                                         className="form-control"
                                                                         id="inputNewPassword"
                                                                         placeholder="New Password"
@@ -98,7 +101,8 @@ const ChangePassword = () => {
                                                                 </label>
                                                                 <div className="col-sm-4">
                                                                     <input
-                                                                        type="text"
+                                                                        style={{ 'text-align': 'left' }}
+                                                                        type="password"
                                                                         className="form-control"
                                                                         id="inputConfirmPassword"
                                                                         placeholder="Confirm Password"
