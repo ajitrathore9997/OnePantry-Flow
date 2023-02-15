@@ -18,7 +18,6 @@ const Login = () => {
     }
     const login = (e) => {
         e.preventDefault();
-        console.log(e);
 
         // const isFormValid = formValidation();
         // if (isFormValid != true) {
@@ -29,7 +28,6 @@ const Login = () => {
             password: password
         })
             .then(function (response) {
-                console.log(response);
                 const response_status = response.data.status;
                 if (response_status == true) {
                     localStorage.setItem('userToken', response.data.data.token);

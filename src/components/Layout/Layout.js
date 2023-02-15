@@ -15,7 +15,6 @@ const Layout = () => {
     //     return <Navigate to="/login" />
     // }
 
-    console.log(localStorage.getItem('userToken'));
     if (!localStorage.getItem('userToken')) {
         return <Navigate to="/login" />
     }

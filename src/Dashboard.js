@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 import axios from 'axios';
-
 //Bootstrap and jQuery libraries
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.min.js';
@@ -10,10 +9,35 @@ import "datatables.net-dt/js/dataTables.dataTables"
 import "datatables.net-dt/css/jquery.dataTables.min.css"
 import $ from 'jquery';
 
+import DataTable, { createTheme } from "react-data-table-component";
+import MiniChart from "react-mini-chart";
+
 
 
 const Dashboard = () => {
 
+  createTheme("solarized", {
+    text: {
+      primary: "#268bd2",
+      secondary: "#2aa198"
+    },
+    background: {
+      default: "#002b36"
+    },
+    context: {
+      background: "#cb4b16",
+      text: "#FFFFFF"
+    },
+    divider: {
+      default: "#073642"
+    },
+    action: {
+      button: "rgba(0,0,0,.54)",
+      hover: "rgba(0,0,0,.08)",
+      disabled: "rgba(0,0,0,.12)"
+    }
+  });
+  // Testing End
   useEffect(() => {
     $('#example').DataTable();
   }, []);
@@ -166,22 +190,6 @@ const Dashboard = () => {
                     <td>Action</td>
                   </tr>
                 ))}
-                {/* <tr>
-                  <td>Tiger Nixon</td>
-                  <td>System Architect</td>
-                  <td>Edinburgh</td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
-                  <td>$320,800</td>
-                </tr>
-                <tr>
-                  <td>Garrett Winters</td>
-                  <td>Accountant</td>
-                  <td>Tokyo</td>
-                  <td>63</td>
-                  <td>2011/07/25</td>
-                  <td>$170,750</td>
-                </tr> */}
               </tbody>
             </table>
           </div>

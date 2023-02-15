@@ -29,7 +29,6 @@ const Profile = () => {
 
     return (
         <>
-            {console.log('userName', userName)}
             <div className="content-wrapper">
                 <div className="content-header">
                     <div className="container-fluid">
