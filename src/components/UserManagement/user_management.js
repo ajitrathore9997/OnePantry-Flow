@@ -16,7 +16,8 @@ import Modal from 'react-bootstrap/Modal';
 
 
 
-const Dashboard = () => {
+
+const UserManagement = () => {
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -65,26 +66,8 @@ const Dashboard = () => {
 
   const token = localStorage.getItem('userToken');
   useEffect(() => {
-    getDashboardData();
     getUsersData();
   }, []);
-
-  const getDashboardData = () => {
-    axios.get('http://54.201.160.69:3282/api/v1/admin/dashboardcount', {
-      headers: {
-        Authorization: token
-      },
-    })
-      .then(function (response) {
-        setAllUsers(response.data.data.alluser);
-        setActiveUsers(response.data.data.all_active);
-        setSellers(response.data.data.seller);
-        setUser(response.data.data.user);
-      })
-      .catch(function (error) {
-
-      });
-  }
   const config = {
     headers: { Authorization: token }
   };
@@ -140,7 +123,8 @@ const Dashboard = () => {
     {
       name: "Action",
       // cell: (row) => <button onClick={handleRowClicked} id={row.first_name} value={JSON.stringify(row)}>View</button>
-      cell: (row) => <Button onClick={handleRowClicked} id={row.first_name} value={JSON.stringify(row)} variant="outline-warning" size="sm">View</Button>
+      cell: (row) =>
+        <span class="text-warning fas fa-eye" onClick={handleRowClicked} id={JSON.stringify(row)}></span>
 
     }
     //   name: "Action",
@@ -150,7 +134,7 @@ const Dashboard = () => {
   ];
 
   const handleRowClicked = (row) => {
-    const data = JSON.parse(row.target.value);
+    const data = JSON.parse(row.target.id);
     const name = data.first_name + " " + data.last_name;
     setUsername(name);
     const email = data.email;
@@ -233,12 +217,12 @@ const Dashboard = () => {
           <div className="container-fluid">
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1 className="m-0 text-dark">Dashboard</h1>
+                <h1 className="m-0 text-dark">User Management</h1>
               </div>{/* /.col */}
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
-                  {/* <li className="breadcrumb-item"><a href="#">Home</a></li> */}
-                  <li className="breadcrumb-item active">Dashboard</li>
+                  <li className="breadcrumb-item active"><a>Home</a></li>
+                  <li className="breadcrumb-item ">User Management</li>
                 </ol>
               </div>{/* /.col */}
             </div>{/* /.row */}
@@ -247,76 +231,18 @@ const Dashboard = () => {
         {/* /.content-header */}
         {/* Main content */}
         <section className="content">
-          <div className="container-fluid">
-            {/* Small boxes (Stat box) */}
-            <div className="row">
-              <div className="col-lg-3 col-6">
-                {/* small box */}
-                <div className="small-box bg-info">
-                  <div className="inner">
-                    <h3>{allUsers}</h3>
-                    <p>All Users</p>
-                  </div>
-                  <div className="icon">
-                    <i className="ion ion-person-add" />
-                  </div>
-                  <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
-                </div>
-              </div>
-              {/* ./col */}
-              <div className="col-lg-3 col-6">
-                {/* small box */}
-                <div className="small-box bg-success">
-                  <div className="inner">
-                    <h3>{allActiveUsers}</h3>
-                    <p>Active Users</p>
-                  </div>
-                  <div className="icon">
-                    <i className="ion ion-stats-bars" />
-                  </div>
-                  <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
-                </div>
-              </div>
-              {/* ./col */}
-              <div className="col-lg-3 col-6">
-                {/* small box */}
-                <div className="small-box bg-warning">
-                  <div className="inner">
-                    <h3>{sellers}</h3>
-                    <p>Seller</p>
-                  </div>
-                  <div className="icon">
-                    <i className="ion ion-person-add" />
-                  </div>
-                  <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
-                </div>
-              </div>
-              {/* ./col */}
-              <div className="col-lg-3 col-6">
-                <div className="small-box bg-danger">
-                  <div className="inner">
-                    <h3>{user}</h3>
-                    <p>Users</p>
-                  </div>
-                  <div className="icon">
-                    <i className="ion ion-pie-graph" />
-                  </div>
-                  <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
-                </div>
-              </div>
-            </div>
 
-            {/* Dashboard Start Updated */}
-            <DataTable title="Latest Users" columns={columns} data={userDetails} defaultSortFieldId pagination={5} onRowClicked={handleRowClicked} highlightOnHover fixedHeaderScrollHeight="300px" />
-            {/* <MiniChart dataSet={[0, -20, 343, 49.3, -100, 200, 78]} /> */}
-            {/* Dashboard End Updated */}
-          </div>
+
+          {/* Dashboard Start Updated */}
+          <DataTable columns={columns} data={userDetails} defaultSortFieldId pagination={5} onRowClicked={handleRowClicked} highlightOnHover fixedHeaderScrollHeight="300px" />
+          {/* <MiniChart dataSet={[0, -20, 343, 49.3, -100, 200, 78]} /> */}
+          {/* Dashboard End Updated */}
         </section>
-      </div>
-    </div>
+      </div >
+    </div >
 
   )
 
 }
 
-export default Dashboard
+export default UserManagement

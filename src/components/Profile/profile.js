@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useEffect } from 'react'
+import Toast from 'react-bootstrap/Toast';
+import { ToastContainer } from 'react-bootstrap';
 
 const Profile = () => {
     const default_background_color = { 'backgroundColor': '#2675ff', 'border': '#2675ff' }
     const [userName, setUserName] = useState('')
     const [phoneNumber, setPhoneNumber] = useState('')
+    const [userId, setUserId] = useState('')
+
+    const [showA, setShowA] = useState(false);
+
+    const toggleShowA = () => setShowA(!showA);
 
     const token = localStorage.getItem('userToken');
     useEffect(() => {
@@ -19,19 +26,54 @@ const Profile = () => {
             user_token: token,
         })
             .then(function (response) {
+                console.log("response.data.data", response.data);
                 setUserName(response.data.data.userName);
                 setPhoneNumber(response.data.data.phoneNumber);
+                setUserId(response.data.data._id);
             })
             .catch(function (error) {
                 // alert('error', error)
             });
     }
 
+    const config = {
+        headers: { Authorization: token }
+    };
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axios.post('http://54.201.160.69:3282/api/v1/admin/updateofuser', {
+            user_id: userId,
+            userName: userName,
+            phoneNumber: phoneNumber
+        }, config)
+            .then(function (response) {
+                const response_status = response.data.status;
+                if (response_status == true) {
+                    toggleShowA();
+                }
+                else {
+
+                }
+            })
+            .catch(function (error) {
+            });
+    }
+
     return (
         <>
+
             <div className="content-wrapper">
                 <div className="content-header">
                     <div className="container-fluid">
+                        <ToastContainer position="top-end" className="p-3" delay={3000} autohide>
+                            <Toast show={showA} onClose={toggleShowA} bg='success'>
+                                <Toast.Header>
+                                    <strong className="me-auto">Success</strong>
+                                    {/* <small>11 mins ago</small> */}
+                                </Toast.Header>
+                                <Toast.Body>User details updated successfully</Toast.Body>
+                            </Toast>
+                        </ToastContainer>
                         <section>
                             <div className="container-fluid">
                                 <div className="row mb-2">
@@ -118,7 +160,9 @@ const Profile = () => {
                                                             </div>
                                                             <div className="form-group row mt-4">
                                                                 <div className="offset-sm-10 col-sm-2">
-                                                                    <button type="submit" className="btn btn-block btn-danger" style={default_background_color}>
+                                                                    <button type="submit" className="btn btn-block btn-danger" style={default_background_color}
+                                                                        onClick={(e) => handleSubmit(e)}
+                                                                    >
                                                                         Submit
                                                                     </button>
                                                                 </div>

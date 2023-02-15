@@ -43,7 +43,7 @@ const Menu = () => {
               </li>
               {/* <li className="nav-item has-treeview menu-open"></li> */}
               <li className="nav-item has-treeview">
-                <a href="/dashboard" className="nav-link">
+                <a href="/user" className="nav-link">
                   <i className="nav-icon fas fa-user-shield iconsize" />
                   <p style={menu_font}>
                     User Management
