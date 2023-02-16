@@ -13,7 +13,11 @@ import DataTable, { createTheme } from "react-data-table-component";
 import MiniChart from "react-mini-chart";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import Form from 'react-bootstrap/Form';
+import Toast from 'react-bootstrap/Toast';
+import { ToastContainer } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { Card } from 'react-bootstrap';
 
 
 
@@ -26,7 +30,11 @@ const UserManagement = () => {
   const [userEmail, setUserEmail] = useState();
   const [userRole, setUserRole] = useState();
   const [userStatus, setUserStatus] = useState();
-
+  const [bgColor, setToastBgColor] = useState('');
+  const [toastMsg, setToastMsg] = useState('');
+  const [showA, setShowA] = useState(false);
+  const toggleShowA = () => setShowA(!showA);
+  const navigate = useNavigate();
 
   createTheme("solarized", {
     text: {
@@ -51,15 +59,12 @@ const UserManagement = () => {
       disabled: "rgba(0,0,0,.12)"
     }
   });
-  // Testing End
-  // useEffect(() => {
-  //   $('#example').DataTable();
-  // }, []);
 
   const [allUsers, setAllUsers] = useState("");
   const [allActiveUsers, setActiveUsers] = useState("");
   const [sellers, setSellers] = useState("");
   const [user, setUser] = useState("");
+  const [searchedKeyword, setSearchKeyword] = useState("");
 
   const [userDetails, setUsersDetails] = useState([]);
 
@@ -101,7 +106,6 @@ const UserManagement = () => {
     },
     {
       name: "Status",
-      // selector: (row) => row.isActive === true ? <b>Active</b> : <b>Inactive</b>,
       selector: (row) =>
         row.isActive === true ?
           <Button variant="success" size="sm">Active</Button>
@@ -111,7 +115,6 @@ const UserManagement = () => {
     },
     {
       name: "Role",
-      // selector: (row) => row.role.name === 'user' ? <b>User</b> : <b>Admin</b>,
       selector: (row) =>
         row.role.name === 'user' ?
           <Button variant="secondary" size="sm">User</Button>
@@ -122,18 +125,30 @@ const UserManagement = () => {
     },
     {
       name: "Action",
-      // cell: (row) => <button onClick={handleRowClicked} id={row.first_name} value={JSON.stringify(row)}>View</button>
       cell: (row) =>
-        <span class="text-warning fas fa-eye" onClick={handleRowClicked} id={JSON.stringify(row)}></span>
-
+        <>
+          <Form.Check type="switch" id="custom-switch" checked={row.isActive} onClick={handleUserStatusChange} value={JSON.stringify(row)} />&nbsp;
+          <span class="text-warning fas fa-eye" onClick={handleRowClicked} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>&nbsp;&nbsp;
+          <span class="text-dark fas fa-pencil-alt" onClick={handleUserEdit} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>&nbsp;&nbsp;
+          <span class="text-danger fas fa-trash-alt" onClick={handleDelete} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>
+        </>
     }
-    //   name: "Action",
-    //   selector: (row) => row.isActive,
-    //   sortable: true
-    // },
   ];
 
+  const handleUserStatusChange = (row) => {
+    const data = JSON.parse(row.target.value);
+    handleUserStatus(data);
+  }
+
+  const handleDelete = (row) => {
+    // const data = JSON.parse(row.target.id);
+    // const user_id = data._id;
+    // alert(user_id);
+    // handleShow();
+  }
+
   const handleRowClicked = (row) => {
+
     const data = JSON.parse(row.target.id);
     const name = data.first_name + " " + data.last_name;
     setUsername(name);
@@ -148,8 +163,72 @@ const UserManagement = () => {
       status = "Inactive";
     setUserStatus(status);
     handleShow();
-
   };
+  const handleUserStatus = (data) => {
+    console.log(data);
+    const userId = data._id;
+    axios.post('http://54.201.160.69:3282/api/v1/admin/statusofuser', {
+      user_id: userId,
+    }, config)
+      .then(function (response) {
+        console.log(response);
+        const response_status = response.data.status;
+        if (response_status == true) {
+          getUsersData();
+          setToastBgColor('success');
+          setToastMsg(response.data.message);
+          toggleShowA();
+
+        }
+        else {
+
+        }
+      })
+      .catch(function (error) {
+      });
+  }
+
+  const handleUserEdit = (row) => {
+    const data = JSON.parse(row.target.id);
+
+    navigate("/user_edit/" + data._id);
+  }
+
+  const handleSearch = (e, sort = '') => {
+    var keyword = e.target.value;
+    setSearchKeyword(keyword);
+    axios.post('http://54.201.160.69:3282/api/v1/admin/listOfusers', {
+      limit: '',
+      sorting: '',
+      page: '',
+      search_key: keyword,
+      type: ''
+    }, config)
+      .then(function (response) {
+        console.log(response);
+        const response_status = response.data.status;
+        setUsersDetails(response.data.data.search_data)
+      })
+      .catch(function (error) {
+      });
+  }
+
+  const handleSort = (row) => {
+
+    axios.post('http://54.201.160.69:3282/api/v1/admin/listOfusers', {
+      limit: '',
+      sorting: row.target.value,
+      page: '',
+      search_key: searchedKeyword,
+      type: ''
+    }, config)
+      .then(function (response) {
+        setUsersDetails(response.data.data.search_data)
+      })
+      .catch(function (error) {
+      });
+
+  }
   return (
     <div>
 
@@ -164,6 +243,8 @@ const UserManagement = () => {
             <Modal.Title><b>User Details</b></Modal.Title>
           </Modal.Header>
           <Modal.Body>
+
+
             <div className="row mb-2">
               <div className="col-sm-4">
                 <li className="breadcrumb-item active"><b>Username</b></li>
@@ -215,6 +296,14 @@ const UserManagement = () => {
         {/* Content Header (Page header) */}
         <div className="content-header">
           <div className="container-fluid">
+            <ToastContainer position="top-end" className="p-3" delay={3000} autohide>
+              <Toast show={showA} onClose={toggleShowA} bg={bgColor} delay={2000} autohide>
+                <Toast.Header>
+                  <strong className="me-auto">Success</strong>
+                </Toast.Header>
+                <Toast.Body>{toastMsg}</Toast.Body>
+              </Toast>
+            </ToastContainer>
             <div className="row mb-2">
               <div className="col-sm-6">
                 <h1 className="m-0 text-dark">User Management</h1>
@@ -231,10 +320,49 @@ const UserManagement = () => {
         {/* /.content-header */}
         {/* Main content */}
         <section className="content">
+          <Card>
+            <Card.Body>
+              <div className="row">
+                <div className="col-sm-3">
+                  <Form.Select aria-label="Default select example" onChange={handleSort}>
+                    <option>Sort By</option>
+                    <option value="sortingKey|asc">Ascending</option>
+                    <option value="sortingKey|desc">Descending</option>
+                  </Form.Select>
+                </div>
+                <div className="col-sm-5">
 
-
+                </div>
+                <div className="col-sm-4">
+                  <div className="form-group m-0" style={{ 'textAlign': 'right' }}>
+                    <input
+                      style={{ 'textAlign': 'left' }}
+                      type="text"
+                      name="keyword"
+                      id="keyword"
+                      className="form-control"
+                      placeholder='Enter keyword to search'
+                      onChange={(e) => handleSearch(e)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </Card.Body>
+          </Card>
           {/* Dashboard Start Updated */}
-          <DataTable columns={columns} data={userDetails} defaultSortFieldId pagination={5} onRowClicked={handleRowClicked} highlightOnHover fixedHeaderScrollHeight="300px" />
+          <DataTable
+            sortServer={false}
+            sortIcon
+            defaultSortAsc={true}
+            noTableHead={false}
+            striped={true}
+            highlightOnHover={true}
+            columns={columns}
+            data={userDetails}
+            defaultSortFieldId
+            pagination={5}
+            onRowClicked={handleRowClicked}
+            fixedHeaderScrollHeight="300px" />
           {/* <MiniChart dataSet={[0, -20, 343, 49.3, -100, 200, 78]} /> */}
           {/* Dashboard End Updated */}
         </section>

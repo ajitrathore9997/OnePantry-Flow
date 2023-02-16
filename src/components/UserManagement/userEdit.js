@@ -4,32 +4,43 @@ import { useEffect } from 'react'
 import Toast from 'react-bootstrap/Toast';
 import { ToastContainer } from 'react-bootstrap';
 
-const Profile = () => {
-    const default_background_color = { 'backgroundColor': '#2675ff', 'border': '#2675ff' }
-    const [userName, setUserName] = useState('')
-    const [phoneNumber, setPhoneNumber] = useState('')
-    const [userId, setUserId] = useState('')
+const UserEdit = () => {
+
+    const [showA, setShowA] = useState(false);
+    const toggleShowA = () => setShowA(!showA);
     const [bgColor, setToastBgColor] = useState('');
     const [toastMsg, setToastMsg] = useState('');
 
-    const [showA, setShowA] = useState(false);
-
-    const toggleShowA = () => setShowA(!showA);
+    const default_background_color = { 'backgroundColor': '#2675ff', 'border': '#2675ff' }
+    const [userFirstName, setUserFirstName] = useState('')
+    const [userLastName, setUserLastName] = useState('')
+    const [userPhoneNumber, setPhoneNumber] = useState('')
+    const [userId, setUserId] = useState('')
 
     const token = localStorage.getItem('userToken');
     useEffect(() => {
         getUserDetails();
     }, []);
+
+
+    const config = {
+        headers: { Authorization: token }
+    };
+
     const getUserDetails = () => {
-        axios.get('http://54.201.160.69:3282/api/v1/admin/userdetail', {
-            headers: {
-                Authorization: token
-            },
-            user_token: token,
-        })
+
+        var segment_str = window.location.pathname;
+        var segment_array = segment_str.split('/');
+        var user_id = segment_array.pop();
+
+        axios.post('http://54.201.160.69:3282/api/v1/admin/detailofuser', {
+            user_id: user_id,
+        },
+            config)
             .then(function (response) {
                 console.log("response.data.data", response.data);
-                setUserName(response.data.data.userName);
+                setUserFirstName(response.data.data.first_name);
+                setUserLastName(response.data.data.last_name);
                 setPhoneNumber(response.data.data.phoneNumber);
                 setUserId(response.data.data._id);
             })
@@ -38,19 +49,22 @@ const Profile = () => {
             });
     }
 
-    const config = {
-        headers: { Authorization: token }
-    };
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if ('' == userName) {
+        if ('' == userFirstName) {
             setToastBgColor('danger');
-            setToastMsg('Username cannot be empty');
+            setToastMsg('First Name is mandatory');
             toggleShowA();
             return false;
         }
-        if ('' == phoneNumber) {
+        if ('' == userLastName) {
+            setToastBgColor('danger');
+            setToastMsg('Last Name is mandatory');
+            toggleShowA();
+            return false;
+        }
+        if ('' == userPhoneNumber) {
             setToastBgColor('danger');
             setToastMsg('Phone number cannot be empty');
             toggleShowA();
@@ -58,15 +72,18 @@ const Profile = () => {
         }
         axios.post('http://54.201.160.69:3282/api/v1/admin/updateofuser', {
             user_id: userId,
-            userName: userName,
-            phoneNumber: phoneNumber
+            first_name: userFirstName,
+            last_name: userLastName,
+            phoneNumber: userPhoneNumber
         }, config)
             .then(function (response) {
+                console.log(response.data.status);
                 const response_status = response.data.status;
                 if (response_status == true) {
                     setToastBgColor('success');
                     setToastMsg('Profile updated Successfully');
                     toggleShowA();
+                    // getUserDetails();
                 }
                 else {
 
@@ -78,7 +95,6 @@ const Profile = () => {
 
     return (
         <>
-
             <div className="content-wrapper">
                 <div className="content-header">
                     <div className="container-fluid">
@@ -132,7 +148,9 @@ const Profile = () => {
                                             {/* /.card-body */}
                                         </div>
                                     </div>
-                                    <div className="col-md-9">
+                                </div>
+                                <div className="row">
+                                    <div className="col-md-12">
                                         <div className="card">
                                             <div className="card-body">
                                                 <div className="tab-content">
@@ -140,38 +158,53 @@ const Profile = () => {
                                                         <form className="form-horizontal">
                                                             <div className="form-group row">
                                                                 <label
-                                                                    htmlFor="inputName"
-                                                                    className="col-sm-3 col-form-label"
+                                                                    htmlFor="userFirstName"
+                                                                    className="col-sm-2 col-form-label"
                                                                 >
-                                                                    Username
+                                                                    First Name
                                                                 </label>
-                                                                <div className="col-sm-9">
+                                                                <div className="col-sm-4">
                                                                     <input
                                                                         style={{ 'textAlign': 'left' }}
                                                                         type="text"
                                                                         className="form-control"
-                                                                        id="inputName"
-                                                                        placeholder="Username"
-                                                                        value={userName}
-                                                                        onChange={(e) => setUserName(e.target.value)}
+                                                                        id="userFirstName"
+                                                                        placeholder="First Name"
+                                                                        value={userFirstName}
+                                                                        onChange={(e) => setUserFirstName(e.target.value)}
                                                                     />
                                                                 </div>
-                                                            </div>
-                                                            <div className="form-group row">
                                                                 <label
-                                                                    htmlFor="inputNumber"
-                                                                    className="col-sm-3 col-form-label"
+                                                                    htmlFor="userLastName"
+                                                                    className="col-sm-2 col-form-label"
+                                                                >
+                                                                    Last Name
+                                                                </label>
+                                                                <div className="col-sm-4">
+                                                                    <input
+                                                                        style={{ 'textAlign': 'left' }}
+                                                                        type="text"
+                                                                        className="form-control"
+                                                                        id="userLastName"
+                                                                        placeholder="First Name"
+                                                                        value={userLastName}
+                                                                        onChange={(e) => setUserLastName(e.target.value)}
+                                                                    />
+                                                                </div>
+                                                                <label
+                                                                    htmlFor="userPhoneNumber"
+                                                                    className="col-sm-2 col-form-label"
                                                                 >
                                                                     Phone Number
                                                                 </label>
-                                                                <div className="col-sm-9">
+                                                                <div className="col-sm-4">
                                                                     <input
                                                                         style={{ 'textAlign': 'left' }}
                                                                         type="number"
                                                                         className="form-control"
-                                                                        id="inputNumber"
+                                                                        id="userPhoneNumber"
                                                                         placeholder="Phone Number"
-                                                                        value={phoneNumber}
+                                                                        value={userPhoneNumber}
                                                                         onChange={(e) => setPhoneNumber(e.target.value)}
                                                                     />
                                                                 </div>
@@ -210,4 +243,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default UserEdit

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import * as Yup from "yup";
+import Toast from 'react-bootstrap/Toast';
+import { ToastContainer } from 'react-bootstrap';
 
 
 const ChangePassword = () => {
@@ -8,9 +10,31 @@ const ChangePassword = () => {
     const [oldPassword, setOldPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
+    const [bgColor, setToastBgColor] = useState('');
+    const [toastMsg, setToastMsg] = useState('');
+    const [showA, setShowA] = useState(false);
+    const toggleShowA = () => setShowA(!showA);
 
     const token = localStorage.getItem('userToken');
     const handlePasswordChange = () => {
+        if ('' == oldPassword) {
+            setToastBgColor('danger');
+            setToastMsg('Please enter Old Password');
+            toggleShowA();
+            return false;
+        }
+        if ('' == newPassword) {
+            setToastBgColor('danger');
+            setToastMsg('Please enter New Password');
+            toggleShowA();
+            return false;
+        }
+        if (confirmPassword != newPassword) {
+            setToastBgColor('danger');
+            setToastMsg('New Password does not match Confirm Password');
+            toggleShowA();
+            return false;
+        }
         const config = {
             headers: { Authorization: token }
         };
@@ -20,10 +44,14 @@ const ChangePassword = () => {
             old_password: oldPassword
         }, config)
             .then(function (response) {
-                alert("Success");
+                setToastBgColor('success');
+                setToastMsg('Password changed successfully');
+                toggleShowA();
             })
             .catch(function (error) {
-                alert("Failure");
+                setToastBgColor('danger');
+                setToastMsg('Error');
+                toggleShowA();
             });
     }
 
@@ -32,6 +60,14 @@ const ChangePassword = () => {
             <div className="content-wrapper">
                 <div className="content-header">
                     <div className="container-fluid">
+                        <ToastContainer position="top-end" className="p-3" delay={3000} autohide>
+                            <Toast show={showA} onClose={toggleShowA} bg={bgColor} delay={2000} autohide>
+                                <Toast.Header>
+                                    <strong className="me-auto">Success</strong>
+                                </Toast.Header>
+                                <Toast.Body>{toastMsg}</Toast.Body>
+                            </Toast>
+                        </ToastContainer>
                         <section>
                             <div className="container-fluid">
                                 <div className="row mb-2">
@@ -61,7 +97,7 @@ const ChangePassword = () => {
                                                             <div className="form-group row">
                                                                 <label
                                                                     htmlFor="inputNewPassword"
-                                                                    className="col-sm-2 col-form-label"
+                                                                    className="col-sm-3 col-form-label"
                                                                 >Old Password</label>
                                                                 <div className="col-sm-4">
                                                                     <input
@@ -77,7 +113,7 @@ const ChangePassword = () => {
                                                             <div className="form-group row">
                                                                 <label
                                                                     htmlFor="inputNewPassword"
-                                                                    className="col-sm-2 col-form-label"
+                                                                    className="col-sm-3 col-form-label"
                                                                 >
                                                                     New Password
                                                                 </label>
@@ -95,7 +131,7 @@ const ChangePassword = () => {
                                                             <div className="form-group row">
                                                                 <label
                                                                     htmlFor="inputConfirmPassword"
-                                                                    className="col-sm-2 col-form-label"
+                                                                    className="col-sm-3 col-form-label"
                                                                 >
                                                                     Confirm Password
                                                                 </label>

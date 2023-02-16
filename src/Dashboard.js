@@ -126,6 +126,7 @@ const Dashboard = () => {
           <Button variant="danger" size="sm">Inactive</Button>
       ,
     },
+    
     {
       name: "Role",
       // selector: (row) => row.role.name === 'user' ? <b>User</b> : <b>Admin</b>,

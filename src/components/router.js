@@ -4,8 +4,9 @@ import Layout from "./Layout/Layout";
 import Login from "./login/login";
 import Profile from "./Profile/profile";
 import ChangePassword from "./Profile/changePassword";
-import Usermanagement from "./UserManagement/user_management"
 import UserManagement from "./UserManagement/user_management";
+import ForgotPassword from "./ForgotPassword/forgotPassword";
+import UserEdit from "./UserManagement/userEdit";
 
 
 export const routers = createBrowserRouter([
@@ -39,12 +40,22 @@ export const routers = createBrowserRouter([
                 exact: true,
                 element: < UserManagement />,
             },
+            {
+                path: "/user_edit/:id",
+                exact: true,
+                element: < UserEdit />,
+            },
         ],
     },
     {
         path: "/login",
         exact: true,
         element: <Login />,
+    },
+    {
+        path: "/forgot_password",
+        exact: true,
+        element: < ForgotPassword />,
     },
 ]);
 
