@@ -7,7 +7,9 @@ import ChangePassword from "./Profile/changePassword";
 import UserManagement from "./UserManagement/user_management";
 import ForgotPassword from "./ForgotPassword/forgotPassword";
 import UserEdit from "./UserManagement/userEdit";
-
+import ViewOrders from "./UserManagement/view_orders";
+import ViewProducts from "./UserManagement/view_products";
+import Category from "./Category/Category";
 
 export const routers = createBrowserRouter([
     {
@@ -45,6 +47,21 @@ export const routers = createBrowserRouter([
                 exact: true,
                 element: < UserEdit />,
             },
+            {
+                path: "/view_orders",
+                exact: true,
+                element: < ViewOrders />,
+            },
+            {
+                path: "/view_products/:id",
+                exact: true,
+                element: < ViewProducts />,
+            },
+            {
+                path: "/category",
+                exact: true,
+                element: < Category />,
+            }
         ],
     },
     {

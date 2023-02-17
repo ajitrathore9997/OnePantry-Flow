@@ -21,7 +21,7 @@ import { Card } from 'react-bootstrap';
 
 
 
-const UserManagement = () => {
+const ViewOrder = () => {
   const [deleteUserId, setUserIdDelete] = useState('');
   const [showDeleteModal, setConfirmDelete] = useState(false);
   const handleConfirmDeleteClose = () => setConfirmDelete(false);
@@ -76,14 +76,14 @@ const UserManagement = () => {
 
   const token = localStorage.getItem('userToken');
   useEffect(() => {
-    getUsersData();
+    getProductList();
   }, []);
   const config = {
     headers: { Authorization: token }
   };
 
-  const getUsersData = () => {
-    axios.post('http://54.201.160.69:3282/api/v1/admin/listOfusers', {},
+  const getProductList = () => {
+    axios.post('http://54.201.160.69:3282/api/v1/admin/prodList', {},
       config)
       .then(function (response) {
         setUsersDetails(response.data.data.search_data)
@@ -100,13 +100,18 @@ const UserManagement = () => {
       cell: (row, index) => index + 1,
     },
     {
-      name: "Name",
-      selector: (row) => row.first_name + " " + row.last_name,
+      name: "Product",
+      selector: (row) => row.name,
       sortable: true
     },
     {
-      name: "Email",
-      selector: (row) => row.email,
+      name: "Category",
+      selector: (row) => row.category_id.category_name,
+
+    },
+    {
+      name: "Price $",
+      selector: (row) => row.selling_price,
 
     },
     {
@@ -118,49 +123,22 @@ const UserManagement = () => {
           <Button variant="danger" size="sm">Inactive</Button>
       ,
     },
-    {
-      name: "Role",
-      selector: (row) =>
-        row.role.name === 'user' ?
-          <Button variant="secondary" size="sm">User</Button>
-          :
-          <Button variant="secondary" size="sm">Admin</Button>
-      ,
-      sortable: true
-    },
-    {
-      name: "View Product",
-      cell: (row) =>
-        <>
-          <span class="text-warning fas fa-eye" onClick={handleViewProdut} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>
-        </>
-    },
-    {
-      name: "View Order",
-      cell: (row) =>
-        <>
-          <span class="text-warning fas fa-eye" onClick={handleViewOrder} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>
-        </>
-    },
-    {
-      name: "Action",
-      cell: (row) =>
-        <>
-          <Form.Check type="switch" id="custom-switch" checked={row.isActive} onClick={handleUserStatusChange} value={JSON.stringify(row)} />&nbsp;
-          <span class="text-warning fas fa-eye" onClick={handleRowClicked} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>&nbsp;&nbsp;
-          <span class="text-dark fas fa-pencil-alt" onClick={handleUserEdit} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>&nbsp;&nbsp;
-          <span class="text-danger fas fa-trash-alt" onClick={handleUserDelete} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>
-        </>
-    }
+    // {
+    //   name: "Action",
+    //   cell: (row) =>
+    //     <>
+    //       <Form.Check type="switch" id="custom-switch" checked={row.isActive} onClick={handleUserStatusChange} value={JSON.stringify(row)} />&nbsp;
+    //       <span class="text-warning fas fa-eye" onClick={handleRowClicked} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>&nbsp;&nbsp;
+    //       <span class="text-dark fas fa-pencil-alt" onClick={handleUserEdit} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>&nbsp;&nbsp;
+    //       <span class="text-danger fas fa-trash-alt" onClick={handleUserDelete} id={JSON.stringify(row)} style={{ 'cursor': 'pointer' }}></span>
+    //     </>
+    // }
   ];
-  const handleViewProdut = (row) => {
-    // navigate("/view_products");
-
-    const data = JSON.parse(row.target.id);
-    navigate("/view_products/" + data._id);
+  const handleViewProdut = () => {
+    navigate("/view_products");
   }
   const handleViewOrder = () => {
-    // navigate("/view_orders");
+    navigate("/view_order");
   }
 
   const handleUserStatusChange = (row) => {
@@ -184,11 +162,11 @@ const UserManagement = () => {
         console.log(response);
         const response_status = response.data.status;
         if (response_status == true) {
-          getUsersData();
+          getProductList();
           setToastBgColor('success');
           setToastMsg(response.data.message);
           toggleShowA();
-          getUsersData();
+          getProductList();
         }
         else {
 
@@ -227,7 +205,7 @@ const UserManagement = () => {
         console.log(response);
         const response_status = response.data.status;
         if (response_status == true) {
-          getUsersData();
+          getProductList();
           setToastBgColor('success');
           setToastMsg(response.data.message);
           toggleShowA();
@@ -250,7 +228,8 @@ const UserManagement = () => {
   const handleSearch = (e, sort = '') => {
     var keyword = e.target.value;
     setSearchKeyword(keyword);
-    axios.post('http://54.201.160.69:3282/api/v1/admin/listOfusers', {
+
+    axios.post('http://54.201.160.69:3282/api/v1/admin/prodList', {
       limit: '',
       sorting: '',
       page: '',
@@ -376,12 +355,12 @@ const UserManagement = () => {
             </ToastContainer>
             <div className="row mb-2">
               <div className="col-sm-6">
-                <h1 className="m-0 text-dark">User Management</h1>
+                <h1 className="m-0 text-dark">View Product</h1>
               </div>{/* /.col */}
               <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
                   <li className="breadcrumb-item active"><a>Home</a></li>
-                  <li className="breadcrumb-item ">User Management</li>
+                  <li className="breadcrumb-item ">View Product</li>
                 </ol>
               </div>{/* /.col */}
             </div>{/* /.row */}
@@ -394,11 +373,11 @@ const UserManagement = () => {
             <Card.Body>
               <div className="row">
                 <div className="col-sm-3">
-                  <Form.Select aria-label="Default select example" onChange={handleSort}>
+                  {/* <Form.Select aria-label="Default select example" onChange={handleSort}>
                     <option>Sort By</option>
                     <option value="sortingKey|asc">Ascending</option>
                     <option value="sortingKey|desc">Descending</option>
-                  </Form.Select>
+                  </Form.Select> */}
                 </div>
                 <div className="col-sm-5">
 
@@ -443,4 +422,4 @@ const UserManagement = () => {
 
 }
 
-export default UserManagement
+export default ViewOrder

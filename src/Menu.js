@@ -13,6 +13,16 @@ const Menu = () => {
     navigate(path);
   }
 
+  const redirectDashboard = () => {
+    navigate("/dashboard");
+  }
+  const redirectUserManagement = () => {
+    navigate("/user");
+  }
+  const redirectCategory = () => {
+    navigate("/category");
+  }
+
   return (
     <div>
       <aside className="main-sidebar sidebar-dark-primary elevation-4">
@@ -34,7 +44,7 @@ const Menu = () => {
           <nav className="mt-2">
             <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
               <li className="nav-item has-treeview menu-open">
-                <a href="/dashboard" className="nav-link active">
+                <a onClick={redirectDashboard} className="nav-link active">
                   <i className="nav-icon fas fa-tachometer-alt iconsize" />
                   <p style={menu_font}>
                     Dashboard
@@ -43,7 +53,7 @@ const Menu = () => {
               </li>
               {/* <li className="nav-item has-treeview menu-open"></li> */}
               <li className="nav-item has-treeview">
-                <a href="/user" className="nav-link">
+                <a onClick={redirectUserManagement} className="nav-link">
                   <i className="nav-icon fas fa-user-shield iconsize" />
                   <p style={menu_font}>
                     User Management
@@ -51,7 +61,7 @@ const Menu = () => {
                 </a>
               </li>
               <li className="nav-item has-treeview">
-                <a href="#" className="nav-link">
+                <a className="nav-link">
                   <i className="fas fa-sitemap iconsize nav-icon" />
                   <p style={menu_font}>
                     Category Management
@@ -60,7 +70,7 @@ const Menu = () => {
                 </a>
                 <ul className="nav nav-treeview">
                   <li className="nav-item">
-                    <a href="#" className="nav-link">
+                    <a onClick={redirectCategory} className="nav-link">
                       <i className="far fa-circle nav-icon" />
                       <p style={menu_font}>Categories</p>
                     </a>
