@@ -18,7 +18,7 @@ const Token = localStorage.getItem('token')
 export const GetService = async (urlString, params) => {
 // const navigate = useNavigate()
 
-console.log('getservice')
+// console.log('getservice')
 
   if (urlString.includes("undefined")) {
     return;

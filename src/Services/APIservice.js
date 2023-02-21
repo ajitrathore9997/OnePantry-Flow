@@ -4,6 +4,9 @@ const API_URL = {
     
     ADMIN_LOGIN: APIBaseURL + 'admin/signIn',
 
+    // DASHBOARD
+    DASHBOARD_COUNT : APIBaseURL + "admin/dashboardcount",
+
 
      //PROFILE
      ADMIN_DETAIL: APIBaseURL + "admin/userdetail",
@@ -42,7 +45,9 @@ const API_URL = {
     //products section
     GET_PRODUCT_LIST : APIBaseURL + 'admin/prodlist',
     CHANGE_PRODUCT_STATUS : APIBaseURL + 'admin/prodstatus' ,
-    GET_PRODUCT_DETAILS : APIBaseURL + 'admin/proddetail'
+    GET_PRODUCT_DETAILS : APIBaseURL + 'admin/proddetail',
+    UPDATE_PRODUCT : APIBaseURL + 'admin/produpdate',
+    DELETE_PRODUCT : APIBaseURL + 'admin/prodDelete',
 
 }
 

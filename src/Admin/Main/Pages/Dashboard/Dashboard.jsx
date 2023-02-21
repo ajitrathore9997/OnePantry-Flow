@@ -2,13 +2,14 @@
 import React from 'react'
 import { useState } from 'react';
 import { API_URL } from '../../../../Services/APIservice';
-import { PostService } from '../../../../Services/ConstantService';
+import { GetService, PostService } from '../../../../Services/ConstantService';
 import { toastEmmit } from '../../../../Helper/Toastr';
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react';
 export default function Dashboard() {
 
   const [userData, setUserData] = useState()
+  const [DashboardCounts, setCounts] = useState()
 
   const getUserList = async () => {
     const data = {
@@ -16,7 +17,6 @@ export default function Dashboard() {
       sorting: 'sortingKey|desc',
       page: 0,
     };
-
 
     PostService(API_URL.GET_ALL_USER, data).then((res) => {
       if (res.data.status === true) {
@@ -28,14 +28,26 @@ export default function Dashboard() {
 
   };
 
+  const getDashboardCounts = async () => { 
+
+    GetService(API_URL.DASHBOARD_COUNT).then((res) => {
+      if (res.data.status === true) {
+       setCounts(res?.data?.data);
+        // console.log(DashboardCounts)
+      }
+    }, (err) => {
+      toastEmmit(err.response.data?.message, 'error')
+    })
+
+  };
 
   useEffect(() => {
     getUserList()
+    getDashboardCounts()
   }, [])
 
   return (
-    <>
-
+    <> 
       <div className="">
         <div className="content-header">
           <div className="container-fluid">
@@ -57,19 +69,19 @@ export default function Dashboard() {
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-info">
                   <div className="inner">
-                    <h3>150</h3>
+                    <h3>{DashboardCounts?.alluser}</h3>
                     <p>All Users</p>
                   </div>
                   <div className="icon">
                     <i className="fa fa-users" />
                   </div>
-                  <Link to="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                  <Link to="/panel/user" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                 </div>
               </div>
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-success">
                   <div className="inner">
-                    <h3>53</h3>
+                    <h3>{DashboardCounts?.all_active}</h3>
                     <p>Active Users</p>
                   </div>
                   <div className="icon">
@@ -81,25 +93,25 @@ export default function Dashboard() {
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-warning">
                   <div className="inner">
-                    <h3>44</h3>
+                    <h3>2</h3>
                     <p>Total Products</p>
                   </div>
                   <div className="icon">
                     <i className="fas fa-shopping-cart" />
                   </div>
-                  <Link to="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                  <Link to="/panel/product" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                 </div>
               </div>
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-danger">
                   <div className="inner">
-                    <h3>65</h3>
+                    <h3>0</h3>
                     <p>Total Orders</p>
                   </div>
                   <div className="icon">
                     <i className="ion ion-pie-graph" />
                   </div>
-                  <Link to="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                  <Link to="/panel/order" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                 </div>
               </div>
             </div>

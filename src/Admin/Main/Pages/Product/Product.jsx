@@ -1,20 +1,29 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Pagination from "../../../../Helper/Pagination";
 import { API_URL } from "../../../../Services/APIservice";
 import { PostService } from "../../../../Services/ConstantService";
+import { toastEmmit } from "../../../../Helper/Toastr";
+
 const Product = () => {
   const [search, setSearch] = useState("");
-  const [currentPage, setCurrentPage] = useState(0);
   const [sorting, setSorting] = useState("sortingKey|desc");
-  const [userLimit, setUserLimit] = useState(10);
   const [productList, setProductList] = useState();
+  const [productId, setProductId] = useState();
+
+  //Pagination states
+  const [currentPage, setCurrentPage] = useState(0);
+  const [total, setTotal] = useState();
+  const [productLimit, setProductLimit] = useState(10);
+  const [totalPages, setTotalPages] = useState();
 
   const getProducts = async () => {
     const data = {
-      limit: userLimit,
+      limit: productLimit,
       sorting: sorting,
       page: currentPage,
       search_key: search,
@@ -23,6 +32,8 @@ const Product = () => {
     PostService(API_URL.GET_PRODUCT_LIST, data).then(
       (res) => {
         setProductList(res.data.data.search_data);
+        setTotalPages(res.data.data.total_pages);
+        setTotal(res.data.data.total);
       },
       (err) => {
         console.log(err);
@@ -32,7 +43,7 @@ const Product = () => {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [search]);
 
   const changeStatus = (productId) => {
     const data = {
@@ -41,10 +52,36 @@ const Product = () => {
 
     PostService(API_URL.CHANGE_PRODUCT_STATUS, data).then(
       (res) => {
+        if (res.data.status === true) {
+          toastEmmit(res?.data?.message, "success");
+        }
         getProducts();
       },
       (err) => {
-        console.log(err);
+        toastEmmit(err.response.data?.message, "error");
+      }
+    );
+  };
+
+  const handlePageClick = (e) => {
+    setCurrentPage(e.selected);
+    getProducts();
+  };
+
+  const deleteProduct = async (id) => {
+    const data = {
+      product_id: id,
+    };
+
+    PostService(API_URL.DELETE_PRODUCT, data).then(
+      (res) => {
+        if (res.data.status === true) {
+          toastEmmit(res?.data?.message, "success");
+        }
+        getProducts();
+      },
+      (err) => {
+        toastEmmit(err.response.data?.message, "error");
       }
     );
   };
@@ -115,7 +152,7 @@ const Product = () => {
                         {productList &&
                           productList.map((product, i) => {
                             return (
-                              <tr className="ng-star-inserted">
+                              <tr key={i} className="ng-star-inserted">
                                 <td className="text-center">{i + 1}</td>
                                 <td className="text-center">{product.name}</td>
                                 <td className="text-center">
@@ -144,8 +181,8 @@ const Product = () => {
                                     >
                                       <input
                                         id="toggle-trigger"
-                                        checked
                                         type="checkbox"
+                                        checked
                                         className=" form-check-input checkbox"
                                         data-toggle="toggle"
                                         onClick={() => {
@@ -170,19 +207,25 @@ const Product = () => {
                                       ></input>
                                     </span>
                                   )}
-                                  <a title="Update" className="mx-2 table-icon">
+                                  <span
+                                    title="Update"
+                                    className="mx-2 table-icon"
+                                  >
                                     <Link
                                       to={"/panel/product/edit/" + product._id}
                                       className="text-dark fas fa-pen"
                                     ></Link>
-                                  </a>
-                                  <a title="View" className="mx-2 table-icon">
+                                  </span>
+                                  <span
+                                    title="View"
+                                    className="mx-2 table-icon"
+                                  >
                                     <Link
                                       to={"/panel/product/view/" + product._id}
                                       className="text-warning fas fa-eye"
                                     ></Link>
-                                  </a>
-                                  <a
+                                  </span>
+                                  <span
                                     title="Delete"
                                     className="mx-2 table-icon"
                                     data-toggle="modal"
@@ -190,9 +233,11 @@ const Product = () => {
                                   >
                                     <span
                                       className="text-danger fas fa-trash"
-                                      onClick={() => {}}
+                                      onClick={() => {
+                                        setProductId(product._id);
+                                      }}
                                     ></span>
-                                  </a>
+                                  </span>
                                 </td>
                               </tr>
                             );
@@ -205,12 +250,68 @@ const Product = () => {
                       </tbody>
                     </table>
                   </div>
+
+                  <Pagination
+                    counting={productLimit * currentPage}
+                    totaldata={total}
+                    pagecount={totalPages}
+                    onChangePage={handlePageClick}
+                  ></Pagination>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      <div
+        className="modal fade"
+        id="exampleModal"
+        tabIndex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="exampleModalLabel">
+                Delete Product !
+              </h5>
+              <button
+                type="button"
+                className="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body" style={{ textAlign: "left" }}>
+              <h6> Are you sure you want to delete this Product ? </h6>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn btn-danger"
+                data-dismiss="modal"
+                onClick={() => {
+                  deleteProduct(productId);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

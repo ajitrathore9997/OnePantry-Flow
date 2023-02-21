@@ -43,6 +43,7 @@ export default function Order() {
                     <th class="text-center">Action</th>
                   </tr>
                 </thead>
+                No Data !
                 {/* <tbody>
                   <ng-container *ngIf="collectionSize>0">
                     <tr *ngFor="let value of reportlist; let i=index">

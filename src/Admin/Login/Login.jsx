@@ -60,7 +60,8 @@ export default function Login() {
           localStorage.setItem("token", res.data.data.token);
           // TOKEN = res.data.data.token
           // setToken(res.data.data.token);
-          navigate("/panel/dashboard");
+          navigate("/panel/dashboard"); 
+          window.location.reload() 
         }
       },
       (err) => {
@@ -148,8 +149,8 @@ export default function Login() {
                 </div>
               </form>
 
-              <p className="mb-1">
-                <Link href="#">Forgot password ?</Link>
+              <p className="mb-4">
+                {/* <Link href="#">Forgot password ?</Link> */}
               </p>
             </div>
           </div>
