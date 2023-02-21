@@ -238,7 +238,6 @@ export const User = () => {
                                     >
                                       <input
                                         id="toggle-trigger"
-                                        checked
                                         type="checkbox"
                                         className=" form-check-input checkbox"
                                         data-toggle="toggle"

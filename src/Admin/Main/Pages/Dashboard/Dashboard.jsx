@@ -63,7 +63,7 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="fa fa-users" />
                   </div>
-                  <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
+                  <Link to="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                 </div>
               </div>
               <div className="col-lg-3 col-6">
@@ -75,7 +75,7 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="fa fa-user-tie" />
                   </div>
-                  <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
+                  <Link to="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                 </div>
               </div>
               <div className="col-lg-3 col-6">
@@ -87,7 +87,7 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="fas fa-shopping-cart" />
                   </div>
-                  <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
+                  <Link to="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                 </div>
               </div>
               <div className="col-lg-3 col-6">
@@ -99,7 +99,7 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="ion ion-pie-graph" />
                   </div>
-                  <a href="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></a>
+                  <Link to="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                 </div>
               </div>
             </div>
@@ -127,7 +127,7 @@ export default function Dashboard() {
                           {userData &&
                             userData.map((user, i) => {
                               return (
-                                <tr className="ng-star-inserted">
+                                <tr key={user._id} className="ng-star-inserted">
                                   <td className="text-center">{i + 1}</td>
                                   <td className="text-center">
                                     {user.first_name} {user.last_name}
@@ -149,12 +149,12 @@ export default function Dashboard() {
                                   </td>
 
                                   <td className="text-center justify-content-center">
-                                    <a title="View" className="mx-2 table-icon">
+                                    <span title="View" className="mx-2 table-icon">
                                       <Link
                                         to={"/panel/user/view/" + user._id}
                                         className="text-warning fas fa-eye"
                                       ></Link>
-                                    </a>
+                                    </span>
                                   </td>
                                 </tr>
                               );
