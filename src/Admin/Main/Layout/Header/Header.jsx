@@ -1,5 +1,6 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import { Link ,useNavigate} from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 
 export default function Header() {
   const navigate = useNavigate()

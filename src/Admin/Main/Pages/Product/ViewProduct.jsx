@@ -1,3 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/heading-has-content */
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ImageURL } from "../../../../Environment/Environment";

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { toastEmmit } from "../../../../Helper/Toastr";
 import { API_URL } from "../../../../Services/APIservice";
