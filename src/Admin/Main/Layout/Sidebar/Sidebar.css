@@ -1,0 +1,13 @@
+.nav-link {
+    cursor: pointer;
+}
+
+.nav-link.active {
+    background-color: rgb(12, 114, 231);
+    color: #ffffff;
+} 
+
+.nav-treeview>.nav-item>.nav-link.active, .nav-treeview>.nav-item>.nav-link.active:focus, .nav-treeview>.nav-item>.nav-link.active:hover {
+    background-color: rgb(12, 114, 231)!important;
+    color: #ffffff !important
+  }

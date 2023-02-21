@@ -37,11 +37,11 @@
   }
 }
 
-.invalid{
-  border-color: red;
-}
+.form-check-input.checkbox {
+  position: relative;
+  margin-top: 6px;
+  }
 
-
-input:invalid {
-  background-color: #ffdddd;
-}
+  a{
+    text-decoration: none !important
+  }

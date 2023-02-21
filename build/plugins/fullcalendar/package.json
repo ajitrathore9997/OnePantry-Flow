@@ -1,27 +1,27 @@
 {
-  "_from": "fullcalendar@^5.4.0",
-  "_id": "fullcalendar@5.5.0",
+  "_from": "fullcalendar@^5.10.1",
+  "_id": "fullcalendar@5.11.4",
   "_inBundle": false,
-  "_integrity": "sha512-aFnL4cIm4/TQaScK41plscaUd+R7Mos+cnhWaviiXwetSX+/67RcS8rKnEzghlKcZZZusGDLSvdwBSYA7MKemQ==",
+  "_integrity": "sha512-1TH40KkWFVlZBpqJ/eB69E7nPABleA0skoc7pTIXJNNNYyUuKPjiJg+TSMunjJ9faPLzvbvfCdgttGZnynPA3Q==",
   "_location": "/fullcalendar",
   "_phantomChildren": {},
   "_requested": {
     "type": "range",
     "registry": true,
-    "raw": "fullcalendar@^5.4.0",
+    "raw": "fullcalendar@^5.10.1",
     "name": "fullcalendar",
     "escapedName": "fullcalendar",
-    "rawSpec": "^5.4.0",
+    "rawSpec": "^5.10.1",
     "saveSpec": null,
-    "fetchSpec": "^5.4.0"
+    "fetchSpec": "^5.10.1"
   },
   "_requiredBy": [
     "/admin-lte"
   ],
-  "_resolved": "https://registry.npmjs.org/fullcalendar/-/fullcalendar-5.5.0.tgz",
-  "_shasum": "645226bfe4ddd5a3009bc5cca4e1bc6d6b66213d",
-  "_spec": "fullcalendar@^5.4.0",
-  "_where": "D:\\CP\\ReactPOC\\my-app\\node_modules\\admin-lte",
+  "_resolved": "https://registry.npmjs.org/fullcalendar/-/fullcalendar-5.11.4.tgz",
+  "_shasum": "a4d218fa1d4617a67ee69d0bc7a99f6f96b90658",
+  "_spec": "fullcalendar@^5.10.1",
+  "_where": "D:\\OnePantryAdmin\\one-pantry-admin\\node_modules\\admin-lte",
   "author": {
     "name": "Adam Shaw",
     "email": "arshaw@arshaw.com",
@@ -35,13 +35,14 @@
   "deprecated": false,
   "description": "An easily consumable combination of standard plugins",
   "devDependencies": {
-    "@fullcalendar/bootstrap": "~5.5.0",
-    "@fullcalendar/core": "~5.5.0",
-    "@fullcalendar/daygrid": "~5.5.0",
-    "@fullcalendar/google-calendar": "~5.5.0",
-    "@fullcalendar/interaction": "~5.5.0",
-    "@fullcalendar/list": "~5.5.0",
-    "@fullcalendar/timegrid": "~5.5.0"
+    "@fullcalendar/bootstrap": "~5.11.4",
+    "@fullcalendar/bootstrap5": "~5.11.4",
+    "@fullcalendar/core": "~5.11.4",
+    "@fullcalendar/daygrid": "~5.11.4",
+    "@fullcalendar/google-calendar": "~5.11.4",
+    "@fullcalendar/interaction": "~5.11.4",
+    "@fullcalendar/list": "~5.11.4",
+    "@fullcalendar/timegrid": "~5.11.4"
   },
   "docs": "https://fullcalendar.io/docs/initialize-globals",
   "homepage": "https://fullcalendar.io/",
@@ -55,5 +56,5 @@
     "homepage": "https://github.com/fullcalendar/fullcalendar"
   },
   "title": "FullCalendar Standard Bundle",
-  "version": "5.5.0"
+  "version": "5.11.4"
 }

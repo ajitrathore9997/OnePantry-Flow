@@ -1,24 +1,5 @@
-/*! KeyTable 2.5.3
- * ©2009-2020 SpryMedia Ltd - datatables.net/license
- */
-
-/**
- * @summary     KeyTable
- * @description Spreadsheet like keyboard navigation for DataTables
- * @version     2.5.3
- * @file        dataTables.keyTable.js
- * @author      SpryMedia Ltd (www.sprymedia.co.uk)
- * @contact     www.sprymedia.co.uk/contact
- * @copyright   Copyright 2009-2020 SpryMedia Ltd.
- *
- * This source file is free software, available under the following license:
- *   MIT license - http://datatables.net/license/mit
- *
- * This source file is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
- *
- * For details please refer to: http://www.datatables.net
+/*! KeyTable 2.8.0
+ * ©2009-2022 SpryMedia Ltd - datatables.net/license
  */
 
 (function( factory ){
@@ -32,11 +13,19 @@
 		// CommonJS
 		module.exports = function (root, $) {
 			if ( ! root ) {
+				// CommonJS environments without a window global must pass a
+				// root. This will give an error otherwise
 				root = window;
 			}
 
-			if ( ! $ || ! $.fn.dataTable ) {
-				$ = require('datatables.net')(root, $).$;
+			if ( ! $ ) {
+				$ = typeof window !== 'undefined' ? // jQuery's factory checks for a global window
+					require('jquery') :
+					require('jquery')( root );
+			}
+
+			if ( ! $.fn.dataTable ) {
+				require('datatables.net')(root, $);
 			}
 
 			return factory( $, root, root.document );
@@ -49,6 +38,28 @@
 }(function( $, window, document, undefined ) {
 'use strict';
 var DataTable = $.fn.dataTable;
+
+
+
+/**
+ * @summary     KeyTable
+ * @description Spreadsheet like keyboard navigation for DataTables
+ * @version     2.8.0
+ * @file        dataTables.keyTable.js
+ * @author      SpryMedia Ltd
+ * @contact     datatables.net
+ * @copyright   Copyright 2009-2022 SpryMedia Ltd.
+ *
+ * This source file is free software, available under the following license:
+ *   MIT license - http://datatables.net/license/mit
+ *
+ * This source file is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ *
+ * For details please refer to: http://www.datatables.net
+ */
+
 var namespaceCounter = 0;
 var editorNamespaceCounter = 0;
 
@@ -129,6 +140,13 @@ $.extend( KeyTable.prototype, {
 	enable: function ( state )
 	{
 		this.s.enable = state;
+	},
+
+	/**
+	 * Get enable status
+	 */
+	enabled: function () {
+		return this.s.enable;
 	},
 
 	/**
@@ -224,7 +242,10 @@ $.extend( KeyTable.prototype, {
 				}
 
 				// Or an Editor date input
-				if ( $(e.target).parents('div.editor-datetime').length ) {
+				if (
+					$(e.target).parents('div.editor-datetime').length ||
+					$(e.target).parents('div.dt-datetime').length 
+				) {
 					return;
 				}
 
@@ -297,16 +318,29 @@ $.extend( KeyTable.prototype, {
 		}
 
 		// Stave saving
-		if ( dt.settings()[0].oFeatures.bStateSave ) {
+		// if ( dt.settings()[0].oFeatures.bStateSave ) {
 			dt.on( 'stateSaveParams'+namespace, function (e, s, d) {
 				d.keyTable = that.s.lastFocus ?
 					that.s.lastFocus.cell.index() :
 					null;
 			} );
-		}
+		// }
 
 		dt.on( 'column-visibility'+namespace, function (e) {
 			that._tabInput();
+		} );
+
+		dt.on( 'column-reorder'+namespace, function (e, s, d) {
+			// Need to update the last focus cell's index
+			var lastFocus = that.s.lastFocus;
+
+			if (lastFocus && lastFocus.cell) {
+				var curr = lastFocus.relative.column;
+				
+				// Manipulate the API instance to correct the column index
+				lastFocus.cell[0][0].column = d.mapping.indexOf(curr);
+				lastFocus.relative.column = d.mapping.indexOf(curr);
+			}
 		} );
 
 		// Redraw - retain focus on the current cell
@@ -461,8 +495,10 @@ $.extend( KeyTable.prototype, {
 				if ( editor ) {
 					// Got Editor - need to activate inline editing,
 					// set the value and submit
+					var options = that._inlineOptions(focused.cell.index());
+
 					editor
-						.inline( focused.cell.index() )
+						.inline(options.cell, options.field, options.options)
 						.set( editor.displayed()[0], pastedText )
 						.submit();
 				}
@@ -513,6 +549,11 @@ $.extend( KeyTable.prototype, {
 			return;	
 		}
 
+		// DataTables draw event
+		if (orig && orig.type === 'draw') {
+			return;
+		}
+
 		var that = this;
 		var dt = this.s.dt;
 		var editor = this.c.editor;
@@ -536,15 +577,19 @@ $.extend( KeyTable.prototype, {
 			return;
 		}
 
-		orig.stopPropagation();
+		if ( orig ) {
+			orig.stopPropagation();
 
-		// Return key should do nothing - for textareas it would empty the
-		// contents
-		if ( key === 13 ) {
-			orig.preventDefault();
+			// Return key should do nothing - for textareas it would empty the
+			// contents
+			if ( key === 13 ) {
+				orig.preventDefault();
+			}
 		}
 
 		var editInline = function () {
+			var options = that._inlineOptions(editCell.index());
+
 			editor
 				.one( 'open'+namespace, function () {
 					// Remove cancel open
@@ -560,6 +605,11 @@ $.extend( KeyTable.prototype, {
 
 					// On blur of the navigation submit
 					dt.on( 'key-blur.editor', function (e, dt, cell) {
+						// When Editor has its own blur enabled - do nothing here
+						if (editor.s.editOpts.onBlur === 'submit') {
+							return;
+						}
+
 						if ( editor.displayed() && cell.node() === editCell.node() ) {
 							editor.submit();
 						}
@@ -587,6 +637,11 @@ $.extend( KeyTable.prototype, {
 						dt.off( 'key-blur.editor' );
 						editor.off( namespace );
 						$( dt.table().container() ).removeClass('dtk-focus-alt');
+
+						if (that.s.returnSubmit) {
+							that.s.returnSubmit = false;
+							that._emitEvent( 'key-return-submit', [dt, editCell] );
+						}
 					} );
 				} )
 				.one( 'cancelOpen'+namespace, function () {
@@ -594,7 +649,7 @@ $.extend( KeyTable.prototype, {
 					// might be that the open event handler isn't needed
 					editor.off( namespace );
 				} )
-				.inline( editCell.index() );
+				.inline(options.cell, options.field, options.options);
 		};
 
 		// Editor 1.7 listens for `return` on keyup, so if return is the trigger
@@ -610,6 +665,20 @@ $.extend( KeyTable.prototype, {
 		else {
 			editInline();
 		}
+	},
+
+
+	_inlineOptions: function (cellIdx)
+	{
+		if (this.c.editorOptions) {
+			return this.c.editorOptions(cellIdx);
+		}
+
+		return {
+			cell: cellIdx,
+			field: undefined,
+			options: undefined
+		};
 	},
 
 
@@ -761,7 +830,6 @@ $.extend( KeyTable.prototype, {
 		dt.state.save();
 	},
 
-
 	/**
 	 * Handle key press
 	 *
@@ -778,6 +846,10 @@ $.extend( KeyTable.prototype, {
 		}
 
 		var enable = this.s.enable;
+		this.s.returnSubmit = (enable === 'navigation-only' || enable === 'tab-only') && e.keyCode === 13
+			? true
+			: false;
+
 		var navEnable = enable === true || enable === 'navigation-only';
 		if ( ! enable ) {
 			return;
@@ -811,11 +883,15 @@ $.extend( KeyTable.prototype, {
 		switch( e.keyCode ) {
 			case 9: // tab
 				// `enable` can be tab-only
-				this._shift( e, e.shiftKey ? 'left' : 'right', true );
+				e.preventDefault();
+
+				this._keyAction( function () {
+					that._shift( e, e.shiftKey ? 'left' : 'right', true );
+				} );
 				break;
 
 			case 27: // esc
-				if ( this.s.blurable && enable === true ) {
+				if ( this.c.blurable && enable === true ) {
 					this._blur();
 				}
 				break;
@@ -825,9 +901,11 @@ $.extend( KeyTable.prototype, {
 				if ( navEnable && !scrolling ) {
 					e.preventDefault();
 
-					dt
-						.page( e.keyCode === 33 ? 'previous' : 'next' )
-						.draw( false );
+					this._keyAction( function () {
+						dt
+							.page( e.keyCode === 33 ? 'previous' : 'next' )
+							.draw( false );
+					} );
 				}
 				break;
 
@@ -835,36 +913,47 @@ $.extend( KeyTable.prototype, {
 			case 36: // home (start of current page)
 				if ( navEnable ) {
 					e.preventDefault();
-					var indexes = dt.cells( {page: 'current'} ).indexes();
-					var colIndexes = this._columns();
 
-					this._focus( dt.cell(
-						indexes[ e.keyCode === 35 ? indexes.length-1 : colIndexes[0] ]
-					), null, true, e );
+					this._keyAction( function () {
+						var indexes = dt.cells( {page: 'current'} ).indexes();
+						var colIndexes = that._columns();
+
+						that._focus( dt.cell(
+							indexes[ e.keyCode === 35 ? indexes.length-1 : colIndexes[0] ]
+						), null, true, e );
+					} );
 				}
 				break;
 
 			case 37: // left arrow
 				if ( navEnable ) {
-					this._shift( e, 'left' );
+					this._keyAction( function () {
+						that._shift( e, 'left' );
+					} );
 				}
 				break;
 
 			case 38: // up arrow
 				if ( navEnable ) {
-					this._shift( e, 'up' );
+					this._keyAction( function () {
+						that._shift( e, 'up' );
+					} );
 				}
 				break;
 
 			case 39: // right arrow
 				if ( navEnable ) {
-					this._shift( e, 'right' );
+					this._keyAction( function () {
+						that._shift( e, 'right' );
+					} );
 				}
 				break;
 
 			case 40: // down arrow
 				if ( navEnable ) {
-					this._shift( e, 'down' );
+					this._keyAction( function () {
+						that._shift( e, 'down' );
+					} );
 				}
 				break;
 
@@ -881,6 +970,23 @@ $.extend( KeyTable.prototype, {
 					this._emitEvent( 'key', [ dt, e.keyCode, this.s.lastFocus.cell, e ] );
 				}
 				break;
+		}
+	},
+
+	/**
+	 * Whether we perform a key shift action immediately or not depends
+	 * upon if Editor is being used. If it is, then we wait until it
+	 * completes its action
+	 * @param {*} action Function to trigger when ready
+	 */
+	_keyAction: function (action) {
+		var editor = this.c.editor;
+
+		if (editor && editor.mode()) {
+			editor.submit(action);
+		}
+		else {
+			action();
 		}
 	},
 
@@ -961,13 +1067,17 @@ $.extend( KeyTable.prototype, {
 	 */
 	_shift: function ( e, direction, keyBlurable )
 	{
-		var that         = this;
-		var dt           = this.s.dt;
-		var pageInfo     = dt.page.info();
-		var rows         = pageInfo.recordsDisplay;
-		var currentCell  = this.s.lastFocus.cell;
-		var columns      = this._columns();
-
+		var that      = this;
+		var dt        = this.s.dt;
+		var pageInfo  = dt.page.info();
+		var rows      = pageInfo.recordsDisplay;
+		var columns   = this._columns();
+		var last      = this.s.lastFocus;
+		if ( ! last ) {
+			return;
+		}
+	
+		var currentCell = last.cell;
 		if ( ! currentCell ) {
 			return;
 		}
@@ -992,6 +1102,16 @@ $.extend( KeyTable.prototype, {
 		var
 			row = currRow,
 			column = columns[ currCol ]; // row is the display, column is an index
+
+		// If the direction is rtl then the logic needs to be inverted from this point forwards
+		if($(dt.table().node()).css('direction') === 'rtl') {
+			if(direction === 'right') {
+				direction = 'left';
+			}
+			else if(direction === 'left'){
+				direction = 'right';
+			}
+		}
 
 		if ( direction === 'right' ) {
 			if ( currCol >= columns.length - 1 ) {
@@ -1159,6 +1279,12 @@ KeyTable.defaults = {
 	editOnFocus: false,
 
 	/**
+	 * Options to pass to Editor's inline method
+	 * @type {function}
+	 */
+	editorOptions: null,
+
+	/**
 	 * Select a cell to automatically select on start up. `null` for no
 	 * automatic selection
 	 * @type {cell-selector}
@@ -1180,7 +1306,7 @@ KeyTable.defaults = {
 
 
 
-KeyTable.version = "2.5.3";
+KeyTable.version = "2.8.0";
 
 
 $.fn.dataTable.KeyTable = KeyTable;
@@ -1217,6 +1343,18 @@ DataTable.Api.register( 'keys.enable()', function ( opts ) {
 			ctx.keytable.enable( opts === undefined ? true : opts );
 		}
 	} );
+} );
+
+DataTable.Api.register( 'keys.enabled()', function ( opts ) {
+	var ctx = this.context;
+
+	if (ctx.length) {
+		return ctx[0].keytable
+			? ctx[0].keytable.enabled()
+			: false;
+	}
+
+	return false;
 } );
 
 DataTable.Api.register( 'keys.move()', function ( dir ) {
@@ -1269,5 +1407,5 @@ $(document).on( 'preInit.dt.dtk', function (e, settings, json) {
 } );
 
 
-return KeyTable;
+return DataTable;
 }));

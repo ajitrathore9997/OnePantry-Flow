@@ -1,28 +1,28 @@
 {
-  "_from": "@sweetalert2/theme-bootstrap-4@^4.0.1",
-  "_id": "@sweetalert2/theme-bootstrap-4@4.0.1",
+  "_from": "@sweetalert2/theme-bootstrap-4@^5.0.8",
+  "_id": "@sweetalert2/theme-bootstrap-4@5.0.15",
   "_inBundle": false,
-  "_integrity": "sha512-5yGhEMkn5Rfo2sOiQVui62S5i/TaAnS6PvV3OnDdVFvZptesleDHgM1ci5u+sg4DGuh4ePPKuuTX80C9q2/TJA==",
+  "_integrity": "sha512-WsGXk67Yz3Txe3lJA4FNqQCKbQQ6yJLpVUknyGcoESVvwHm+UBBlIMHAcKuLvF+WXK9Rbq8gXhpDIU8ISoiPlQ==",
   "_location": "/@sweetalert2/theme-bootstrap-4",
   "_phantomChildren": {},
   "_requested": {
     "type": "range",
     "registry": true,
-    "raw": "@sweetalert2/theme-bootstrap-4@^4.0.1",
+    "raw": "@sweetalert2/theme-bootstrap-4@^5.0.8",
     "name": "@sweetalert2/theme-bootstrap-4",
     "escapedName": "@sweetalert2%2ftheme-bootstrap-4",
     "scope": "@sweetalert2",
-    "rawSpec": "^4.0.1",
+    "rawSpec": "^5.0.8",
     "saveSpec": null,
-    "fetchSpec": "^4.0.1"
+    "fetchSpec": "^5.0.8"
   },
   "_requiredBy": [
     "/admin-lte"
   ],
-  "_resolved": "https://registry.npmjs.org/@sweetalert2/theme-bootstrap-4/-/theme-bootstrap-4-4.0.1.tgz",
-  "_shasum": "e7144f6bf9f3fd03a726e1d7a462b544c34ae29a",
-  "_spec": "@sweetalert2/theme-bootstrap-4@^4.0.1",
-  "_where": "D:\\CP\\ReactPOC\\my-app\\node_modules\\admin-lte",
+  "_resolved": "https://registry.npmjs.org/@sweetalert2/theme-bootstrap-4/-/theme-bootstrap-4-5.0.15.tgz",
+  "_shasum": "bede688c13784acf73e01352e00d3e7fb8d69e01",
+  "_spec": "@sweetalert2/theme-bootstrap-4@^5.0.8",
+  "_where": "D:\\OnePantryAdmin\\one-pantry-admin\\node_modules\\admin-lte",
   "author": "",
   "bugs": {
     "url": "https://github.com/sweetalert2/sweetalert2-themes/issues"
@@ -50,5 +50,5 @@
     "type": "git",
     "url": "git+https://github.com/sweetalert2/sweetalert2-themes.git"
   },
-  "version": "4.0.1"
+  "version": "5.0.15"
 }

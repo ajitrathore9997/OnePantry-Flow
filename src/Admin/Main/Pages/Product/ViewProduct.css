@@ -1,0 +1,22 @@
+.imageBoxSmall{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    box-sizing: border-box;
+  } 
+   .highlight {
+    transition: all .1s ease;
+    box-shadow: 0 0 5px rgb(95, 95, 95);
+  }
+  
+  .highlight2 {
+    transition: all .2s ease;
+    box-shadow: 0 0 15px rgb(0, 0, 0);
+  }
+  .imageBox{
+    margin: 25px 0px; 
+    border-radius: 10px;
+    height: 286px;
+    width: 292px;
+    box-sizing: border-box;
+  }
