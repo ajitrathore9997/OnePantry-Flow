@@ -1,17 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // import { APIBaseURL } from "../../Environment/Environment";
 import { API_URL } from "../../Services/APIservice";
 import axios from "axios";
-import '../../App.css'; 
+import "../../App.css";
 import { toastEmmit } from "../../Helper/Toastr";
-
-
+import LogoImg from "../../assets/img/logo.png";
 
 export default function Login() {
   let navigate = useNavigate();
-
 
   useEffect(() => {
     const Udata = JSON.parse(localStorage.getItem("userdata"));
@@ -37,10 +35,9 @@ export default function Login() {
 
   let [RememberMe, setRememberMe] = useState("");
 
-  
   const submitForm = async (e) => {
-    e.preventDefault(); 
- 
+    e.preventDefault();
+
     if (RememberMe === true) {
       localStorage.setItem("userdata", JSON.stringify(FormData));
     } else {
@@ -50,23 +47,23 @@ export default function Login() {
     // const URL = APIBaseURL + "admin/signIn";
 
     // console.log(FormData)
-    await axios.post(API_URL.ADMIN_LOGIN , FormData).then(
+    await axios.post(API_URL.ADMIN_LOGIN, FormData).then(
       (res) => {
         // console.log(res)
-        
+
         if (res.data.status === true) {
-          toastEmmit(res?.data?.message,'success') 
-          // console.log(res.data.data.token) 
+          toastEmmit(res?.data?.message, "success");
+          // console.log(res.data.data.token)
           localStorage.setItem("token", res.data.data.token);
           // TOKEN = res.data.data.token
           // setToken(res.data.data.token);
-          navigate("/panel/dashboard"); 
-          window.location.reload() 
+          navigate("/panel/dashboard");
+          window.location.reload();
         }
       },
       (err) => {
-        console.log(err.response.data)
-        toastEmmit(err.response.data?.message,'error') 
+        console.log(err.response.data);
+        toastEmmit(err.response.data?.message, "error");
       }
     );
   };
@@ -76,10 +73,19 @@ export default function Login() {
       <div className="login-page">
         <div className="login-box">
           <div className="login-logo">
-            <b>OnePantry </b>
+          <img src={LogoImg} alt="Logo" className="brand-image img-circle elevation-3" style={{height:'150px'}} /> 
+          {/* <b>OnePantry </b> */}
           </div>
           <div className="card">
             <div className="card-body login-card-body">
+              {/* <div className="login-logo">
+                <img
+                  src={LogoImg}
+                  alt="Logo"
+                  className="brand-image img-circle elevation-3"
+                  style={{ height: "150px" }}
+                />
+              </div> */}
               <p className="login-box-msg">Sign in to start your session</p>
               <form
                 onSubmit={(e) => {
@@ -118,7 +124,7 @@ export default function Login() {
                     placeholder="Password"
                   />
                   <div className="input-group-append">
-                    <div className="input-group-text">
+                    <div className="input-group-text cursor">
                       <span
                         onClick={() => {
                           setType(!ShowHide);
@@ -144,7 +150,6 @@ export default function Login() {
                     <button type="submit" className="btn btn-primary btn-block">
                       Sign In
                     </button>
-                    
                   </div>
                 </div>
               </form>

@@ -114,12 +114,13 @@ export default function ChangePassword() {
     }
 
     PostService(API_URL.CHANGE_PASSWORD,data).then((res)=>{
-      console.log(res.data)
-      toastEmmit(res.data.message,'success')
-      navigate('/panel/dashboard')
-    }, (err) => {
-      console.log(err)
-      toastEmmit(err.message,'error')
+      console.log(res)
+      if(res?.status === 200){
+        toastEmmit(res?.data?.message,'success')
+        navigate('/panel/dashboard')
+      }else{
+        toastEmmit(res?.data?.message,'error')
+      }
     })
 
   }

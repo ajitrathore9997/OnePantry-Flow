@@ -9,11 +9,13 @@ import { GetService, PostService } from "../../../../../Services/ConstantService
 import nouser from '../../../../../assets/img/no_user.jpg'
 import { toastEmmit } from "../../../../../Helper/Toastr";
 import { API_URL } from "../../../../../Services/APIservice";
+import { FadeLoader } from "react-spinners";
+
 
 export default function Profile() {
 
   const navigate = useNavigate()
-  
+  const [loading, setLoading] = useState(true)
   const [localImgPath, setLocalImgPath] = useState(nouser)
   const [user, setUser] = useState();
   const [userName, setUserName] = useState();
@@ -55,35 +57,44 @@ export default function Profile() {
 
   const getUserDetails = async () => {
 
+    setLoading(true)
     GetService(API_URL.ADMIN_DETAIL).then((res) => {
 
-      if (res.status === 200) {
+      if (res.data?.status === true) {
         setUser(res.data.data)
         setUserName(res.data.data.userName)
         setPhoneNumber(res.data.data.phoneNumber)
         if (res.data.data.image) {
           setLocalImgPath(ImageURL + res.data.data.image)
         }
-      }
+      } 
+
+      setLoading(false)
+
     }, (err) => {
+
+      toastEmmit(err.data?.message,'error')
       console.log(err.response.data)
+      setLoading(false)
+
     })
 
-  };
-
-
-
+  }; 
 
   useEffect(() => {
+
     getUserDetails();
+
   }, []);
 
 
 
 
   const onimageUpload = (e) => {
+    
     setImage(e.target.files[0]);
     setLocalImgPath(window.URL.createObjectURL(e.target.files[0]));
+
   };
 
 
@@ -112,6 +123,10 @@ export default function Profile() {
         </section>
         <div className="container p-2">
           <div className="card p-3">
+        <div  style={{ display: 'flex', justifyContent: 'center' }}>
+                            <FadeLoader speedMultiplier={0.5} loading={loading} />
+                        </div>
+        {!loading &&  <>
             <div className="upload_profile_image d-flex">
               <div className="img_box ">
                 <img
@@ -122,7 +137,7 @@ export default function Profile() {
                   onChange={(e) => setImage(e.target.files[0])}
                 />
               </div>
-              <div className="btn_box mx-3 mx-md-3">
+              <div className="btn_box mx-3 col-md-3">
                 <label className="form-label">Change Profile Picture</label>
                 <span className="btn btn-primary mainBtn btn-block btn-file">
                   Select Image
@@ -188,6 +203,7 @@ export default function Profile() {
                 </div>
               </form>
             </div>
+          </ >}
           </div>
         </div>
       </app-add-user>

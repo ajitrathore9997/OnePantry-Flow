@@ -11,9 +11,11 @@ import { GetService, PostService } from "../../../../Services/ConstantService";
 import defaultImage from "../../../../assets/img/thumbnail.jpg";
 import "./ViewProduct.css";
 import { toastEmmit } from "../../../../Helper/Toastr";
+import FadeLoader from "react-spinners/FadeLoader";
 
 const EditProduct = () => {
 
+  const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
   const [savedImages,setSavedImages] = useState([])
   const [product, setProduct] = useState();
@@ -27,6 +29,7 @@ const EditProduct = () => {
   const [data, setData] = useState({})
 
   const getProduct = async () => {
+    setLoading(true)
     const data = {
       product_id: id,
     };
@@ -65,9 +68,11 @@ const EditProduct = () => {
 
         getSubCategoryList(res?.data?.data?.category_id?._id)
         setSubCategory(res?.data?.data?.sub_category_id?._id);
+        setLoading(false)
       },
       (err) => {
         toastEmmit(err.message, 'error')
+        setLoading(false)
       }
     );
   };
@@ -211,6 +216,10 @@ const EditProduct = () => {
 
       <div className="container-fluid p-2">
         <div className="card p-3">
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <FadeLoader speedMultiplier={0.5} loading={loading} />
+                        </div>
+          {!loading && 
           <div className="ng-star-inserted">
             <form className="ng-untouched ng-pristine ng-invalid"  >
               <div className="row">
@@ -349,11 +358,11 @@ const EditProduct = () => {
                             src={showImage}
                           />
                         </div>
-                        <div className="d-flex flex-wrap mt-3 justify-content-center">
+                        <div className="d-flex flex-wrap mt-3 justify-content-center ">
                           {miniImages &&
                             miniImages.map((i, j) => {
                               return (
-                                <div key={j} className="mx-auto my-1 ng-star-inserted">
+                                <div key={j} className="mx-auto my-1 ng-star-inserted cursor">
                                   <img
                                     className="imageBoxSmall highlight p-1"
                                     id={"images" + j}
@@ -409,7 +418,7 @@ const EditProduct = () => {
                 </div>
               </div>
             </form>
-          </div>
+          </div>}
         </div>
       </div>
 

@@ -1,10 +1,8 @@
-import axios from "axios";
-import React from "react";
-import {  Navigate} from "react-router-dom"; 
-// import { replace } from 'connected-react-router';
+import axios from "axios";   
 import { toastEmmit } from "../Helper/Toastr";
 // import { refresh_token } from "./AuthApi";
 // import { errorHandler } from "./ErrorHandler"; 
+import history from '../Helper/history';
 
 // let token = getAuthToken();
 /*===============================================================
@@ -15,19 +13,12 @@ const Token = localStorage.getItem('token')
 // console.log(Token , '----------token')
 
 
-export const GetService = async (urlString, params) => {
-// const navigate = useNavigate()
-
+export const GetService = async (urlString, params) => { 
 // console.log('getservice')
 
   if (urlString.includes("undefined")) {
     return;
-  }
-//  <Link to={'/login'} />
-
-  // <redirect to='/login' />
-  
-
+  } 
 //   if (!validateExpTimestamp()) {
 //     await refresh_token();
 //   }
@@ -46,13 +37,13 @@ const Token = localStorage.getItem('token')
     .get(urlString, AxiosConfig)
     .catch((err) => {
     //   errorHandler(err);
-      return err;
+      return err.response;
     });
   if (response?.response?.status === 401) {
     toastEmmit(response?.response?.data.message,'error')
     localStorage.removeItem('token');
-    // <redirect to='/login' />
-    // console.log("invalid");
+    history.push('/login')
+    window.location.reload()  
     // refresh_token();
   }
 
@@ -63,8 +54,8 @@ const Token = localStorage.getItem('token')
             Common Post API for JSON post
 ==================================================================*/
 //  notify(`${err?.response?.status} Something went wrong`);
-export const PostService = async (urlString, data) => {
-  
+
+export const PostService = async (urlString, data) => { 
   
 //   if (!validateExpTimestamp()) {
 //     // await refresh_token();
@@ -76,12 +67,7 @@ const Token = localStorage.getItem('token')
       content: "application/json",
       Authorization: Token
     },
-  };
-  
-  // console.log('link')
-  // const navigate = useNavigate();
-  // console.log('link')
-  // navigate('/login')
+  }; 
   const response = await axios
     .post( urlString, data, AxiosConfig)
     .catch((err) => {
@@ -92,16 +78,15 @@ const Token = localStorage.getItem('token')
       //   }`
       // );
     //   errorHandler(err);
-      return err;
+      return err.response;
     });
+    console.log(response)
   if (response?.response?.status === 401) {
     toastEmmit(response?.response?.data.message,'error')
     // refresh_token();
     localStorage.removeItem('token');  
-    <Navigate to="/login" />
-    // <Navigate to={'/login'}></Navigate>
-    // redirect('/login')
-    console.log('link')
+    history.push('/login')
+    window.location.reload()  
   }
   return response;
 };
@@ -130,8 +115,9 @@ export const postFormData = async (urlString, data) => {
     });
   if (response?.response?.status === 401) {
     // refresh_token();
-    localStorage.removeItem('token');
-    // <redirect to='/login' />
+    localStorage.removeItem('token'); 
+    history.push('/login')
+    window.location.reload()  
   }
   return response;
 };

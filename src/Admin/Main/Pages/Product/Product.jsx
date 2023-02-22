@@ -8,12 +8,14 @@ import Pagination from "../../../../Helper/Pagination";
 import { API_URL } from "../../../../Services/APIservice";
 import { PostService } from "../../../../Services/ConstantService";
 import { toastEmmit } from "../../../../Helper/Toastr";
+import FadeLoader from "react-spinners/FadeLoader";
 
 const Product = () => {
   const [search, setSearch] = useState("");
   const [sorting, setSorting] = useState("sortingKey|desc");
   const [productList, setProductList] = useState();
   const [productId, setProductId] = useState();
+  const [loading, setLoading] = useState(true)
 
   //Pagination states
   const [currentPage, setCurrentPage] = useState(0);
@@ -22,6 +24,7 @@ const Product = () => {
   const [totalPages, setTotalPages] = useState();
 
   const getProducts = async () => {
+    setLoading(true)
     const data = {
       limit: productLimit,
       sorting: sorting,
@@ -34,9 +37,11 @@ const Product = () => {
         setProductList(res.data.data.search_data);
         setTotalPages(res.data.data.total_pages);
         setTotal(res.data.data.total);
+        setLoading(false)
       },
       (err) => {
         console.log(err);
+        setLoading(false)
       }
     );
   };
@@ -68,7 +73,7 @@ const Product = () => {
     getProducts();
   };
 
-  const deleteProduct = async (id) => {
+  const deleteProduct = async (id)=> {
     const data = {
       product_id: id,
     };
@@ -88,7 +93,7 @@ const Product = () => {
 
   return (
     <div>
-      <section className="content-header">
+     < section className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
@@ -137,6 +142,7 @@ const Product = () => {
                   </div>
 
                   <div className="card-body table-responsive">
+                    {!loading && 
                     <table className="table table-hover text-nowrap table-bordered">
                       <thead>
                         <tr>
@@ -183,7 +189,7 @@ const Product = () => {
                                         id="toggle-trigger"
                                         type="checkbox"
                                         checked
-                                        className=" form-check-input checkbox"
+                                        className=" form-check-input checkbox cursor"
                                         data-toggle="toggle"
                                         onClick={() => {
                                           changeStatus(product._id);
@@ -199,7 +205,7 @@ const Product = () => {
                                       <input
                                         id="toggle-trigger"
                                         type="checkbox"
-                                        className=" form-check-input checkbox"
+                                        className=" form-check-input checkbox cursor"
                                         data-toggle="toggle"
                                         onClick={() => {
                                           changeStatus(product._id);
@@ -232,7 +238,7 @@ const Product = () => {
                                     data-target="#exampleModal"
                                   >
                                     <span
-                                      className="text-danger fas fa-trash"
+                                      className="text-danger fas fa-trash cursor"
                                       onClick={() => {
                                         setProductId(product._id);
                                       }}
@@ -248,7 +254,11 @@ const Product = () => {
                           </tr>
                         )}
                       </tbody>
-                    </table>
+                    </table>}
+
+<div style={{ display: 'flex', justifyContent: 'center' }}>
+  <FadeLoader speedMultiplier={0.5} loading={loading} />
+</div>
                   </div>
 
                   <Pagination

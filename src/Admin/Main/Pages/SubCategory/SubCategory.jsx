@@ -10,6 +10,7 @@ import { toastEmmit } from "../../../../Helper/Toastr";
 import { ImageURL } from "../../../../Environment/Environment";
 import Pagination from "../../../../Helper/Pagination";
 import defaultImg from "../../../../assets/img/thumbnail.jpg";
+import FadeLoader from "react-spinners/FadeLoader";
 
 export const SubCategory = () => {
 
@@ -24,12 +25,15 @@ export const SubCategory = () => {
 
   const [CatList, setCatList] = useState([]);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     getSub_CategoryList();
     CategoryList()
   }, [search_key, currentPage]);
 
   const getSub_CategoryList = () => {
+    setLoading(true);
     const param = {
       limit: 10,
       page: currentPage,
@@ -45,11 +49,13 @@ export const SubCategory = () => {
         SetTotalPageCount(res.data.data.total_pages);
         SetTotalCount(res.data.data.total);
         setCount(res.data.data.page * param.limit);
+        setLoading(false);
       },
       (err) => {
         if (err) {
           console.log(err.response.data);
           toastEmmit(err.response.data?.message, "error");
+          setLoading(false);
         }
       }
     );
@@ -243,6 +249,7 @@ setLocalImgPath((selectedData?.image) ? (ImageURL + selectedData?.image) : defau
                     </div>
                   </div>
                   <div className="card-body table-responsive">
+                  {!loading && (
                     <table className="table table-hover table-bordered">
                       <thead>
                         <tr>
@@ -324,6 +331,10 @@ setLocalImgPath((selectedData?.image) ? (ImageURL + selectedData?.image) : defau
                         ))}
                       </tbody>
                     </table>
+                  )}
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <FadeLoader speedMultiplier={0.5} loading={loading} />
+                    </div>
                     <div className="mt-4">
                       <Pagination counting={S_No_Count} totaldata={TotalCount} pagecount={TotalPageCount} onChangePage={handlePageClick} />
                     </div>
@@ -351,7 +362,7 @@ setLocalImgPath((selectedData?.image) ? (ImageURL + selectedData?.image) : defau
           <div className="modal-content">
             <div className="modal-header">
               <h4 className="modal-title" id="exampleModalLabel">
-                {selectedData ? 'Update Sub-Category !' : 'Add Sub-Category !'}
+                {selectedData ? 'Edit Sub-Category !' : 'Add Sub-Category !'}
               </h4>
               <button
                 type="button"

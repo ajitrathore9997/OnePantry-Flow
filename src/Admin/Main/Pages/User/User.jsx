@@ -1,12 +1,14 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toastEmmit } from "../../../../Helper/Toastr";
 import { API_URL } from "../../../../Services/APIservice";
 import { PostService } from "../../../../Services/ConstantService";
 import Pagination from "../../../../Helper/Pagination";
+import FadeLoader from "react-spinners/FadeLoader";
 
 export const User = () => {
   const [userData, setUserData] = useState();
@@ -17,8 +19,10 @@ export const User = () => {
   const [userLimit, setUserLimit] = useState(10);
   const [sorting, setSorting] = useState("sortingKey|desc");
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true)
 
   const getUserList = async () => {
+    setLoading(true)
     const data = {
       limit: userLimit,
       sorting: sorting,
@@ -33,10 +37,16 @@ export const User = () => {
           setUserData(res.data.data.search_data);
           setTotalPages(res.data.data.total_pages);
           setTotal(res.data.data.total);
+          setLoading(false)
+
+        }
+        if (userData) {
+          setLoading(false)
         }
       },
       (err) => {
-        toastEmmit(err.response.data?.message, "error");
+        toastEmmit(err.data?.message, "error");
+        setLoading(false)
       }
     );
   };
@@ -45,7 +55,7 @@ export const User = () => {
   //     getUserList();
   // }, []);
 
-  useEffect(() => {
+  useEffect(() => { 
     getUserList();
   }, [search]);
 
@@ -62,7 +72,7 @@ export const User = () => {
         getUserList();
       },
       (err) => {
-        toastEmmit(err.response.data?.message, "error");
+        toastEmmit(err.data?.message, "error");
       }
     );
   };
@@ -80,12 +90,13 @@ export const User = () => {
         getUserList();
       },
       (err) => {
-        toastEmmit(err.response.data?.message, "error");
+        toastEmmit(err.data?.message, "error");
       }
     );
   };
 
   const changeSorting = (sort) => {
+    
     setSorting(sort);
     getUserList();
   };
@@ -97,6 +108,7 @@ export const User = () => {
 
   return (
     <>
+
       <section className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
@@ -133,7 +145,7 @@ export const User = () => {
                             <i className="fas fa-filter"></i>
                           </span>
                           <select
-                            className="form-select form-select-md"
+                            className="form-select form-select-md cursor"
                             onChange={(e) => {
                               changeSorting(e.target.value);
                             }}
@@ -167,6 +179,7 @@ export const User = () => {
                   </div>
 
                   <div className="card-body table-responsive">
+                    {!loading && 
                     <table className="table table-hover text-nowrap table-bordered">
                       <thead>
                         <tr>
@@ -234,13 +247,13 @@ export const User = () => {
                                   {user.isActive && (
                                     <span
                                       className="form-switch pt-1"
-                                      title="Deactive"
+                                      title="Deactivate"
                                     >
                                       <input
                                         id="toggle-trigger"
                                         type="checkbox"
                                         checked
-                                        className=" form-check-input checkbox"
+                                        className=" form-check-input checkbox cursor"
                                         data-toggle="toggle"
                                         onClick={() => {
                                           changeStatus(user._id);
@@ -251,12 +264,12 @@ export const User = () => {
                                   {!user.isActive && (
                                     <span
                                       className="form-switch pt-1"
-                                      title="Active"
+                                      title="Activate"
                                     >
                                       <input
                                         id="toggle-trigger"
                                         type="checkbox"
-                                        className=" form-check-input checkbox"
+                                        className=" form-check-input checkbox cursor"
                                         data-toggle="toggle"
                                         onClick={() => {
                                           changeStatus(user._id);
@@ -283,7 +296,7 @@ export const User = () => {
                                     data-target="#exampleModal"
                                   >
                                     <span
-                                      className="text-danger fas fa-trash"
+                                      className="text-danger fas fa-trash cursor"
                                       onClick={() => {
                                         setId(user._id);
                                       }}
@@ -299,7 +312,13 @@ export const User = () => {
                           </tr>
                         )}
                       </tbody>
-                    </table>
+
+                    </table>}
+
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      <FadeLoader speedMultiplier={0.5} loading={loading} />
+                    </div>
+
                   </div>
 
                   <Pagination
@@ -354,7 +373,8 @@ export const User = () => {
                 className="btn btn-danger"
                 data-dismiss="modal"
                 onClick={() => {
-                  deleteUser(id);
+                  deleteUser(id)
+;
                 }}
               >
                 Delete

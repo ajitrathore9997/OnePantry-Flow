@@ -9,9 +9,11 @@ import { PostService } from '../../../../Services/ConstantService'
 import nouser from '../../../../assets/img/no_user.jpg'
 import { toastEmmit } from "../../../../Helper/Toastr";
 import { ImageURL } from '../../../../Environment/Environment'
+import FadeLoader from "react-spinners/FadeLoader";
 
 const EditUser = () => {
 
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
     const [user, setUser] = useState()
@@ -22,7 +24,7 @@ const EditUser = () => {
     const [phoneNumber, setPhoneNumber] = useState()
     const [image, setImage] = useState()
 
-    const getUserData = async () => { 
+    const getUserData = async () => {
 
         const data = {
             user_id: id
@@ -33,22 +35,26 @@ const EditUser = () => {
             if (res.status === 200) {
                 setUser(res.data.data)
                 setFirstName(res.data.data.first_name)
-                setLastName(res.data.data.last_name)    
+                setLastName(res.data.data.last_name)
                 setPhoneNumber(res.data.data.phoneNumber)
                 if (res.data.data.image) {
                     setLocalImgPath(ImageURL + res.data.data.image)
                     console.log('localimage', localImgPath)
                 }
                 console.log(user)
+                    
+            setLoading(false)
             }
         }, (err) => {
-            console.log(err.response.data)
+            toastEmmit(err.data?.message, "error");
+            setLoading(false)
         })
 
     }
 
 
     useEffect(() => {
+        setLoading(true)
         getUserData()
     }, [])
 
@@ -92,7 +98,7 @@ const EditUser = () => {
         },
             (err) => {
                 console.log('error')
-                toastEmmit(err.response.data?.message, 'error')
+                toastEmmit(err.data?.message, 'error')
             })
 
     }
@@ -132,69 +138,78 @@ const EditUser = () => {
                 </section>
                 <div className="container p-2">
                     <div className="card p-3">
-                        <div className="upload_profile_image d-flex">
-                            <div className="img_box">
-                                <img alt="userImage" height={120} width={120} className="profile_img rounded-circle" src={localImgPath} />
-                            </div>
-                            <div className="btn_box mx-3 mx-md-3">
-                                <label className="form-label">
-                                    Change Profile Picture
-                                </label>
-                                <span className="btn btn-primary mainBtn btn-block btn-file">
-                                    Select Image
-                                    <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => { onimageUpload(e) }} />
-                                </span>
-                            </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <FadeLoader speedMultiplier={0.5} loading={loading} />
                         </div>
-                        <div className="ng-star-inserted">
-                            <form className="ng-untouched ng-pristine ng-invalid" onSubmit={(e) => handleSubmit(e)}>
-                                <div className="row">
-                                    <div className="col-md-6 mt-3">
-                                        <div className="form-group">
-                                            <label htmlFor="inputfName" className="form-label">
-                                                FirstName
-                                                <sup className="error">
-                                                    *
-                                                </sup>
-                                            </label>
-                                            <input type="text" formcontrolname="first_name" defaultValue={user && user.first_name} id="inputfName" placeholder="First Name" className="form-control ng-untouched ng-pristine ng-valid"
-                                                onChange={(e) => { setFirstName(e.target.value) }} />
-                                        </div>
+
+                        {!loading &&
+                            <>
+                                <div className="upload_profile_image d-flex">
+                                    <div className="img_box">
+                                        <img alt="userImage" height={120} width={120} className="profile_img rounded-circle" src={localImgPath} />
                                     </div>
-                                    <div className="col-md-6 mt-3">
-                                        <div className="form-group">
-                                            <label htmlFor="inputlName" className="form-label">
-                                                Last Name
-                                                <sup className="error">
-                                                    *
-                                                </sup>
-                                            </label>
-                                            <input type="text" formcontrolname="last_name" id="inputlName" defaultValue={user && user.last_name} placeholder="Last Name" className="form-control ng-untouched ng-pristine ng-valid"
-                                                onChange={(e) => { setLastName(e.target.value) }} />
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6 mt-3">
-                                        <div className="form-group">
-                                            <label htmlFor="inputPhone" className="form-label">
-                                                Phone Number
-                                                <sup className="error">
-                                                    *
-                                                </sup>
-                                            </label>
-                                            <input type="number" formcontrolname="phoneNumber" id="inputPhone" defaultValue={user && user.phoneNumber} placeholder="Phone Number" className="form-control ng-untouched ng-pristine ng-invalid"
-                                                onChange={(e) => { setPhoneNumber(e.target.value) }} />
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="mt-4">
-                                            <button type="submit" className="btn btn-primary" >
-                                                Submit
-                                            </button>
-                                        </div>
+                                    <div className="btn_box mx-3 mx-md-3">
+                                        <label className="form-label">
+                                            Change Profile Picture
+                                        </label>
+                                        <span className="btn btn-primary mainBtn btn-block btn-file">
+                                            Select Image
+                                            <input type="file" accept=".jpg,.jpeg,.png" onChange={(e) => { onimageUpload(e) }} />
+                                        </span>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                                <div className="ng-star-inserted">
+                                    <form className="ng-untouched ng-pristine ng-invalid" onSubmit={(e) => handleSubmit(e)}>
+                                        <div className="row">
+                                            <div className="col-md-6 mt-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="inputfName" className="form-label">
+                                                        FirstName
+                                                        <sup className="error">
+                                                            *
+                                                        </sup>
+                                                    </label>
+                                                    <input type="text" formcontrolname="first_name" defaultValue={user && user.first_name} id="inputfName" placeholder="First Name" className="form-control ng-untouched ng-pristine ng-valid"
+                                                        onChange={(e) => { setFirstName(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6 mt-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="inputlName" className="form-label">
+                                                        Last Name
+                                                        <sup className="error">
+                                                            *
+                                                        </sup>
+                                                    </label>
+                                                    <input type="text" formcontrolname="last_name" id="inputlName" defaultValue={user && user.last_name} placeholder="Last Name" className="form-control ng-untouched ng-pristine ng-valid"
+                                                        onChange={(e) => { setLastName(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6 mt-3">
+                                                <div className="form-group">
+                                                    <label htmlFor="inputPhone" className="form-label">
+                                                        Phone Number
+                                                        <sup className="error">
+                                                            *
+                                                        </sup>
+                                                    </label>
+                                                    <input type="number" formcontrolname="phoneNumber" id="inputPhone" defaultValue={user && user.phoneNumber} placeholder="Phone Number" className="form-control ng-untouched ng-pristine ng-invalid"
+                                                        onChange={(e) => { setPhoneNumber(e.target.value) }} />
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="mt-4">
+                                                    <button type="submit" className="btn btn-primary" >
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </>
+                        }
                     </div>
                 </div>
             </div>

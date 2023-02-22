@@ -11,13 +11,16 @@ import { PostService } from "../../../../Services/ConstantService";
 import "./ViewProduct.css";
 import defaultImage from "../../../../assets/img/thumbnail.jpg";
 import { toastEmmit } from "../../../../Helper/Toastr";
+import { FadeLoader } from "react-spinners";
 
 const ViewProduct = () => {
+  const [loading,setLoading] = useState(true)
   const { id } = useParams();
   const [image, setImage] = useState(  defaultImage);
   const [product, setProduct] = useState();
 
   const getProduct = async () => {
+    setLoading(true)
     const data = {
       product_id: id,
     };
@@ -27,9 +30,11 @@ const ViewProduct = () => {
         setProduct(res.data.data);
         setImage(res.data?.data?.product[0]?.image);
         console.log(res.data.data);
+        setLoading(false)
       },
       (err) => {
         toastEmmit(err.message,'error') 
+        setLoading(false)
       }
     );
   };
@@ -74,6 +79,11 @@ const ViewProduct = () => {
 
 
       <div className="card p-3">
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+                            <FadeLoader speedMultiplier={0.5} loading={loading} />
+                        </div>
+
+        {!loading && 
         <div className="row">
           <div className="col-lg-5 col-md-6">
             <div className="d-flex align-items-center flex-column">
@@ -94,7 +104,7 @@ const ViewProduct = () => {
                     <>
                       <img
                         alt="No image"
-                        className="imageBoxSmall highlight p-1 m-2 "
+                        className="imageBoxSmall highlight p-1 m-2 cursor"
                         id={i._id}
                         onMouseOver={() => handleMouseOver(i)}
                         onMouseOut={() => handleMouseOut(i._id)}
@@ -197,7 +207,7 @@ const ViewProduct = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
     </div>
   );

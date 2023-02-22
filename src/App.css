@@ -45,3 +45,20 @@
   a{
     text-decoration: none !important
   }
+
+  .cursor{
+    cursor: pointer;
+  }
+  .load{
+    opacity: 0.5;
+  }
+  
+  .dashboard-loader{
+    height: 90%;
+    width:80%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:absolute;
+    z-index:1000;
+  }

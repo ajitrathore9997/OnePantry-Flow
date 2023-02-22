@@ -1,4 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React from 'react'
 import { useState } from 'react';
 import { API_URL } from '../../../../Services/APIservice';
@@ -6,12 +7,16 @@ import { GetService, PostService } from '../../../../Services/ConstantService';
 import { toastEmmit } from '../../../../Helper/Toastr';
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react';
+import FadeLoader from 'react-spinners/FadeLoader';
 export default function Dashboard() {
 
+  const [loading,setLoading] = useState(true)
   const [userData, setUserData] = useState()
   const [DashboardCounts, setCounts] = useState()
+ 
 
   const getUserList = async () => {
+    setLoading(true)
     const data = {
       limit: 10,
       sorting: 'sortingKey|desc',
@@ -21,22 +26,29 @@ export default function Dashboard() {
     PostService(API_URL.GET_ALL_USER, data).then((res) => {
       if (res.data.status === true) {
         setUserData(res.data.data.search_data);
-      }
+      } 
+      setLoading(false) 
     }, (err) => {
-      toastEmmit(err.response.data?.message, 'error')
+      toastEmmit(err.data?.message, 'error')
+ 
+      setLoading(false)
     })
 
   };
 
   const getDashboardCounts = async () => { 
-
+    setLoading(true)
     GetService(API_URL.DASHBOARD_COUNT).then((res) => {
       if (res.data.status === true) {
        setCounts(res?.data?.data);
         // console.log(DashboardCounts)
       }
+  
+      setLoading(false)
     }, (err) => {
-      toastEmmit(err.response.data?.message, 'error')
+      toastEmmit(err.data?.message, 'error')
+  
+      setLoading(false)
     })
 
   };
@@ -46,9 +58,28 @@ export default function Dashboard() {
     getDashboardCounts()
   }, [])
 
+  useEffect(
+    ()=>{
+      if(loading){
+      document.getElementById('data').classList.add('load')
+      
+      document.getElementById('loader').classList.add('dashboard-loader')
+      }
+      else{
+      document.getElementById('data').classList.remove('load')
+      document.getElementById('loader').classList.remove('dashboard-loader')
+      }
+    },[loading]
+  )
+
   return (
     <> 
-      <div className="">
+    <div >
+    <div className='' id='loader'>   
+       <FadeLoader loading={loading}/>
+    </div>
+    </div>
+ <div className="" id='data'>
         <div className="content-header">
           <div className="container-fluid">
             <div className="row mb-2">
@@ -87,13 +118,13 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="fa fa-user-tie" />
                   </div>
-                  <Link to="#" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                  <Link to="/panel/user" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
                 </div>
               </div>
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-warning">
                   <div className="inner">
-                    <h3>2</h3>
+                    <h3>{DashboardCounts?.product}</h3>
                     <p>Total Products</p>
                   </div>
                   <div className="icon">
@@ -105,7 +136,7 @@ export default function Dashboard() {
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-danger">
                   <div className="inner">
-                    <h3>0</h3>
+                    <h3>{DashboardCounts?.order}</h3>
                     <p>Total Orders</p>
                   </div>
                   <div className="icon">
