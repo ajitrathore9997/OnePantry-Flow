@@ -1,85 +1,87 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import React from 'react'
-import { useState } from 'react';
-import { API_URL } from '../../../../Services/APIservice';
-import { GetService, PostService } from '../../../../Services/ConstantService';
-import { toastEmmit } from '../../../../Helper/Toastr';
-import { Link } from 'react-router-dom'
-import { useEffect } from 'react';
-import FadeLoader from 'react-spinners/FadeLoader';
+import React from "react";
+import { useState } from "react";
+import { API_URL } from "../../../../Services/APIservice";
+import { GetService, PostService } from "../../../../Services/ConstantService";
+import { toastEmmit } from "../../../../Helper/Toastr";
+import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import FadeLoader from "react-spinners/FadeLoader";
 export default function Dashboard() {
-
-  const [loading,setLoading] = useState(true)
-  const [userData, setUserData] = useState()
-  const [DashboardCounts, setCounts] = useState()
- 
+  const [loading, setLoading] = useState(true);
+  const [userData, setUserData] = useState();
+  const [DashboardCounts, setCounts] = useState();
 
   const getUserList = async () => {
-    setLoading(true)
+    setLoading(true);
     const data = {
       limit: 10,
-      sorting: 'sortingKey|desc',
+      sorting: "sortingKey|desc",
       page: 0,
     };
 
-    PostService(API_URL.GET_ALL_USER, data).then((res) => {
-      if (res.data.status === true) {
-        setUserData(res.data.data.search_data);
-      } 
-      setLoading(false) 
-    }, (err) => {
-      toastEmmit(err.data?.message, 'error')
- 
-      setLoading(false)
-    })
-
+    PostService(API_URL.GET_ALL_USER, data).then(
+      (res) => {
+        if (res.data.status === true) {
+          setUserData(res.data.data.search_data); 
+        }
+        
+      },
+      (err) => {
+        toastEmmit(err.data?.message, "error");
+        setLoading(false);
+      }
+    );
   };
 
-  const getDashboardCounts = async () => { 
-    setLoading(true)
-    GetService(API_URL.DASHBOARD_COUNT).then((res) => {
-      if (res.data.status === true) {
-       setCounts(res?.data?.data);
-        // console.log(DashboardCounts)
+  const getDashboardCounts = async () => {
+    setLoading(true);
+    GetService(API_URL.DASHBOARD_COUNT).then(
+      (res) => {
+        if (res.data.status === true) {
+          setCounts(res?.data?.data);
+          // console.log(DashboardCounts) 
+        }
+      },
+      (err) => {
+        toastEmmit(err.data?.message, "error");
+        setLoading(false);
       }
-  
-      setLoading(false)
-    }, (err) => {
-      toastEmmit(err.data?.message, 'error')
-  
-      setLoading(false)
-    })
-
+    );
   };
 
   useEffect(() => {
-    getUserList()
-    getDashboardCounts()
-  }, [])
+    getUserList();
+    getDashboardCounts();
+  }, []);
 
-  useEffect(
-    ()=>{
-      if(loading){
-      document.getElementById('data').classList.add('load')
-      
-      document.getElementById('loader').classList.add('dashboard-loader')
-      }
-      else{
-      document.getElementById('data').classList.remove('load')
-      document.getElementById('loader').classList.remove('dashboard-loader')
-      }
-    },[loading]
-  )
+  useEffect(() => {
+    if (loading) {
+      document.getElementById("data").classList.add("load");
+
+      document.getElementById("loader").classList.add("dashboard-loader");
+    } else {
+      document.getElementById("data").classList.remove("load");
+      document.getElementById("loader").classList.remove("dashboard-loader");
+    }
+  }, [loading]);
+
+
+  useEffect(()=>{
+    if(DashboardCounts && userData){
+      setLoading(false)
+    }
+  },[DashboardCounts, userData])
 
   return (
-    <> 
-    <div >
-    <div className='' id='loader'>   
-       <FadeLoader loading={loading}/>
-    </div>
-    </div>
- <div className="" id='data'>
+    <>
+      <div>
+        <div className="load" id="loader">
+          <FadeLoader loading={loading} />
+        </div>
+      </div>
+      <div className="" id="data">
         <div className="content-header">
           <div className="container-fluid">
             <div className="row mb-2">
@@ -106,7 +108,9 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="fa fa-users" />
                   </div>
-                  <Link to="/panel/user" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                  <Link to="/panel/user" className="small-box-footer">
+                    More info <i className="fas fa-arrow-circle-right" />
+                  </Link>
                 </div>
               </div>
               <div className="col-lg-3 col-6">
@@ -118,7 +122,9 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="fa fa-user-tie" />
                   </div>
-                  <Link to="/panel/user" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                  <Link to="/panel/user" className="small-box-footer">
+                    More info <i className="fas fa-arrow-circle-right" />
+                  </Link>
                 </div>
               </div>
               <div className="col-lg-3 col-6">
@@ -130,7 +136,9 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="fas fa-shopping-cart" />
                   </div>
-                  <Link to="/panel/product" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                  <Link to="/panel/product" className="small-box-footer">
+                    More info <i className="fas fa-arrow-circle-right" />
+                  </Link>
                 </div>
               </div>
               <div className="col-lg-3 col-6">
@@ -142,7 +150,9 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="ion ion-pie-graph" />
                   </div>
-                  <Link to="/panel/order" className="small-box-footer">More info <i className="fas fa-arrow-circle-right" /></Link>
+                  <Link to="/panel/order" className="small-box-footer">
+                    More info <i className="fas fa-arrow-circle-right" />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -152,9 +162,7 @@ export default function Dashboard() {
                 <div className="row">
                   <div className="card wrap cddr2">
                     <div className="card-body">
-
-
-                      <h2 className="default_color mb-4" >Latest Users</h2>
+                      <h2 className="default_color mb-4">Latest Users</h2>
 
                       <table className="table table-hover text-nowrap table-bordered">
                         <thead>
@@ -183,16 +191,17 @@ export default function Dashboard() {
                                       </span>
                                     )}
                                     {!user.isActive && (
-                                      <span 
-                                        className="fw-bold badge p-2 badge-danger"
-                                      >
+                                      <span className="fw-bold badge p-2 badge-danger">
                                         Deactive
                                       </span>
                                     )}
                                   </td>
 
                                   <td className="text-center justify-content-center">
-                                    <span title="View" className="mx-2 table-icon">
+                                    <span
+                                      title="View"
+                                      className="mx-2 table-icon"
+                                    >
                                       <Link
                                         to={"/panel/user/view/" + user._id}
                                         className="text-warning fas fa-eye"
@@ -202,19 +211,21 @@ export default function Dashboard() {
                                 </tr>
                               );
                             })}
-                          {
-                            userData && userData.length === 0 && <tr><h6> No Data Found </h6></tr>
-                          }
+                          {userData && userData.length === 0 && (
+                            <tr>
+                              <h6> No Data Found </h6>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
-                    </div></div></div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </section>
           </div>
-
         </section>
       </div>
-
-
     </>
-  )
+  );
 }

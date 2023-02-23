@@ -12,7 +12,7 @@ import { API_URL } from "../../../../../Services/APIservice";
 import { FadeLoader } from "react-spinners";
 
 
-export default function Profile() {
+export default function Profile({sendAdminDetails}) {
 
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
@@ -44,6 +44,7 @@ export default function Profile() {
       console.log(res)
       if (res.data.status === true) {
           toastEmmit(res?.data?.message, 'success')
+          sendAdminDetails()
           navigate('/panel/dashboard')
       }
   },

@@ -4,7 +4,7 @@ import Footer from './Layout/Footer/Footer';
 import Header from './Layout/Header/Header';
 import Sidebar from './Layout/Sidebar/Sidebar';
 
-export default function Main() {
+export default function Main({admin}) {
 
     // console.log(localStorage.getItem('Token'));
     // if (!localStorage.getItem('Token')) {
@@ -13,13 +13,13 @@ export default function Main() {
 
   return (
    <>
- {console.log('main.js')}
+ {/* {console.log('main.js')} */}
     <Header></Header>
-    <Sidebar></Sidebar>
-
+    <Sidebar adminDetail={admin}></Sidebar>
     <div className='content-wrapper'>
         <Outlet></Outlet>
     </div>
+    {/* {console.log('main.js 19')} */}
     <Footer></Footer>
    </>
    

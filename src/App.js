@@ -1,4 +1,5 @@
 // import logo from './logo.svg';
+
 import './App.css';   
 import Dashboard from './Admin/Main/Pages/Dashboard/Dashboard';
 import Login from './Admin/Login/Login';
@@ -18,15 +19,32 @@ import UserOrderMngt from './Admin/Main/Pages/User/UserOrderMngt';
 import Product from './Admin/Main/Pages/Product/Product';
 import ViewProduct from './Admin/Main/Pages/Product/ViewProduct';
 import EditProduct from './Admin/Main/Pages/Product/EditProduct';
+// import Commission from './Admin/Main/Pages/Commission/Commission';
+import {  useState } from 'react';
+// import { GetService } from './Services/ConstantService';
+// import { API_URL } from './Services/APIservice';
+// import { toastEmmit } from './Helper/Toastr';
 
 function App() {
+
+  const [admin,setAdmin] = useState(false)
+
+ 
+
+  const sendAdminDetails = ( ) => { 
+    setAdmin(!admin)
+  }
+
+
   return (
     <div className="wrapper">
+
+
 
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="*" element={<Navigate to="/login" />} />
-        <Route path='/panel' element={<Main />}>
+        <Route path='/panel' element={<Main admin={admin} />}>
           <Route path="" element={<Navigate to="/dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="user" element={<User />} />
@@ -40,7 +58,8 @@ function App() {
           <Route path='product/view/:id' element={<ViewProduct />} />
           <Route path='product/edit/:id' element={<EditProduct />} />
           <Route path="order" element={<Order />} />
-          <Route path="profile" element={<Profile/>} />
+          {/* <Route path='commission' element={<Commission/> } /> */}
+          <Route path="profile"   element={<Profile sendAdminDetails={sendAdminDetails}/>} />
           <Route path="change-password" element={<ChangePassword/>} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Route>

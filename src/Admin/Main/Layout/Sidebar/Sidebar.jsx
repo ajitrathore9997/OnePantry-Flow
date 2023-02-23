@@ -9,7 +9,7 @@ import { GetService } from "../../../../Services/ConstantService";
 import { API_URL } from "../../../../Services/APIservice";
 import { ImageURL } from "../../../../Environment/Environment";
 
-export default function Sidebar() {
+export default function Sidebar({adminDetail}) {
   const navigate = useNavigate();
 
   function Signout() {
@@ -22,12 +22,12 @@ export default function Sidebar() {
 
   useEffect(()=>{
     GetService(API_URL.ADMIN_DETAIL).then((res)=>{
-      console.log(res)
+      // console.log(res)
       if(res.data?.status === true){
         setAdminData(res?.data?.data)
       }
     })
-  },[])
+  },[adminDetail])
 
 
 
