@@ -8,6 +8,7 @@ import Main from './Admin/Main/Main';
 import ChangePassword from './Admin/Main/Pages/Setting/ChangePassword/ChangePassword';
 import Profile from './Admin/Main/Pages/Setting/Profile/Profile';
 import Order from './Admin/Main/Pages/Order/Order';
+import ViewOrder from './Admin/Main/Pages/Order/ViewOrder';
 import { ToastContainer } from 'react-toastify';
 import { User } from './Admin/Main/Pages/User/User';
 import { Category } from './Admin/Main/Pages/Category Management/Category'; 
@@ -19,11 +20,8 @@ import UserOrderMngt from './Admin/Main/Pages/User/UserOrderMngt';
 import Product from './Admin/Main/Pages/Product/Product';
 import ViewProduct from './Admin/Main/Pages/Product/ViewProduct';
 import EditProduct from './Admin/Main/Pages/Product/EditProduct';
-// import Commission from './Admin/Main/Pages/Commission/Commission';
-import {  useState } from 'react';
-// import { GetService } from './Services/ConstantService';
-// import { API_URL } from './Services/APIservice';
-// import { toastEmmit } from './Helper/Toastr';
+import Commission from './Admin/Main/Pages/Commission/Commission';
+import {  useState } from 'react'; 
 
 function App() {
 
@@ -38,8 +36,6 @@ function App() {
 
   return (
     <div className="wrapper">
-
-
 
       <Routes>
         <Route path="/login" element={<Login />} />
@@ -56,9 +52,10 @@ function App() {
           <Route path="sub-category" element={<SubCategory />} />
           <Route path='product' element={<Product />}>          </Route>
           <Route path='product/view/:id' element={<ViewProduct />} />
-          <Route path='product/edit/:id' element={<EditProduct />} />
+          <Route path='product/edit/:id' element={<EditProduct />} /> 
           <Route path="order" element={<Order />} />
-          {/* <Route path='commission' element={<Commission/> } /> */}
+          <Route path='order/view/:id' element={<ViewOrder />} />
+          <Route path='commission' element={<Commission/> } />
           <Route path="profile"   element={<Profile sendAdminDetails={sendAdminDetails}/>} />
           <Route path="change-password" element={<ChangePassword/>} />
           <Route path="*" element={<Navigate to="/dashboard" />} />

@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 // import { APIBaseURL } from "../../Environment/Environment";
@@ -9,14 +10,21 @@ import { toastEmmit } from "../../Helper/Toastr";
 import LogoImg from "../../assets/img/logo.png";
 
 export default function Login() {
+
   let navigate = useNavigate();
+  const [error,setError] = useState(false)
+  const [email,setEmail]= useState("")
+  const [password,setPassword] = useState("")
+  const [emailError,setEmailError]= useState(false)
 
   useEffect(() => {
     const Udata = JSON.parse(localStorage.getItem("userdata"));
-    // console.log(Udata)
+    
     if (Udata) {
       setRememberMe(true);
-      setFormData(Udata);
+      // setFormData(Udata);
+      setEmail(Udata?.email)
+      setPassword(Udata?.password)
     }
 
     if (localStorage.getItem("token")) {
@@ -26,10 +34,10 @@ export default function Login() {
     }
   }, []);
 
-  let [FormData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  // let [FormData, setFormData] = useState({
+  //   email: "",
+  //   password: "",
+  // });
 
   let [ShowHide, setType] = useState(true);
 
@@ -38,8 +46,19 @@ export default function Login() {
   const submitForm = async (e) => {
     e.preventDefault();
 
+    if(!email || !password){
+      setError(true)
+      return  
+    }
+
+    // setFormData({email:email,password:password})
+    const Data = {
+      email : email,
+      password : password
+    }
+
     if (RememberMe === true) {
-      localStorage.setItem("userdata", JSON.stringify(FormData));
+      localStorage.setItem("userdata", JSON.stringify({email : email , password : password}));
     } else {
       localStorage.removeItem("userdata");
     }
@@ -47,7 +66,7 @@ export default function Login() {
     // const URL = APIBaseURL + "admin/signIn";
 
     // console.log(FormData)
-    await axios.post(API_URL.ADMIN_LOGIN, FormData).then(
+    await axios.post(API_URL.ADMIN_LOGIN, Data).then(
       (res) => {
         // console.log(res)
 
@@ -68,13 +87,25 @@ export default function Login() {
     );
   };
 
+  const changeEmail = (e) => {
+
+    if(!e.includes("@"))
+    {
+      setEmailError(true)
+    }       
+    else{
+      setEmailError(false)
+    } 
+   return setEmail(e)
+  }
+
   return (
     <>
       <div className="login-page">
         <div className="login-box">
           <div className="login-logo">
           <img src={LogoImg} alt="Logo" className="brand-image img-circle elevation-3" style={{height:'150px'}} /> 
-          {/* <b>OnePantry </b> */}
+           {/* <b>OnePantry </b>  */}
           </div>
           <div className="card">
             <div className="card-body login-card-body">
@@ -91,35 +122,43 @@ export default function Login() {
                 onSubmit={(e) => {
                   submitForm(e);
                 }}
+                noValidate
               >
-                <div className="input-group mb-3">
+                <div className="mb-3">
+                <div className="input-group">
                   <input
                     type="email"
                     className="form-control"
                     required
                     name="email"
-                    value={FormData.email}
+                    value={email}
                     onChange={(e) =>
-                      setFormData({ ...FormData, email: e.target.value })
+                      
+                     changeEmail(e.target.value)
+                    
                     }
                     placeholder="Email"
                   />
-                  {/* setFormData({...FormData,[e.target.name]:e.target.value})} */}
+                  {/* setFormData({...FormData,[e.target.name]:e.target.value})}  */}
                   <div className="input-group-append">
                     <div className="input-group-text">
                       <span className="fas fa-envelope" />
                     </div>
                   </div>
                 </div>
-                <div className="input-group mb-3">
+                { !email && error  && <div className="text-danger  ml-2">Email is required</div>}
+                { emailError && email && <div className="text-danger  ml-2">Invalid Email Format</div>}
+                </div>
+                <div className="mb-3">
+                <div className="input-group ">
                   <input
                     type={ShowHide ? "password" : "text"}
                     className="form-control"
                     required
                     name="password"
-                    value={FormData.password}
+                    value={password}
                     onChange={(e) =>
-                      setFormData({ ...FormData, password: e.target.value })
+                      setPassword(e.target.value)
                     }
                     placeholder="Password"
                   />
@@ -133,6 +172,8 @@ export default function Login() {
                       />
                     </div>
                   </div>
+                </div>
+                  {error && !password && <div className="text-danger ml-2">password is required</div>}
                 </div>
                 <div className="row">
                   <div className="col-8">
@@ -155,7 +196,7 @@ export default function Login() {
               </form>
 
               <p className="mb-4">
-                {/* <Link href="#">Forgot password ?</Link> */}
+                 {/* <Link href="#">Forgot password ?</Link>  */}
               </p>
             </div>
           </div>

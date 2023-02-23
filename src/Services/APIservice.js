@@ -49,6 +49,14 @@ const API_URL = {
     UPDATE_PRODUCT : APIBaseURL + 'admin/produpdate',
     DELETE_PRODUCT : APIBaseURL + 'admin/prodDelete',
 
+      //commission section
+      GET_COMMISSION_LIST : APIBaseURL + 'admin/listCommission',
+      EDIT_COMMISSION_LIST : APIBaseURL + 'admin/editCommission',
+
+    // Order Section
+    GET_ORDER_LIST : APIBaseURL + 'admin/orderList',
+    GET_ORDER_DETAILS : APIBaseURL + 'admin/orderDetail',
+
 }
 
 export {API_URL}

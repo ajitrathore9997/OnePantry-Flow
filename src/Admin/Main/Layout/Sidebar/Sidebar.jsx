@@ -126,6 +126,12 @@ export default function Sidebar({adminDetail}) {
                   <p>Order Management</p>
                 </NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink to={"/panel/commission"} className="nav-link">
+                  <i className="nav-icon fas fa-dollar-sign iconsize" />
+                  <p>Commission</p>
+                </NavLink>
+              </li>
 
               <li className="nav-item">
                 <a
