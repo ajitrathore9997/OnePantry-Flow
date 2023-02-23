@@ -1,9 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../Sidebar/Sidebar.css";
-import avatrImg from "../../../../assets/img/avatar.png";
+// import avatrImg from "../../../../assets/img/avatar.png";
+import no_user from "../../../../assets/img/no_user.jpg";
 import LogoImg from "../../../../assets/img/logo.png";
+import { GetService } from "../../../../Services/ConstantService";
+import { API_URL } from "../../../../Services/APIservice";
+import { ImageURL } from "../../../../Environment/Environment";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -13,6 +17,20 @@ export default function Sidebar() {
     localStorage.removeItem("token");
     navigate("/login");
   }
+
+  const [AdminData , setAdminData] = useState();
+
+  useEffect(()=>{
+    GetService(API_URL.ADMIN_DETAIL).then((res)=>{
+      console.log(res)
+      if(res.data?.status === true){
+        setAdminData(res?.data?.data)
+      }
+    })
+  },[])
+
+
+
 
   return (
     <>
@@ -30,13 +48,13 @@ export default function Sidebar() {
           <div className="user-panel mt-3 pb-3 mb-3 d-flex">
             <div className="image">
               <img
-                src={avatrImg}
+                src={(AdminData?.image) ? (ImageURL + AdminData?.image) : no_user}
                 className="img-circle elevation-2"
                 alt="User"
               />
             </div>
             <div className="info">
-              <a className="d-block">Admin</a>
+              <a className="d-block">{AdminData?.userName || 'Admin'}</a>
             </div>
           </div>
 

@@ -39,8 +39,8 @@ const Token = localStorage.getItem('token')
     //   errorHandler(err);
       return err.response;
     });
-  if (response?.response?.status === 401) {
-    toastEmmit(response?.response?.data.message,'error')
+  if (response?.status === 401) {
+    // toastEmmit(response?.response?.data.message,'error')
     localStorage.removeItem('token');
     history.push('/login')
     window.location.reload()  
@@ -81,8 +81,8 @@ const Token = localStorage.getItem('token')
       return err.response;
     });
     console.log(response)
-  if (response?.response?.status === 401) {
-    toastEmmit(response?.response?.data.message,'error')
+  if (response?.status === 401) {
+    // toastEmmit(response?.response?.data.message,'error')
     // refresh_token();
     localStorage.removeItem('token');  
     history.push('/login')
