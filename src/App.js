@@ -21,6 +21,9 @@ import Product from './Admin/Main/Pages/Product/Product';
 import ViewProduct from './Admin/Main/Pages/Product/ViewProduct';
 import EditProduct from './Admin/Main/Pages/Product/EditProduct';
 import Commission from './Admin/Main/Pages/Commission/Commission';
+import Transaction from './Admin/Main/Pages/Transaction/Transaction';
+import Refund from './Admin/Main/Pages/Refund/Refund';
+
 import {  useState } from 'react'; 
 
 function App() {
@@ -55,6 +58,9 @@ function App() {
           <Route path='product/edit/:id' element={<EditProduct />} /> 
           <Route path="order" element={<Order />} />
           <Route path='order/view/:id' element={<ViewOrder />} />
+          <Route path='transactions' element={<Transaction/> } />
+          <Route path='refunds' element={<Refund />} />
+
           <Route path='commission' element={<Commission/> } />
           <Route path="profile"   element={<Profile sendAdminDetails={sendAdminDetails}/>} />
           <Route path="change-password" element={<ChangePassword/>} />

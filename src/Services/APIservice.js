@@ -57,6 +57,9 @@ const API_URL = {
     GET_ORDER_LIST : APIBaseURL + 'admin/orderList',
     GET_ORDER_DETAILS : APIBaseURL + 'admin/orderDetail',
 
+    // Transaction Section
+    GET_TRANSACTION_LIST: APIBaseURL +'admin/transactionList',
+
 }
 
 export {API_URL}

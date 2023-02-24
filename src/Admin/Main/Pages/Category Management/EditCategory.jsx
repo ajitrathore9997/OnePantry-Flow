@@ -69,6 +69,7 @@ export const EditCategory = (props) => {
     setcatname("");
     setcatImage("");
     setLocalImgPath(defaultImg);
+    setError(false)
   }
 
   return (

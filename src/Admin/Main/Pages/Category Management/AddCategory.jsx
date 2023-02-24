@@ -46,8 +46,7 @@ export const AddCategory = (props) => {
         console.log(res);
         if (res.data.status === true) {
           toastEmmit(res?.data?.message, "success");
-          e.target.reset();
-          setLocalImgPath(defaultImg);
+          resetFunc(); 
           props.getlist();
           document.getElementById("closeModal").click();
         }
@@ -67,13 +66,14 @@ export const AddCategory = (props) => {
   //   setLocalImgPath( (selectedData?.image) ? (ImageURL + selectedData?.image) : '')
   // }, [selectedData])
 
-  function resetFunc() {
+  function resetFunc() { 
     // setSelectedData();
     setcatname("");
     setcatImage("");
     setLocalImgPath(defaultImg);
     setError(false)
   }
+//  console.log('add cat=======')
 
   return (
     <>
