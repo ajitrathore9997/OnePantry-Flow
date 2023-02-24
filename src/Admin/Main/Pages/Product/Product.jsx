@@ -48,7 +48,7 @@ const Product = () => {
 
   useEffect(() => {
     getProducts();
-  }, [search]);
+  }, [search,currentPage]);
 
   const changeStatus = (productId) => {
     const data = {
@@ -70,7 +70,7 @@ const Product = () => {
 
   const handlePageClick = (e) => {
     setCurrentPage(e.selected);
-    getProducts();
+    // getProducts();
   };
 
   const deleteProduct = async (id)=> {

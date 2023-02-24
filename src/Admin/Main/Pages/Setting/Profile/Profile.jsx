@@ -14,6 +14,7 @@ import { FadeLoader } from "react-spinners";
 
 export default function Profile({sendAdminDetails}) {
 
+  const [error,setError] = useState(false)
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [localImgPath, setLocalImgPath] = useState(nouser)
@@ -30,8 +31,10 @@ export default function Profile({sendAdminDetails}) {
 
     console.log(image);
 
-    if(!userName)
-    setUserName(user.userName)
+    if(!userName){
+      setError(true)
+      return
+    } 
 
     let formdata = new FormData();
 
@@ -166,9 +169,10 @@ export default function Profile({sendAdminDetails}) {
                         defaultValue={user && user.userName}
                         className="form-control ng-untouched ng-pristine ng-valid"
                         onChange={(e) => {
-                          setUserName(e.target.value);
+                          setUserName(e.target.value.trim());
                         }}
                       />
+                      {error && !userName && <div className="error">UserName is required</div> }
                     </div>
                   </div>
                   <div className="col-md-6 mt-3">

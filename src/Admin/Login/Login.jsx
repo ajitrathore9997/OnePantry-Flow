@@ -146,8 +146,8 @@ export default function Login() {
                     </div>
                   </div>
                 </div>
-                { !email && error  && <div className="text-danger  ml-2">Email is required</div>}
-                { emailError && email && <div className="text-danger  ml-2">Invalid Email Format</div>}
+                { !email && error  && <div className="error ml-2">Email is required</div>}
+                { emailError && email && <div className="error ml-2">Invalid Email Format</div>}
                 </div>
                 <div className="mb-3">
                 <div className="input-group ">
@@ -173,7 +173,7 @@ export default function Login() {
                     </div>
                   </div>
                 </div>
-                  {error && !password && <div className="text-danger ml-2">password is required</div>}
+                  {error && !password && <div className="error ml-2">password is required</div>}
                 </div>
                 <div className="row">
                   <div className="col-8">

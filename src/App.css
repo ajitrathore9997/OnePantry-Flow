@@ -62,3 +62,9 @@
     position:absolute;
     z-index:1000;
   }
+
+  .error{
+    font-size: small;
+    font-weight: bolder;
+    color:red;
+  }

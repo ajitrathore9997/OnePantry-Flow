@@ -48,12 +48,12 @@ const UserProductMngt = () => {
   useEffect(() => {
     setLoading(true);
     getProductList();
-  }, [search]);
+  }, [search,currentPage]);
 
   const handlePageClick = (e) => {
     setCurrentPage(e.selected);
     setLoading(true);
-    getProductList();
+    // getProductList();
   };
 
   return (

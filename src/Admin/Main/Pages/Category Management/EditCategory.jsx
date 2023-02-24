@@ -8,6 +8,7 @@ import defaultImg from "../../../../assets/img/thumbnail.jpg";
 export const EditCategory = (props) => {
   // console.log("Edit category calling ", props);
   const { getlist, selectedData, setSelectedData } = props;
+  const [error,setError] = useState(false)
 
   const [catName, setcatname] = useState("");
   const [catImage, setcatImage] = useState("");
@@ -28,6 +29,11 @@ export const EditCategory = (props) => {
 
   const submit = (e) => {
     e.preventDefault();
+
+    if(!catName || !catImage){
+      setError(true)
+      return
+    }
 
     let formdata = new FormData();
     formdata.append("category_id", selectedData?._id);
@@ -97,9 +103,10 @@ export const EditCategory = (props) => {
                     name="name"
                     value={catName}
                     className="form-control"
-                    onChange={(e) => setcatname(e.target.value)}
+                    onChange={(e) => setcatname(e.target.value.trim())}
                     placeholder="eg: Beverages etc ...."
                   />
+                  {error && !catName && <div className="error">Category Name cannot be empty</div>}
                 </div>
 
                 <div className="mt-3">
@@ -116,6 +123,7 @@ export const EditCategory = (props) => {
                           onChange={(e) => onimageUpload(e)}
                         />
                       </span>
+                      {error && !catImage && <div className="error">Image should be selected</div>}
                     </div>
                     <div className="col-md-7 col-6">
                       <img src={ImgPath} alt="..." className="categoryImage" />

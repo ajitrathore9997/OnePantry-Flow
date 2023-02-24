@@ -70,11 +70,11 @@ const Commission = () => {
   }
   useEffect(() => {
     getCommissionList()
-  }, [search])
+  }, [search,currentPage])
 
   const handlePageClick = (e) => {
     setCurrentPage(e.selected)
-    getCommissionList()
+    // getCommissionList()
   }
 
   return (

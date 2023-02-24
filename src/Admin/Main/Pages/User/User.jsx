@@ -57,7 +57,7 @@ export const User = () => {
 
   useEffect(() => { 
     getUserList();
-  }, [search]);
+  }, [search,currentPage,sorting]);
 
   const deleteUser = async (userId) => {
     const data = {
@@ -98,12 +98,12 @@ export const User = () => {
   const changeSorting = (sort) => {
     
     setSorting(sort);
-    getUserList();
+    // getUserList();
   };
 
   const handlePageClick = (e) => {
     setCurrentPage(e.selected);
-    getUserList();
+    // getUserList();
   };
 
   return (
@@ -150,9 +150,9 @@ export const User = () => {
                               changeSorting(e.target.value);
                             }}
                           >
-                            <option defaultValue="sortingKey|asc">
+                            <option value="">
                               Sort-by
-                            </option>
+                            </option> 
                             <option value="sortingKey|asc">
                               Ascending Order
                             </option>

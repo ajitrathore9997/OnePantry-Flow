@@ -15,6 +15,7 @@ import FadeLoader from "react-spinners/FadeLoader";
 
 const EditProduct = () => {
 
+  const [error,setError] = useState(false)
   const [loading, setLoading] = useState(true)
   const navigate = useNavigate()
   const [savedImages,setSavedImages] = useState([])
@@ -26,7 +27,12 @@ const EditProduct = () => {
   const [category, setCategory] = useState();
   const [subCategory, setSubCategory] = useState();
   const [subCategoryList, setSubCategoryList] = useState([]);
-  const [data, setData] = useState({})
+    
+  const [name,setName] = useState()
+  const [selling_price,setSelling_price] = useState()
+  const [shiping_charge,setShiping_charge] = useState()
+  const [quantity,setQuantity] = useState()
+  const [description,setDescription] = useState()
 
   const getProduct = async () => {
     setLoading(true)
@@ -52,14 +58,13 @@ const EditProduct = () => {
         }
 
         setSavedImages(temp)
-        setData({
-          product_id: res?.data?.data?._id,
-          name: res?.data?.data?.name,
-          selling_price: res?.data?.data?.selling_price,
-          shiping_charge: res?.data?.data?.shiping_charge,
-          quantity: res?.data?.data?.quantity,
-          description: res?.data?.data?.description
-        })
+          
+          setName(res?.data?.data?.name)
+          setSelling_price(res?.data?.data?.selling_price)
+          setShiping_charge(res?.data?.data?.shiping_charge)
+          setQuantity(res?.data?.data?.quantity)
+          setDescription(res?.data?.data?.description)
+         
 
         if (res.data.data.product.length)
           setShowImage(ImageURL + res.data.data.product[0]?.image);
@@ -101,8 +106,10 @@ const EditProduct = () => {
 
     PostService(API_URL.SUB_CATEGORY_LIST_OF_CATEGORY, x).then(
       (res) => {
-        setSubCategoryList(res?.data?.data);
-  
+        console.log(res.data.data)
+        setSubCategoryList(res?.data?.data); 
+        if(category !== product.category_id._id)
+        setSubCategory("")
       },
       (err) => {
         toastEmmit(err.message, 'error')
@@ -154,15 +161,20 @@ const EditProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
+    if(!name || !selling_price || !shiping_charge || !quantity || !category || quantity<0 || selling_price<0 || shiping_charge<0   ){
+      setError(true)
+      return
+    }
     const formdata = new FormData()
 
-    formdata.append("name", data.name)
-    formdata.append("selling_price", data.selling_price)
-    formdata.append("shiping_charge", data.shiping_charge)
-    formdata.append("quantity", data.quantity)
-    formdata.append("description", data.description)
-    formdata.append("product_id",data.product_id)
+    formdata.append("name",  name)
+    formdata.append("selling_price",  selling_price)
+    formdata.append("shiping_charge",  shiping_charge)
+    formdata.append("quantity",  quantity)
+    formdata.append("description", description)
+    formdata.append("product_id",  product._id)
     formdata.append("category_id",category)
+    if(subCategory)
     formdata.append("sub_category_id",subCategory)
  
     for(let i=0;i<savedImages.length;i++){
@@ -184,11 +196,6 @@ const EditProduct = () => {
 
   }
 
-  const changeData = (value, key) => {
-    const temp = data
-    temp[key] = value
-    setData(temp)
-  }
 
   return (
     <div>
@@ -235,9 +242,10 @@ const EditProduct = () => {
                         placeholder="Product Name"
                         defaultValue={product?.name}
                         className="form-control ng-untouched ng-pristine ng-valid"
-                        onChange={(e) => { changeData(e.target.value, 'name') }}
+                        onChange={(e) => { setName(e.target.value.trim()) }}
 
-                      />
+                      /> 
+                      {!(name) && error && <div className="error">Name is required</div> }
                     </div>
                   </div>
 
@@ -254,20 +262,21 @@ const EditProduct = () => {
                         }}
                         className="form-select"
                       >
-                        <option>Select</option>
-                        {categoryList.map((category, key) => (
+                        <option value=''>Select</option>
+                        {categoryList?.map((category, key) => (
                           <option key={key} value={category?._id}>
                             {category?.category_name}
                           </option>
                         ))}
                       </select>
+                      {error && !category && <div className="error">Category should be selected</div> }
+
                     </div>
                   </div>
                   <div className="mt-3">
                     <div className="form-group">
                       <label htmlFor="inputfcategory" className="form-label">
-                        Select Sub Category
-                        <sup className="error">*</sup>
+                        Select Sub Category 
                       </label>
                       <select
                         value={subCategory}
@@ -276,13 +285,17 @@ const EditProduct = () => {
                         }}
                         className="form-select"
                       >
-                        <option>Select</option>
-                        {subCategoryList.map((subCategory, key) => (
+                        <option value=''>Select</option>
+                        {subCategoryList?.map((subCategory, key) => (
                           <option key={key} value={subCategory._id}>
                             {subCategory.sub_category_name}
                           </option>
-                        ))}
-                      </select>
+                        ))} 
+                        {
+                          !subCategoryList?.length && 
+                          <option value='' >No Sub-Category found</option >
+                        }
+                      </select> 
                     </div>
                   </div>
                   <div className="mt-3">
@@ -293,10 +306,14 @@ const EditProduct = () => {
                       </label>
                       <input
                         type="number"
-                        defaultValue={product?.selling_price}
-                        onChange={(e) => { changeData(e.target.value, 'selling_price') }}
+                        min='0'
+                        defaultValue={ selling_price}
+                        onChange={(e) => { setSelling_price(e.target.value) }}
                         className="form-control ng-untouched ng-pristine ng-valid"
                       />
+                      {error && !selling_price && <div className="error">Price is required</div> }
+                      {error && selling_price<0 && <div className="error">Price cannot be negative</div> }
+
                     </div>
                   </div>
                   <div className="row">
@@ -308,10 +325,14 @@ const EditProduct = () => {
                         </label>
                         <input
                           type="number"
-                          defaultValue={product?.shiping_charge}
-                          onChange={(e) => { changeData(e.target.value, 'shiping_charge') }}
+                          min='0'
+                          defaultValue={ shiping_charge}
+                          onChange={(e) => { setShiping_charge(e.target.value) }}
                           className="form-control ng-untouched ng-pristine ng-invalid"
                         />
+                      {error && !shiping_charge && <div className="error">Shiping Charge is required</div> }
+                      {error && shiping_charge<0 && <div className="error">Shiping Charge cannot be negative</div> }
+
                       </div>
                     </div>
                     <div className="mt-3 col-6">
@@ -322,10 +343,13 @@ const EditProduct = () => {
                         </label>
                         <input
                           type="number"
-                          defaultValue={product?.quantity}
-                          onChange={(e) => { changeData(e.target.value, 'quantity') }}
+                          min='0'
+                          defaultValue={  quantity}
+                          onChange={(e) => { setQuantity(e.target.value) }}
                           className="form-control ng-untouched ng-pristine ng-valid"
                         />
+                      {error && !quantity && <div className="error">Quantity is required</div> }
+                      {error && quantity<0 && <div className="error">Quantity cannot be negative</div> }
                       </div>
                     </div>
                   </div>
@@ -338,8 +362,8 @@ const EditProduct = () => {
                       <textarea
                         name=""
                         placeholder="Product Name"
-                        defaultValue={product?.description}
-                        onChange={(e) => { changeData(e.target.value, 'description') }}
+                        defaultValue={ description}
+                        onChange={(e) => { setDescription(e.target.value) }}
                         className="form-control ng-untouched ng-pristine ng-valid"
                         cols="1"
                         rows="2"
@@ -348,7 +372,7 @@ const EditProduct = () => {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  <div className="row">
+                  <div className="row justify-content-center">
                     <div className="col-md-6 mb-2">
                       <div className="d-flex flex-column justify-content-center">
                         <div className="mx-auto">
@@ -376,7 +400,7 @@ const EditProduct = () => {
                                   />
                                   <span className="removeImage">
                                     <i
-                                      className="fas fa-times"
+                                      className="fas fa-times error"
                                       onClick={() => {
                                         removeImage(i);
                                       }}

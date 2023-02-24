@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { React, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../../../Services/APIservice";
@@ -20,8 +21,8 @@ export default function Order() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const Ddate = new Date("2023-02-22T07:09:42.229Z").toLocaleDateString();
-    console.log(Ddate);
+    // const Ddate = new Date("2023-02-22T07:09:42.229Z").toLocaleDateString();
+    // console.log(Ddate);
     getOrderList();
   }, [search_key, currentPage, status]);
 
