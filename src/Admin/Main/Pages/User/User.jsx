@@ -259,7 +259,7 @@ export const User = ({users}) => {
                                         checked
                                         className=" form-check-input checkbox cursor"
                                         data-toggle="toggle"
-                                        onClick={() => {
+                                        onChange={() => {
                                           changeStatus(user._id);
                                         }}
                                       ></input>

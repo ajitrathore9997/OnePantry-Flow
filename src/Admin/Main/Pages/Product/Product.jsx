@@ -151,6 +151,7 @@ const Product = () => {
                           <th className="text-center">Category</th>
                           <th className="text-center">Price $</th>
                           <th className="text-center">Status</th>
+                          <th className="text-center">Seller</th>
                           <th className="text-center">Action</th>
                         </tr>
                       </thead>
@@ -179,6 +180,14 @@ const Product = () => {
                                     </span>
                                   )}
                                 </td>
+                                <td className="text-center">
+                                <span title="Seller Profile" className="mx-2 table-icon">
+                                    <Link
+                                      to={"/panel/user/view/" + product?.seller?._id}
+                                      className="text-warning fas fa-eye"
+                                    ></Link>
+                                  </span>
+                                </td>
                                 <td className="text-center justify-content-center">
                                   {product.isActive && (
                                     <span
@@ -191,7 +200,7 @@ const Product = () => {
                                         checked
                                         className=" form-check-input checkbox cursor"
                                         data-toggle="toggle"
-                                        onClick={() => {
+                                        onChange={() => {
                                           changeStatus(product._id);
                                         }}
                                       ></input>

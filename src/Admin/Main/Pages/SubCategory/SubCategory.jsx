@@ -120,7 +120,7 @@ export const SubCategory = () => {
   const [ImgPath, setLocalImgPath] = useState(defaultImg);
 
   useEffect(() => {
-    console.log("data selected", selectedData);
+    // console.log("data selected", selectedData);
     setsub_catname(selectedData?.sub_category_name);
     Setselected_Cat(selectedData?.category_id);
     setsub_catImage(selectedData?.image);
@@ -179,7 +179,7 @@ export const SubCategory = () => {
       console.log(res);
       if (res.data.status === true) {
         setCatList(res?.data?.data);
-        console.log(CatList);
+        // console.log(CatList);
       }
     });
   }

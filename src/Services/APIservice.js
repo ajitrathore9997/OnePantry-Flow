@@ -60,6 +60,9 @@ const API_URL = {
     // Transaction Section
     GET_TRANSACTION_LIST: APIBaseURL +'admin/transactionList',
 
+    // Refund Section
+    GET_REFUND_LIST: APIBaseURL +'admin/listDispute',
+
 }
 
 export {API_URL}

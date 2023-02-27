@@ -8,7 +8,7 @@ import { format, parseISO } from "date-fns";
 
 const Transaction = () => {
 
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     const [transactionList, setTransactionList] = useState()
 
     //Pagination States
@@ -22,6 +22,7 @@ const Transaction = () => {
     },[currentPage])
 
     const getTransactionList = () =>{
+        setLoading(true)
         const data = {
             limit: transactionLimit,
             page: currentPage
@@ -32,9 +33,11 @@ const Transaction = () => {
             setTransactionList(res.data?.data?.search_data)
             setTotal(res.data?.data?.total)
             setTotalPages(res.data?.data?.total_pages) 
+            setLoading(false)
         },
         (err) => {
             console.log(err)
+            setLoading(false)
         })
     }
 
