@@ -169,7 +169,7 @@ export default function Profile({sendAdminDetails}) {
                         defaultValue={user && user.userName}
                         className="form-control ng-untouched ng-pristine ng-valid"
                         onChange={(e) => {
-                          setUserName(e.target.value.trim());
+                          setUserName(e.target.value);
                         }}
                       />
                       {error && !userName && <div className="error">UserName is required</div> }

@@ -242,7 +242,7 @@ const EditProduct = () => {
                         placeholder="Product Name"
                         defaultValue={product?.name}
                         className="form-control ng-untouched ng-pristine ng-valid"
-                        onChange={(e) => { setName(e.target.value.trim()) }}
+                        onChange={(e) => { setName(e.target.value) }}
 
                       /> 
                       {!(name) && error && <div className="error">Name is required</div> }

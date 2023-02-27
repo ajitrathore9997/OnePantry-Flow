@@ -93,7 +93,7 @@ export const AddCategory = (props) => {
                 type="button"
                 className="btn-close"
                 required
-                data-dismiss="modal"
+                data-dismiss="modal"  
                 aria-label="Close"
                 onClick={resetFunc}
               ></button>
@@ -101,13 +101,13 @@ export const AddCategory = (props) => {
             <form onSubmit={(e) => submit(e)}>
               <div className="modal-body">
                 <div className="form-group">
-                  <label>Name of Category</label>
+                  <label>Name of Category</label> 
                   <input
-                    type="text"
+                    type="text" 
                     name="name"
                     value={catName}
                     className="form-control"
-                    onChange={(e) => setcatname(e.target.value.trim())}
+                    onChange={(e) => setcatname(e.target.value)}
                     placeholder="Name"
                   />
                   {error && !catName && <div className="error">Category Name cannot be empty</div>}

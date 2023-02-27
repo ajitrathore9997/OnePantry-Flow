@@ -391,11 +391,11 @@ export const SubCategory = () => {
                     name="name"
                     value={Sub_catName}
                     className="form-control"
-                    onChange={(e) => setsub_catname(e.target.value.trim())}
+                    onChange={(e) => setsub_catname(e.target.value)}
                     placeholder="Name"
                   />
                   {error && !Sub_catName && (
-                    <div className="error">Name should be given</div>
+                    <div className="error">Name is required</div>
                   )}
                 </div>
 
@@ -417,7 +417,7 @@ export const SubCategory = () => {
                     })}
                   </select>
                   {error && !selected_Cat && (
-                    <div className="error">Name should be given</div>
+                    <div className="error">Please select Category</div>
                   )}
                 </div>
 
@@ -436,7 +436,7 @@ export const SubCategory = () => {
                         />
                       </span>
                       {error && !Sub_catImage && (
-                        <div className="error">Image should be selected</div>
+                        <div className="error">Image is required</div>
                       )}
                     </div>
                     <div className="col-md-7 col-6">

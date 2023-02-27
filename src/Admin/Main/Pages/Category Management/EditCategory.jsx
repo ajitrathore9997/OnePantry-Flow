@@ -104,7 +104,7 @@ export const EditCategory = (props) => {
                     name="name"
                     value={catName}
                     className="form-control"
-                    onChange={(e) => setcatname(e.target.value.trim())}
+                    onChange={(e) => setcatname(e.target.value)}
                     placeholder="eg: Beverages etc ...."
                   />
                   {error && !catName && <div className="error">Category Name cannot be empty</div>}
