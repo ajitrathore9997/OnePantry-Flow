@@ -122,7 +122,7 @@ export default function Dashboard() {
                   <div className="icon">
                     <i className="fa fa-user-tie" />
                   </div>
-                  <Link to="/panel/user" className="small-box-footer">
+                  <Link to="/panel/user/active" className="small-box-footer">
                     More info <i className="fas fa-arrow-circle-right" />
                   </Link>
                 </div>

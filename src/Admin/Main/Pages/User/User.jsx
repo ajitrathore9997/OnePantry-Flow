@@ -10,7 +10,7 @@ import { PostService } from "../../../../Services/ConstantService";
 import Pagination from "../../../../Helper/Pagination";
 import FadeLoader from "react-spinners/FadeLoader";
 
-export const User = () => {
+export const User = ({users}) => {
   const [userData, setUserData] = useState();
   const [totalPages, setTotalPages] = useState();
   const [total, setTotal] = useState();
@@ -30,6 +30,10 @@ export const User = () => {
       search_key: search,
       // type: "user",
     };
+
+    if(users === 'active'){
+      data.type = 'active'
+    }
 
     PostService(API_URL.GET_ALL_USER, data).then(
       (res) => {

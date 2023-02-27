@@ -45,8 +45,9 @@ function App() {
         <Route path="*" element={<Navigate to="/login" />} />
         <Route path='/panel' element={<Main admin={admin} />}>
           <Route path="" element={<Navigate to="/dashboard" />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="user" element={<User />} />
+          <Route path="dashboard" element={<Dashboard />} /> 
+          <Route path="user" element={<User users='all' />} />
+          <Route path = 'user/active' element={<User users='active' />} />
           <Route path='user/view/:id' element={<ViewUser/>} />
           <Route path='user/edit/:id' element={<EditUser/>} />
           <Route path='/panel/user/product-by-seller/view/:id' element={<UserProductMngt/>} />
