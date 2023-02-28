@@ -286,11 +286,11 @@ export const SubCategory = () => {
 
                               <td>
                                 <span
-                                  class="form-switch pt-1 "
+                                  className="form-switch pt-1 "
                                   title={data.isActive ? "Deactive" : "Active"}
                                 >
                                   <input
-                                    class="form-check-input checkbox"
+                                    className="form-check-input checkbox"
                                     style={{ cursor: "pointer" }}
                                     type="checkbox"
                                     role="switch"

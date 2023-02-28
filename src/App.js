@@ -23,6 +23,9 @@ import EditProduct from './Admin/Main/Pages/Product/EditProduct';
 import Commission from './Admin/Main/Pages/Commission/Commission';
 import Transaction from './Admin/Main/Pages/Transaction/Transaction';
 import Refund from './Admin/Main/Pages/Refund/Refund';
+import ViewTransaction from './Admin/Main/Pages/Transaction/ViewTransaction';
+import ViewDispute from './Admin/Main/Pages/Disputes/ViewDispute';
+import Disputes from './Admin/Main/Pages/Disputes/Disputes';
 
 import {  useState } from 'react'; 
 
@@ -60,6 +63,9 @@ function App() {
           <Route path="order" element={<Order />} />
           <Route path='order/view/:id' element={<ViewOrder />} />
           <Route path='transactions' element={<Transaction/> } />
+          <Route path='transactions/view/:id' element={<ViewTransaction /> } />
+          <Route path='disputes' element={<Disputes />} />
+          <Route path='disputes/view/:id' element={<ViewDispute/>} />
           <Route path='refunds' element={<Refund />} />
 
           <Route path='commission' element={<Commission/> } />

@@ -80,7 +80,7 @@ function ViewOrder() {
                         <strong>Address:</strong> {"N/A"}
                       </div>
                     </div>
-                    <div className="float-right col-6">
+                    <div className="float-right col-5">
                       <h4>
                         <strong>Payment</strong> Detail
                       </h4>

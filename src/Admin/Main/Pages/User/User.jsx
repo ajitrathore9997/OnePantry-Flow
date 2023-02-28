@@ -201,7 +201,7 @@ export const User = ({users}) => {
                         {userData &&
                           userData.map((user, i) => {
                             return (
-                              <tr className="ng-star-inserted">
+                              <tr key={i} className="ng-star-inserted">
                                 <td className="text-center">
                                   {i + currentPage * userLimit + 1}
                                 </td>
@@ -281,19 +281,19 @@ export const User = ({users}) => {
                                       ></input>
                                     </span>
                                   )}
-                                  <a title="Update" className="mx-2 table-icon">
+                                  <span title="Update" className="mx-2 table-icon">
                                     <Link
                                       to={"/panel/user/edit/" + user._id}
                                       className="text-dark fas fa-pen"
                                     ></Link>
-                                  </a>
-                                  <a title="View" className="mx-2 table-icon">
+                                  </span>
+                                  <span title="View" className="mx-2 table-icon">
                                     <Link
                                       to={"/panel/user/view/" + user._id}
                                       className="text-warning fas fa-eye"
                                     ></Link>
-                                  </a>
-                                  <a
+                                  </span>
+                                  <span
                                     title="Delete"
                                     className="mx-2 table-icon"
                                     data-toggle="modal"
@@ -305,7 +305,7 @@ export const User = ({users}) => {
                                         setId(user._id);
                                       }}
                                     ></span>
-                                  </a>
+                                  </span>
                                 </td>
                               </tr>
                             );

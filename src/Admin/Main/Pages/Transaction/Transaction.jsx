@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FadeLoader } from 'react-spinners'
@@ -19,26 +20,26 @@ const Transaction = () => {
 
     useEffect(() => {
         getTransactionList()
-    },[currentPage])
+    }, [currentPage])
 
-    const getTransactionList = () =>{
+    const getTransactionList = () => {
         setLoading(true)
         const data = {
             limit: transactionLimit,
             page: currentPage
         }
 
-        PostService(API_URL.GET_TRANSACTION_LIST,data).then((res) => {
+        PostService(API_URL.GET_TRANSACTION_LIST, data).then((res) => {
             console.log(res)
             setTransactionList(res.data?.data?.search_data)
             setTotal(res.data?.data?.total)
-            setTotalPages(res.data?.data?.total_pages) 
+            setTotalPages(res.data?.data?.total_pages)
             setLoading(false)
         },
-        (err) => {
-            console.log(err)
-            setLoading(false)
-        })
+            (err) => {
+                console.log(err)
+                setLoading(false)
+            })
     }
 
     const handlePageClick = (e) => {
@@ -97,7 +98,7 @@ const Transaction = () => {
                                                 <thead>
                                                     <tr>
                                                         <th className="text-center">S.No</th>
-                                                        {/* {/ <th className="text-center">Seller</th> /} */}
+                                                        {/* {/ {/ <th className="text-center">Seller</th> /} /} */}
                                                         <th className="text-center">User</th>
                                                         <th className="text-center">Type</th>
                                                         <th className="text-center">Status</th>
@@ -105,40 +106,40 @@ const Transaction = () => {
                                                         <th className="text-center">Payment Mode</th>
                                                         <th className="text-center">Transaction Id</th>
                                                         <th className="text-center">Created At</th>
-                                                        {/* {/ <th className="text-center">Action</th> /} */}
+                                                        <th className="text-center">Action</th> 
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                     
+
                                                     {transactionList &&
                                                         transactionList.map((transaction, i) => {
                                                             return (
                                                                 <tr key={i}>
-                                                                <td className="text-center">{i+1}</td>
-                                                                <td className="text-center">{transaction.user.userName}</td>
-                                                               
-                                                                <td className="text-center">{transaction.type}</td>
-                                                                <td className="text-center">
-                                                                   {transaction.status === 'succeeded' &&  <span className="fw-bold badge mx-1 p-1 badge-success">Completed</span>}
-                                                                   {transaction.status !== 'succeeded' && <span class="fw-bold badge mx-1 p-1 badge-danger">Failed</span>}
+                                                                    <td className="text-center">{i + 1}</td>
+                                                                    <td className="text-center">{transaction.user.userName}</td>
+
+                                                                    <td className="text-center">{transaction.type}</td>
+                                                                    <td className="text-center">
+                                                                        {transaction.status === 'succeeded' && <span className="fw-bold badge mx-1 p-1 badge-success">Completed</span>}
+                                                                        {transaction.status !== 'succeeded' && <span class="fw-bold badge mx-1 p-1 badge-danger">Failed</span>}
+                                                                    </td>
+                                                                    <td className="text-center">
+                                                                        <span className='error'>{transaction.amount}</span>
+                                                                    </td>
+                                                                    <td className="text-center">
+                                                                        {transaction.payment_mode === 'card' &&
+                                                                            <span className="fw-bold badge mx-1 p-1 badge-primary">Card</span>}
+                                                                        {/* {/ {/ <span className="fw-bold badge mx-1 p-1 badge-info">Wallet</span> /} /} */}
+                                                                    </td>
+                                                                    <td className='text-center'>{transaction?.transaction_id}   </td>
+                                                                    <td className="text-center"> {format(
+                                                                        parseISO(transaction.createdAt),
+                                                                        "dd/MM/yyyy"
+                                                                    )}</td>
+                                                                    <td className="text-center">
+                                                                    <Link className="text-warning fas fa-eye" to={'/panel/transactions/view/' + transaction?._id }></Link>
                                                                 </td>
-                                                                <td className="text-center">
-                                                                    <span className='error'>{transaction.amount}</span>
-                                                                </td>
-                                                                <td className="text-center">
-                                                                    { transaction.payment_mode === 'card' && 
-                                                                    <span className="fw-bold badge mx-1 p-1 badge-primary">Card</span>}
-                                                                    {/* {/ <span className="fw-bold badge mx-1 p-1 badge-info">Wallet</span> /} */}
-                                                                </td>
-                                                                <td className='text-center'>{transaction?.transaction_id}   </td>
-                                                               <td className="text-center"> {format(
-                                    parseISO(transaction.createdAt),
-                                    "dd/MM/yyyy"
-                                  )}</td>
-                                                                {/* <td className="text-center">
-                                                                    <Link className="text-warning fas fa-eye" to={'/panel/transactions/view' }></Link>
-                                                                </td> */}
-                                                            </tr>
+                                                                </tr>
                                                             );
                                                         })}
                                                     {transactionList && transactionList.length === 0 && (

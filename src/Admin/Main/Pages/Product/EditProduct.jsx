@@ -108,7 +108,7 @@ const EditProduct = () => {
       (res) => {
         console.log(res.data.data)
         setSubCategoryList(res?.data?.data); 
-        if(category !== product.category_id._id)
+        if(category !== product?.category_id?._id)
         setSubCategory("")
       },
       (err) => {

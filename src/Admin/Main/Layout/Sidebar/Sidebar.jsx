@@ -139,12 +139,12 @@ export default function Sidebar({adminDetail}) {
                   <p>Transaction</p>
                 </NavLink>
               </li>
-              {/* <li className="nav-item">
+              <li className="nav-item">
                 <NavLink to={"/panel/disputes"} className="nav-link">
                   <i className="nav-icon fas fa-adjust iconsize" />
                   <p>Disputes</p>
                 </NavLink>
-              </li> */}
+              </li>
               <li className="nav-item">
                 <NavLink to={"/panel/refunds"} className="nav-link">
                   <i className="nav-icon fas fa-arrow-circle-right iconsize" />

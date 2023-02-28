@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-
 import React from "react";
 import { useState } from "react";
 import { API_URL } from "../../../../Services/APIservice";
@@ -8,10 +6,27 @@ import { toastEmmit } from "../../../../Helper/Toastr";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import FadeLoader from "react-spinners/FadeLoader";
+
+ 
+// import { Bar } from "react-chartjs-2";
+
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState();
   const [DashboardCounts, setCounts] = useState();
+
+  // const labels = ["January", "February", "March", "April", "May", "June"];
+  // const data = {
+  //   labels: labels,
+  //   datasets: [
+  //     {
+  //       label: "My First dataset",
+  //       backgroundColor: "rgb(255, 99, 132)",
+  //       borderColor: "rgb(255, 99, 132)",
+  //       data: [0, 10, 5, 2, 20, 30, 45],
+  //     },
+  //   ],
+  // };
 
   const getUserList = async () => {
     setLoading(true);
@@ -156,7 +171,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-
+{/* <Bar data={data} /> */}
             <section className="content  d-flex justify-content-center">
               <div className="container-fluid">
                 <div className="row">
