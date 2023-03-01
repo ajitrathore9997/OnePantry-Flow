@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
@@ -19,14 +20,13 @@ const ViewDispute = () => {
     PostService(API_URL.GET_DISPUTE_DETAIL, data).then(
       (res) => {
         console.log(res);
-        setDispute(res.data);
+        if(res.data.status === true){
+          setDispute(res.data);
+        }else{
+          toastEmmit(res?.data?.message, "error");
+        }
         setLoading(false);
-      },
-      (err) => {
-        console.log(err);
-        toastEmmit(err.response?.data?.message, "error");
-        setLoading(false);
-      }
+      } 
     );
   };
 
@@ -120,14 +120,14 @@ const ViewDispute = () => {
                       </div>
                     </div>
                     <div className="float-left mb-3 mx-5 p-4">
-                      <strong>Message :</strong> {dispute?.message}
+                      <strong>Message :</strong> {dispute?.data?.reason}
                     </div>
                   </>
                 )}
 
                 {loading && (
                   <div style={{ display: "flex", justifyContent: "center" }}>
-                    <FadeLoader speedMultiplier={0.5} loading={loading} />
+                    <FadeLoader speedMultiplier={2} loading={loading} />
                   </div>
                 )}
               </div>

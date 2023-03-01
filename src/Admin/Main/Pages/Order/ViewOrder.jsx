@@ -62,7 +62,7 @@ function ViewOrder() {
       <section className="content d-flex justify-content-center">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-12">
+            {!loading && <div className="col-12">
               <div className="card">
                 <div id="PrintInvoice">
                   <div className="card-header p-4">
@@ -205,10 +205,10 @@ function ViewOrder() {
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
+            </div>}
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <FadeLoader speedMultiplier={0.5} loading={loading} />
+            <FadeLoader speedMultiplier={2} loading={loading} />
+          </div>
           </div>
         </div>
       </section>

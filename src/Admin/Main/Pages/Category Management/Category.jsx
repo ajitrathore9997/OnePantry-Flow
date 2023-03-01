@@ -48,8 +48,8 @@ export const Category = () => {
       },
       (err) => {
         if (err) {
-          console.log(err.response.data);
-          toastEmmit(err.response.data?.message, "error");
+          console.log(err.data);
+          toastEmmit(err.data?.message, "error");
           setLoading(false);
         }
       }
@@ -72,7 +72,7 @@ export const Category = () => {
       },
       (err) => {
         console.log(err);
-        toastEmmit(err.response.data?.message, "error");
+        toastEmmit(err.data?.message, "error");
       }
     );
   }
@@ -87,12 +87,10 @@ export const Category = () => {
         console.log(res);
         if (res.data.status === true) {
           toastEmmit(res?.data?.message, "success");
+          getCategoryList();
+        }else{
+          toastEmmit(res?.data?.message, "error");
         }
-        getCategoryList();
-      },
-      (err) => {
-        console.log(err);
-        toastEmmit(err.response.data?.message, "error");
       }
     );
   };

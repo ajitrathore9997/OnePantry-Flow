@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+
 import React from "react";
 import { useState } from "react";
 import { API_URL } from "../../../../Services/APIservice";
@@ -7,26 +10,39 @@ import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import FadeLoader from "react-spinners/FadeLoader";
 
- 
-// import { Bar } from "react-chartjs-2";
+import Chart from "chart.js/auto";
+import { Bar } from "react-chartjs-2";
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [userData, setUserData] = useState();
   const [DashboardCounts, setCounts] = useState();
 
-  // const labels = ["January", "February", "March", "April", "May", "June"];
-  // const data = {
-  //   labels: labels,
-  //   datasets: [
-  //     {
-  //       label: "My First dataset",
-  //       backgroundColor: "rgb(255, 99, 132)",
-  //       borderColor: "rgb(255, 99, 132)",
-  //       data: [0, 10, 5, 2, 20, 30, 45],
-  //     },
-  //   ],
-  // };
+  const labels = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "Novmber",
+    "December",
+  ];
+  const data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Users",
+        backgroundColor: "rgb(255, 99, 132, 0.7)",
+        borderColor: "rgb(255, 99, 132, 0.5)",
+        data: [2, 10, 5, 2, 6, 1, 8],
+      },
+    ],
+  };
 
   const getUserList = async () => {
     setLoading(true);
@@ -39,9 +55,8 @@ export default function Dashboard() {
     PostService(API_URL.GET_ALL_USER, data).then(
       (res) => {
         if (res.data.status === true) {
-          setUserData(res.data.data.search_data); 
+          setUserData(res.data.data.search_data);
         }
-        
       },
       (err) => {
         toastEmmit(err.data?.message, "error");
@@ -56,7 +71,7 @@ export default function Dashboard() {
       (res) => {
         if (res.data.status === true) {
           setCounts(res?.data?.data);
-          // console.log(DashboardCounts) 
+          // console.log(DashboardCounts)
         }
       },
       (err) => {
@@ -82,12 +97,11 @@ export default function Dashboard() {
     }
   }, [loading]);
 
-
-  useEffect(()=>{
-    if(DashboardCounts && userData){
-      setLoading(false)
+  useEffect(() => {
+    if (DashboardCounts && userData) {
+      setLoading(false);
     }
-  },[DashboardCounts, userData])
+  }, [DashboardCounts, userData]);
 
   return (
     <>
@@ -96,6 +110,7 @@ export default function Dashboard() {
           <FadeLoader loading={loading} />
         </div>
       </div>
+
       <div className="" id="data">
         <div className="content-header">
           <div className="container-fluid">
@@ -111,8 +126,9 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-        <section className="content">
-          <div className="container-fluid">
+
+        <div className="container-fluid">
+          <section className="content">
             <div className="row">
               <div className="col-lg-3 col-6">
                 <div className="small-box bg-info">
@@ -171,75 +187,88 @@ export default function Dashboard() {
                 </div>
               </div>
             </div>
-{/* <Bar data={data} /> */}
-            <section className="content  d-flex justify-content-center">
-              <div className="container-fluid">
-                <div className="row">
-                  <div className="card wrap cddr2">
-                    <div className="card-body">
-                      <h2 className="default_color mb-4">Latest Users</h2>
+          </section>
 
-                      <table className="table table-hover text-nowrap table-bordered">
-                        <thead>
-                          <tr>
-                            <th className="text-center">S.No</th>
-                            <th className="text-center">Name</th>
-                            <th className="text-center">Email</th>
-                            <th className="text-center">Status</th>
-                            <th className="text-center">Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {userData &&
-                            userData.map((user, i) => {
-                              return (
-                                <tr key={user._id} className="ng-star-inserted">
-                                  <td className="text-center">{i + 1}</td>
-                                  <td className="text-center">
-                                    {user.first_name} {user.last_name}
-                                  </td>
-                                  <td className="text-center">{user.email}</td>
-                                  <td className="text-center">
-                                    {user.isActive && (
-                                      <span className="fw-bold badge p-2 badge-success">
-                                        Active
-                                      </span>
-                                    )}
-                                    {!user.isActive && (
-                                      <span className="fw-bold badge p-2 badge-danger">
-                                        Deactive
-                                      </span>
-                                    )}
-                                  </td>
-
-                                  <td className="text-center justify-content-center">
-                                    <span
-                                      title="View"
-                                      className="mx-2 table-icon"
-                                    >
-                                      <Link
-                                        to={"/panel/user/view/" + user._id}
-                                        className="text-warning fas fa-eye"
-                                      ></Link>
-                                    </span>
-                                  </td>
-                                </tr>
-                              );
-                            })}
-                          {userData && userData.length === 0 && (
-                            <tr>
-                              <h6> No Data Found </h6>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
+          {/* <section className="content">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="card">
+                  <div className="card-body">
+                    <h3 className="default_color mb-2">Users Graph Analysis</h3>
+                    <Bar data={data} />
                   </div>
                 </div>
               </div>
-            </section>
-          </div>
-        </section>
+            </div>
+          </section> */}
+
+          <section className="content">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="card wrap cddr2">
+                  <div className="card-body">
+                    <h3 className="default_color mb-4">Latest Users</h3>
+
+                    <table className="table table-hover text-nowrap table-bordered">
+                      <thead>
+                        <tr>
+                          <th className="text-center">S.No</th>
+                          <th className="text-center">Name</th>
+                          <th className="text-center">Email</th>
+                          <th className="text-center">Status</th>
+                          <th className="text-center">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {userData &&
+                          userData.map((user, i) => {
+                            return (
+                              <tr key={user._id} className="ng-star-inserted">
+                                <td className="text-center">{i + 1}</td>
+                                <td className="text-center">
+                                  {user.first_name} {user.last_name}
+                                </td>
+                                <td className="text-center">{user.email}</td>
+                                <td className="text-center">
+                                  {user.isActive && (
+                                    <span className="fw-bold badge p-2 badge-success">
+                                      Active
+                                    </span>
+                                  )}
+                                  {!user.isActive && (
+                                    <span className="fw-bold badge p-2 badge-danger">
+                                      Deactive
+                                    </span>
+                                  )}
+                                </td>
+
+                                <td className="text-center justify-content-center">
+                                  <span
+                                    title="View"
+                                    className="mx-2 table-icon"
+                                  >
+                                    <Link
+                                      to={"/panel/user/view/" + user._id}
+                                      className="text-warning fas fa-eye"
+                                    ></Link>
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        {userData && userData.length === 0 && (
+                          <tr>
+                            <h6> No Data Found </h6>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
     </>
   );

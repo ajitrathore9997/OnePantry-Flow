@@ -320,7 +320,7 @@ export const User = ({users}) => {
                     </table>}
 
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                      <FadeLoader speedMultiplier={0.5} loading={loading} />
+                      <FadeLoader speedMultiplier={2} loading={loading} />
                     </div>
 
                   </div>

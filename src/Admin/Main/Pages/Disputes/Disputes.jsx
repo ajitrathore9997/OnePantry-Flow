@@ -24,7 +24,7 @@ const Disputes = () => {
     const data = {
       limit: disputeLimit,
       page: currentPage,
-      sorting: sort,
+      type: parseInt(sort),
     };
 
     PostService(API_URL.GET_DISPUTE_LIST, data).then(
@@ -106,7 +106,7 @@ const Disputes = () => {
 
                   <div className="card-body table-responsive">
                     {!loading && (
-                      <table className="table table-hover text-nowrap table-border">
+                      <table className="table table-hover text-nowrap table-bordered">
                         <thead>
                           <tr>
                             <th className="text-center">#</th>
@@ -149,46 +149,45 @@ const Disputes = () => {
                                         "/panel/disputes/view/" + dispute?._id
                                       }
                                     ></Link>
-                                    <span
+
+                                    <button
                                       title="Resolve"
-                                      className="table-icon"
+                                      className="mx-3 table-icon btn btn-success btn-sm"
                                       data-toggle="modal"
                                       data-target="#exampleModal"
+                                      onClick={() => {
+                                        setDisputeAction({
+                                          id: dispute?._id,
+                                          action: "Resolve",
+                                        });
+                                      }}
                                     >
-                                      <button
-                                        className="mx-3 table-icon btn btn-success btn-sm"
-                                        onClick={() => {
-                                          setDisputeAction({
-                                            id: dispute?._id,
-                                            action: "Resolve",
-                                          });
-                                        }}
-                                      >
-                                        Resolve
-                                      </button>
-                                    </span>
-                                    <span
+                                      Resolve
+                                    </button>
+
+                                    <button
                                       title="Reject"
-                                      className="table-icon"
                                       data-toggle="modal"
                                       data-target="#exampleModal"
+                                      className="mx-2 table-icon btn btn-danger btn-sm"
+                                      onClick={() => {
+                                        setDisputeAction({
+                                          id: dispute?._id,
+                                          action: "Reject",
+                                        });
+                                      }}
                                     >
-                                      <button
-                                        className="mx-2 table-icon btn btn-danger btn-sm"
-                                        onClick={() => {
-                                          setDisputeAction({
-                                            id: dispute?._id,
-                                            action: "Reject",
-                                          });
-                                        }}
-                                      >
-                                        Reject
-                                      </button>
-                                    </span>
+                                      Reject
+                                    </button>
                                   </td>
                                 </tr>
                               );
                             })}
+                          {disputeList?.length === 0 && (
+                            <tr>
+                              <h6> No Data Found </h6>
+                            </tr>
+                          )}
                         </tbody>
                       </table>
                     )}
@@ -197,7 +196,7 @@ const Disputes = () => {
                       <div
                         style={{ display: "flex", justifyContent: "center" }}
                       >
-                        <FadeLoader speedMultiplier={0.5} loading={loading} />
+                        <FadeLoader speedMultiplier={2} loading={loading} />
                       </div>
                     )}
                   </div>

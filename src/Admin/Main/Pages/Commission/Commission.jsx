@@ -165,11 +165,16 @@ const Commission = () => {
 
                           </tr>
                         })}
+                        {commissionList?.length === 0 && (
+                          <tr>
+                            <h6> No Data Found </h6>
+                          </tr>
+                        )}
                       </tbody>
                     </table>}
 
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
-                      <FadeLoader speedMultiplier={0.5} loading={loading} />
+                      <FadeLoader speedMultiplier={2} loading={loading} />
                     </div>
                   </div>
 

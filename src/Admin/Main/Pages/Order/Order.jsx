@@ -168,7 +168,7 @@ export default function Order() {
                       </tbody>
                     </table>
                     <div style={{ display: "flex", justifyContent: "center" }}>
-                      <FadeLoader speedMultiplier={0.5} loading={loading} />
+                      <FadeLoader speedMultiplier={2} loading={loading} />
                     </div>
                   </div>
                   <Pagination

@@ -79,7 +79,7 @@ const ViewUser = () => {
             <div className="card p-3">
               <div className="card-body">
                 <div style={{ display: "flex", justifyContent: "center" }}>
-                  <FadeLoader speedMultiplier={0.5} loading={loading} />
+                  <FadeLoader speedMultiplier={2} loading={loading} />
                 </div>
 
                 {!loading && (

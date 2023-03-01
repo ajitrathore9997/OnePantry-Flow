@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { API_URL } from '../../../../Services/APIservice'
 import { PostService } from '../../../../Services/ConstantService'
+import {FadeLoader} from 'react-spinners'
 
 const ViewTransaction = () => {
 
     const [transaction,setTransaction] =useState()
+    const [loading,setLoading] =useState(true)
     const {id} = useParams()
 
     const getTransactionDetails = async () => {
@@ -17,7 +19,7 @@ const ViewTransaction = () => {
         PostService(API_URL.GET_TRANSACTION_DETAIL,data).then((res) => {
             console.log(res)
             setTransaction(res.data?.data)
-
+            setLoading(false)
         },(err) => {
             console.log(err)
         })
@@ -61,7 +63,9 @@ const ViewTransaction = () => {
 
 
             <div className="card m-2">
-                <div className="card-header p-4 row">
+                {!loading && 
+                <>
+                <div className="card-header p-4">
                     <div className="float-left col-5">
                         <h4>
                             <strong>Buyer</strong> Detail
@@ -102,7 +106,8 @@ const ViewTransaction = () => {
                     </div>
                 </div>
                 <div className="card-body">
-                    <div className="table-responsive-sm  ">
+                
+                    <div className="table-responsive-sm">
                        <table className="table table-striped table-hover">
                             <thead>
                                 <tr>
@@ -143,8 +148,17 @@ const ViewTransaction = () => {
                             </table>
                         </div>
                     </div>
+                    
 
+                    
                 </div>
+                </>
+                    }
+                 
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <FadeLoader speedMultiplier={2} loading={loading} />
+                </div>
+          
             </div>
 
 
