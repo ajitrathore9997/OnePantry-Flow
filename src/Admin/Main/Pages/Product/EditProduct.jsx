@@ -307,6 +307,7 @@ const EditProduct = () => {
                       <input
                         type="number"
                         min='0'
+                        onWheel={(e) => {e.target.blur()}}
                         defaultValue={ selling_price}
                         onChange={(e) => { setSelling_price(e.target.value) }}
                         className="form-control ng-untouched ng-pristine ng-valid"
@@ -326,6 +327,7 @@ const EditProduct = () => {
                         <input
                           type="number"
                           min='0'
+                          onWheel={(e) => {e.target.blur()}}
                           defaultValue={ shiping_charge}
                           onChange={(e) => { setShiping_charge(e.target.value) }}
                           className="form-control ng-untouched ng-pristine ng-invalid"
@@ -344,6 +346,7 @@ const EditProduct = () => {
                         <input
                           type="number"
                           min='0'
+                          onWheel={(e) => {e.target.blur()}}
                           defaultValue={  quantity}
                           onChange={(e) => { setQuantity(e.target.value) }}
                           className="form-control ng-untouched ng-pristine ng-valid"

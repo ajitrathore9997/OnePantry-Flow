@@ -152,6 +152,19 @@ export default function Sidebar({adminDetail}) {
                 </NavLink>
               </li>
 
+              {/* <li className="nav-item">
+                <NavLink to={"/panel/content"} className="nav-link">
+                  <i className="nav-icon fas fa-table iconsize" />
+                  <p>Content </p>
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to={"/panel/notifications"} className="nav-link">
+                  <i className="nav-icon fas fa-bell iconsize" />
+                  <p>Notifications</p>
+                </NavLink>
+              </li> */}
+
               <li className="nav-item">
                 <a
                   className="nav-link collapsed"

@@ -27,6 +27,11 @@ import ViewTransaction from './Admin/Main/Pages/Transaction/ViewTransaction';
 import ViewDispute from './Admin/Main/Pages/Disputes/ViewDispute';
 import Disputes from './Admin/Main/Pages/Disputes/Disputes';
 
+import Notifications from './Admin/Main/Pages/Notifications/Notifications';
+import Content from './Admin/Main/Pages/Content Management/Content';
+import ViewContent from './Admin/Main/Pages/Content Management/ViewContent';
+import EditContent from './Admin/Main/Pages/Content Management/EditContent';
+
 import {  useState } from 'react'; 
 
 function App() {
@@ -67,8 +72,15 @@ function App() {
           <Route path='disputes' element={<Disputes />} />
           <Route path='disputes/view/:id' element={<ViewDispute/>} />
           <Route path='refunds' element={<Refund />} />
-
           <Route path='commission' element={<Commission/> } />
+
+
+          <Route path='content' element={<Content/> } />
+          <Route path='content/view/id' element={<ViewContent />} />
+          <Route path='content/edit/id' element={<EditContent />} />
+          <Route path='notifications' element={<Notifications/> } />
+
+
           <Route path="profile"   element={<Profile sendAdminDetails={sendAdminDetails}/>} />
           <Route path="change-password" element={<ChangePassword/>} />
           <Route path="*" element={<Navigate to="/dashboard" />} />
