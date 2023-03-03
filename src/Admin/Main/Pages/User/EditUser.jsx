@@ -172,7 +172,7 @@ const EditUser = () => {
                       <div className="col-md-6 mt-3">
                         <div className="form-group">
                           <label htmlFor="inputfName" className="form-label">
-                            FirstName
+                            First Name
                             <sup className="error   ">*</sup>
                           </label>
                           <input
@@ -189,7 +189,7 @@ const EditUser = () => {
                           {error && !firstName && (
                             <div className="error">
                               {" "}
-                              FirstName cannot be empty
+                              First Name cannot be empty
                             </div>
                           )}
                         </div>
@@ -214,7 +214,7 @@ const EditUser = () => {
                           {error && !lastName && (
                             <div className="error">
                               {" "}
-                              LastName cannot be empty
+                              Last Name cannot be empty
                             </div>
                           )}
                         </div>
