@@ -3,7 +3,7 @@
 import './App.css';   
 import Dashboard from './Admin/Main/Pages/Dashboard/Dashboard';
 import Login from './Admin/Login/Login';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route,  Routes} from 'react-router-dom';
 import Main from './Admin/Main/Main';
 import ChangePassword from './Admin/Main/Pages/Setting/ChangePassword/ChangePassword';
 import Profile from './Admin/Main/Pages/Setting/Profile/Profile';

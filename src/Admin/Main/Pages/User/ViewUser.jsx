@@ -123,14 +123,14 @@ const ViewUser = () => {
                           )}
                         </h6>
 
-                        <h6 className="text-muted">
+                        {/* <h6 className="text-muted">
                           Phone :{" "}
                           {user && user.phoneNumber ? (
                             user.phoneNumber
                           ) : (
                             <>Not available</>
                           )}
-                        </h6>
+                        </h6> */}
                       </div>
                     </div>
                   </div>

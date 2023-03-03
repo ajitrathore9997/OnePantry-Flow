@@ -1,122 +1,211 @@
-import React from 'react'
-import { Link } from 'react-router-dom' 
+/* eslint-disable react-hooks/exhaustive-deps */
+import { format, parseISO } from "date-fns";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { FadeLoader } from "react-spinners";
+import Pagination from "../../../../Helper/Pagination";
+import { toastEmmit } from "../../../../Helper/Toastr";
+import { API_URL } from "../../../../Services/APIservice";
+import { PostService } from "../../../../Services/ConstantService";
 
 const Content = () => {
- 
-    return (
-        <div>
-            <section className="content-header">
+  const [ContentList, setContentList] = useState();
+  const [TotalPageCount, SetTotalPageCount] = useState();
+  const [TotalCount, SetTotalCount] = useState();
+  const [S_No_Count, setCount] = useState(1);
+  const [search_key, setsearch_key] = useState("");
+  const [currentPage, setCurrentPage] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-                <div className="container-fluid">
-                    <div className="row mb-2">
-                        <div className="col-sm-6">
-                            <h1 className="default_color">Content List</h1>
-                        </div>
-                        <div className="col-sm-6">
-                            <ol className="breadcrumb float-sm-right">
-                                <Link
-                                    to="/panel/dashboard"
-                                    className="breadcrumb-item"
-                                    style={{ textDecoration: "none" }}
-                                >
-                                    Dashboard
-                                </Link>
-                                <li className="breadcrumb-item active">Content</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-            </section>
+  const [selectedData, setSelectedData] = useState();
 
+  useEffect(() => {
+    getContentList();
+  }, [search_key, currentPage]);
 
-            <section className="content  d-flex justify-content-center">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="col-12">
-                            <div className="card wrap cddr2">
-                                <div className="card-body">
-                                    <div className="row mb-3">
-                                        <div className="col-md-6 offset-md-6">
-                                            {/* <div className="d-flex justify-content-end">
-                                                <div className="me-3">
-                                                    <label >From </label>
-                                                    <input type="date" className="form-control ng-untouched ng-pristine ng-valid" max="2023-02-24" />
-                                                </div>
-                                                <div>
-                                                    <label>To </label>
-                                                    <input type="date" className="form-control ng-untouched ng-pristine ng-valid" min="" max="2023-02-24" />
-                                                </div>
-                                            </div> */}
-  
-                                            
-                                        </div>
-                                    </div>
+  const getContentList = () => {
+    setLoading(true);
 
-                                    <div className="card-body table-responsive">
+    const param = {
+      limit: 10,
+      page: currentPage,
+      sorting: "sortingKey|desc",
+      search_key: search_key,
+    };
 
-                                        <table className="table table-hover text-nowrap table-border">
-                                            <thead>
-                                                <tr>
-                                                    <th className="text-center">#</th>
-                                                    {/* <th className="text-center">Seller</th> */}
-                                                    <th className="text-center">Title</th>
-                                                    <th className="text-center">Action</th>
-                                                    {/* <th className="text-center">Action</th> */}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+    PostService(API_URL.GET_CONTENT_LIST, param).then((res) => {
+      console.log(res);
+      if (res?.data?.status === true) {
+        setContentList(res.data.data.search_data);
+        SetTotalPageCount(res.data.data.total_pages);
+        SetTotalCount(res.data.data.total);
+        setCount(res.data.data.page * param.limit);
+        setLoading(false);
+      } else {
+        toastEmmit(res?.data?.message, "error");
+        setLoading(false);
+      }
+    });
+  };
 
-                                                <tr>
-                                                    <td className="text-center">1</td>
-                                                    <td className="text-center">Terms and condition</td>
-                                                    <td className="text-center">
-                                                        <Link
-                                                            title="View"
-                                                            style={{ cursor: "pointer" }}
-                                                            className="mx-2"
-                                                            data-toggle="modal"
-                                                            data-target="#ViewModal"
-                                                            to={'view/id'}
-                                                        >
-                                                            <i className="text-warning fas fa-eye"></i>
-                                                        </Link>
+  const changeStatus = (id) => {
+    const data = {
+      content_id: id,
+    };
 
-                                                        <span title="Update" className="mx-2 table-icon">
-                                                            <Link
-                                                                to={"/panel/content/edit/id"}
-                                                                className="text-dark fas fa-pen"
-                                                            ></Link>
-                                                        </span>
+    PostService(API_URL.CHANGE_CONTENT_STATUS, data).then((res) => {
+      console.log(res);
+      if (res.data.status === true) {
+        toastEmmit(res?.data?.message, "success");
+        getContentList();
+      } else {
+        toastEmmit(res?.data?.message, "error");
+      }
+    });
+  };
 
+  const handlePageClick = (e) => {
+    console.log(e.selected);
+    setCurrentPage(e.selected);
+  };
 
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+  const search = (e) => {
+    setsearch_key(e);
+  };
 
-                                        </table>
-
-                                        {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                            <FadeLoader speedMultiplier={0.5} loading={loading} />
-                                        </div> */}
-
-                                    </div>
-
-                                    {/* <Pagination
-                                        counting={transactionLimit * currentPage}
-                                        totaldata={total}
-                                        pagecount={totalPages}
-                                        onChangePage={handlePageClick}
-                                    ></Pagination> */}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
- 
-
-            </section>
+  return (
+    <div>
+      <section className="content-header">
+        <div className="container-fluid">
+          <div className="row mb-2">
+            <div className="col-sm-6">
+              <h1 className="default_color">Content List</h1>
+            </div>
+            <div className="col-sm-6">
+              <ol className="breadcrumb float-sm-right">
+                <Link
+                  to="/panel/dashboard"
+                  className="breadcrumb-item"
+                  style={{ textDecoration: "none" }}
+                >
+                  Dashboard
+                </Link>
+                <li className="breadcrumb-item active">Content</li>
+              </ol>
+            </div>
+          </div>
         </div>
-    )
-}
+      </section>
 
-export default Content
+      <section className="content  d-flex justify-content-center">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-12">
+              <div className="card wrap cddr2">
+                <div className="card-body">
+                  <div className="row mb-3">
+                    <div className="col-md-6 offset-md-6">
+                      <nav className="navbar">
+                        <input
+                          className="form-control"
+                          type="text"
+                          name="firstnamesearch"
+                          placeholder="Search by Keyword"
+                          onChange={(e) => search(e.target.value)}
+                        />
+                      </nav>
+                    </div>
+                  </div>
+
+                  <div className="card-body table-responsive">
+                    {!loading && (
+                      <table className="table table-hover text-nowrap table-bordered">
+                        <thead>
+                          <tr>
+                            <th className="text-center">S.No</th>
+                            <th className="text-center">Title</th>
+                            <th className="text-center">Status</th>
+                            <th className="text-center">Created-At</th>
+                            <th className="text-center">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {ContentList?.map((data, i) => (
+                            <tr key={i} className="text-center">
+                              <td>{i + S_No_Count + 1}</td>
+                              <td>{data?.title ? data?.title : "N/A"}</td>
+                              <td className="text-center">
+                                <span
+                                  className={
+                                    data?.isActive
+                                      ? "fw-bold badge p-2 badge-success"
+                                      : "fw-bold badge p-2 badge-danger"
+                                  }
+                                >
+                                  {" "}
+                                  {data?.isActive ? "Active" : "Deactive"}
+                                </span>
+                              </td>
+                              <td>{format(parseISO(data?.createdAt),
+                                      "dd/MM/yyyy"
+                                    )}</td>
+                              <td className="text-center">
+                                <span
+                                  className="form-switch pt-1 "
+                                  title={data.isActive ? "Deactive" : "Active"}
+                                >
+                                  <input
+                                    className="form-check-input checkbox"
+                                    style={{ cursor: "pointer" }}
+                                    type="checkbox"
+                                    role="switch"
+                                    checked={data?.isActive}
+                                    onChange={() => changeStatus(data?._id)}
+                                  />
+                                </span>
+
+                                <Link
+                                  title="View"
+                                  style={{ cursor: "pointer" }}
+                                  className="mx-2"
+                                  to={"view/id"}
+                                >
+                                  <i className="text-warning fas fa-eye"></i>
+                                </Link>
+                                <Link
+                                  title="Update"
+                                  className="mx-2 table-icon"
+                                  to={"/panel/content/edit/id"}
+                                >
+                                  <i className="text-dark fas fa-pen"></i>
+                                </Link>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    )}
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <FadeLoader speedMultiplier={2} loading={loading} />
+                    </div>
+                  </div>
+
+                  <div className="mt-4">
+                    <Pagination
+                      counting={S_No_Count}
+                      totaldata={TotalCount}
+                      pagecount={TotalPageCount}
+                      onChangePage={handlePageClick}
+                    ></Pagination>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Content;

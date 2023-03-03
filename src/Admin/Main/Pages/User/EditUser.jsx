@@ -66,7 +66,7 @@ const EditUser = () => {
 
     console.log(firstName, lastName, phoneNumber, image);
 
-    if (!firstName || !lastName || !phoneNumber) {
+    if (!firstName || !lastName) {
       setError(true);
       return;
     }
@@ -81,7 +81,7 @@ const EditUser = () => {
     formdata.append("user_id", user._id);
     formdata.append("first_name", firstName);
     formdata.append("last_name", lastName);
-    formdata.append("phoneNumber", phoneNumber);
+    // formdata.append("phoneNumber", phoneNumber);
 
     if (image) formdata.append("image", image);
 
@@ -219,7 +219,7 @@ const EditUser = () => {
                           )}
                         </div>
                       </div>
-                      <div className="col-md-6 mt-3">
+                      {/* <div className="col-md-6 mt-3">
                         <div className="form-group">
                           <label htmlFor="inputPhone" className="form-label">
                             Phone Number
@@ -243,7 +243,7 @@ const EditUser = () => {
                             </div>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                       <div className="row">
                         <div className="mt-4">
                           <button type="submit" className="btn btn-primary">
