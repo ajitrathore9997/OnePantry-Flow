@@ -93,7 +93,7 @@ const ViewTransaction = () => {
                                         )}
                                     </div>
                                     <div>
-                                        <strong>Payment Amount: </strong > $ {transaction?.Main_order_detail?.amount}
+                                        <strong>Payment Amount: </strong > $ {transaction?.total_amount}
                                     </div>
                                     <div>
                                         <strong> Payment Mode:</strong> {transaction?.payment_mode}
@@ -175,7 +175,7 @@ const ViewTransaction = () => {
                                                     <strong className="text-dark">Payment Amount :</strong>
                                                 </td>
                                                 <td className="center">
-                                                    <strong className="text-dark">${transaction?.Main_order_detail?.amount}</strong>
+                                                    <strong className="text-dark">${transaction?.total_amount}</strong>
                                                 </td>
                                             </tr>
                                         </tbody>
