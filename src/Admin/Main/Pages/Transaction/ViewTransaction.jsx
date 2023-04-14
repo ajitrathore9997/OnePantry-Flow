@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import { API_URL } from '../../../../Services/APIservice'
 import { PostService } from '../../../../Services/ConstantService'
 import {FadeLoader} from 'react-spinners'
+import { format, parseISO } from "date-fns";
 
 const ViewTransaction = () => {
 
@@ -85,7 +86,10 @@ const ViewTransaction = () => {
                                 <strong>Payment</strong> Detail
                             </h4>
                             <div>
-                                <strong>Date:</strong> {transaction?.createdAt}
+                                <strong>Date:</strong>{format(
+                                      parseISO(transaction.createdAt),
+                                      "dd/MM/yyyy"
+                                    )}
                             </div>
                             <div>
                                 <strong>Payment Amount: </strong > $ {transaction?.amount}

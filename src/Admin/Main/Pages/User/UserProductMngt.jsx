@@ -158,7 +158,8 @@ const UserProductMngt = () => {
                                     <Link
                                       title="View"
                                       className="mx-2 table-icon"
-                                      to={"/panel/user/product-by-seller/view/"}
+                                      // to={"/panel/user/product-by-seller/view/"}
+                                      to={"/panel/product/view/"+product._id} 
                                     >
                                       <span className="text-warning fas fa-eye"></span>
                                     </Link>

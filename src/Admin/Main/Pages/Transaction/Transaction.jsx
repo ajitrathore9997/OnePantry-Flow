@@ -116,7 +116,7 @@ const Transaction = () => {
                                 <tr key={i}>
                                   <td className="text-center">{i + 1}</td>
                                   <td className="text-center">
-                                    {transaction.user.userName}
+                                    {transaction?.type=="purchase"?transaction?.buyer?.userName:transaction?.seller?.userName}
                                   </td>
 
                                   <td className="text-center">
@@ -136,7 +136,7 @@ const Transaction = () => {
                                   </td>
                                   <td className="text-center">
                                     <span className="error">
-                                      {transaction.amount}
+                                      {transaction.total_amount}
                                     </span>
                                   </td>
                                   <td className="text-center">
@@ -148,7 +148,7 @@ const Transaction = () => {
                                     {/* {/ {/ <span className="fw-bold badge mx-1 p-1 badge-info">Wallet</span> /} /} */}
                                   </td>
                                   <td className="text-center">
-                                    {transaction?.transaction_id}{" "}
+                                    {transaction?.transactionId}{" "}
                                   </td>
                                   <td className="text-center">
                                     {" "}

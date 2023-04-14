@@ -191,7 +191,7 @@ export const User = ({users}) => {
                           <th className="text-center">Name</th>
                           <th className="text-center">Email</th>
                           <th className="text-center">Status</th>
-                          <th className="text-center">Role</th>
+                          {/* <th className="text-center">Role</th> */}
                           <th className="text-center">View Product</th>
                           <th className="text-center">View Order</th>
                           <th className="text-center">Action</th>
@@ -221,11 +221,11 @@ export const User = ({users}) => {
                                     </span>
                                   )}
                                 </td>
-                                <td className="text-center">
+                                {/* <td className="text-center">
                                   <span className="fw-bold badge mx-1 p-2 badge-dark">
                                     {user.role.name}
                                   </span>
-                                </td>
+                                </td> */}
                                 <td className="text-center">
                                   <Link
                                     title="View"

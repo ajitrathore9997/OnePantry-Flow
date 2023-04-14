@@ -4,6 +4,7 @@ import { API_URL } from "../../../../Services/APIservice";
 import { PostService } from "../../../../Services/ConstantService";
 import { toastEmmit } from "../../../../Helper/Toastr";
 import { FadeLoader } from "react-spinners";
+import { format, parseISO } from "date-fns";
 
 function ViewOrder() {
   useEffect(() => {
@@ -71,24 +72,28 @@ function ViewOrder() {
                         <strong>Buyer</strong> Detail
                       </h4>
                       <div>
-                        <strong>Name:</strong> {"N/A"}
+                        <strong>Name:</strong> {order?.buyerDetail?.userName || "N/A"}
                       </div>
                       <div>
-                        <strong> Email:</strong> {"N/A"}
+                        <strong> Email:</strong> {order?.buyerDetail?.email ||"N/A"}
                       </div>
-                      <div>
-                        <strong>Address:</strong> {"N/A"}
-                      </div>
+                      {/* <div>
+                        <strong>Address:</strong> {order?.buyerDetail?.userName ||"N/A"}
+                      </div> */}
                     </div>
                     <div className="float-right col-5">
                       <h4>
                         <strong>Payment</strong> Detail
                       </h4>
                       <div>
-                        <strong>Date:</strong> {"N/A"}
+                        <strong>Date:</strong>
+                         {format(
+                          parseISO(order.createdAt),
+                          "dd/MM/yyyy"
+                        )}
                       </div>
                       <div>
-                        <strong> Payment Amount:</strong> {"N/A"}
+                        <strong> Payment Amount:</strong> {order?.amount || "N/A"}
                       </div>
                       <div>
                         <strong>Transaction Id:</strong> {"N/A"}
@@ -113,31 +118,32 @@ function ViewOrder() {
                         </tr>
                       </thead>
                       <tbody>
-                        {order?.products &&
-                          order?.products.map((order, i) => {
+                        {order?.subOrderDetail &&
+                          order?.subOrderDetail.map((order, i) => {
                             return (
                               <tr key={i}>
                                 <td className="center"> {i + 1} </td>
                                 <td className="text-center strong">
-                                  {order.name}
+                                  {order?.productDetail?.name || 'N/A'}
                                 </td>
                                 <td className="text-center strong">
-                                  {order?.seller?.userName}
+                                  {order?.sellerDetail?.userName || 'N/A'}
                                 </td>
                                 <td className="text-center strong">
-                                  {order.description}
+                                  {order?.productDetail?.description || 'N/A'}
                                 </td>
                                 <td className="text-center strong">
-                                  {order.quantity}
+                                  {order.quantity || 'N/A'}
                                 </td>
                                 <td className="text-center strong">
-                                  {order.selling_price}
+                                  {order.price || 'N/A'}
                                 </td>
                                 <td className="text-center strong">
-                                  {order.shiping_charge}
+                                  {0}
+                                  {/* {order?.shipping_charge || 'N/A'} */}
                                 </td>
                                 <td className="text-center strong">
-                                  {order.selling_price + order.shiping_charge}
+                                  {(order.price * order.quantity) + 0 || 'N/A'}
                                 </td>
                               </tr>
                             );
@@ -176,25 +182,25 @@ function ViewOrder() {
                         <strong>Shipping</strong> Detail
                       </h4>
                       <div>
-                        <strong>Name:</strong> {order?.shipping_address?.name}
+                        <strong>Name:</strong> {order?.shipping_addDetail?.name || 'N/A'}
                       </div>
                       <div>
                         <strong> Street:</strong>{" "}
-                        {order?.shipping_address?.street}
+                        {order?.shipping_addDetail?.street || 'N/A'}
                       </div>
                       <div>
-                        <strong>City:</strong> {order?.shipping_address?.city}
+                        <strong>City:</strong> {order?.shipping_addDetail?.city || 'N/A'}
                       </div>
                       <div>
-                        <strong>State:</strong> {order?.shipping_address?.state}
+                        <strong>State:</strong> {order?.shipping_addDetail?.state || 'N/A'}
                       </div>
                       <div>
                         <strong>Country:</strong>{" "}
-                        {order?.shipping_address?.country}
+                        {order?.shipping_addDetail?.country || 'N/A'}
                       </div>
                       <div>
                         <strong>Pin Code:</strong>{" "}
-                        {order?.shipping_address?.pin_code}
+                        {order?.shipping_addDetail?.pin_code || 'N/A'}
                       </div>
                     </div>
                   </div>
@@ -206,9 +212,9 @@ function ViewOrder() {
                 </div>
               </div>
             </div>}
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <FadeLoader speedMultiplier={2} loading={loading} />
-          </div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <FadeLoader speedMultiplier={2} loading={loading} />
+            </div>
           </div>
         </div>
       </section>

@@ -135,11 +135,11 @@ export default function Order() {
                             return (
                               <tr key={i} className="ng-star-inserted">
                                 <td className="text-center">{i + 1}</td>
-                                <td className="text-center">{"N/A"}</td>
+                                <td className="text-center">{order?.buyerDetail?.userName || 'N/A'}</td>
                                 <td className="text-center ">
                                   {order.commission || "N/A"}
                                 </td>
-                                <td className="text-center">{order.price}</td>
+                                <td className="text-center">{order.amount || "N/A"}</td>
                                 <td className="text-center">
                                   {format(
                                     parseISO(order.createdAt),

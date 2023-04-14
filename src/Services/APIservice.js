@@ -52,12 +52,16 @@ const API_URL = {
   EDIT_COMMISSION_LIST: APIBaseURL + 'admin/editCommission',
 
   // Order Section
-  GET_ORDER_LIST: APIBaseURL + 'admin/orderList',
-  GET_ORDER_DETAILS: APIBaseURL + 'admin/orderDetail',
+  // GET_ORDER_LIST: APIBaseURL + 'admin/orderList',
+  GET_ORDER_LIST: APIBaseURL + 'admin/main-orderList',
+  // GET_ORDER_DETAILS: APIBaseURL + 'admin/orderDetail',
+  GET_ORDER_DETAILS: APIBaseURL + 'admin/main-orderDetail',
 
   // Transaction Section
-  GET_TRANSACTION_LIST: APIBaseURL + 'admin/transactionList',
-  GET_TRANSACTION_DETAIL: APIBaseURL + 'admin/transaction-detail',
+  // GET_TRANSACTION_LIST: APIBaseURL + 'admin/transactionList',
+  GET_TRANSACTION_LIST: APIBaseURL + 'admin/main-transaction-list',
+  // GET_TRANSACTION_DETAIL: APIBaseURL + 'admin/transaction-detail',
+  GET_TRANSACTION_DETAIL: APIBaseURL + 'admin/main-transaction-detail',
 
   // Refund Section
   GET_REFUND_LIST: APIBaseURL + 'admin/listDispute',
