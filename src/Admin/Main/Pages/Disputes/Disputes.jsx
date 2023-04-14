@@ -11,7 +11,7 @@ const Disputes = () => {
   const [disputeList, setDisputeList] = useState();
   const [disputeAction, setDisputeAction] = useState();
   const [currentPage, setCurrentPage] = useState(0);
-  const [sort, setSort] = useState();
+  const [sort, setSort] = useState()
   const [total, setTotal] = useState();
   const [totalPages, setTotalPages] = useState();
   const [disputeLimit, setDisputeLimit] = useState(10);

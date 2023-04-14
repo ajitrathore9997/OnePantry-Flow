@@ -116,7 +116,7 @@ const Transaction = () => {
                                 <tr key={i}>
                                   <td className="text-center">{i + 1}</td>
                                   <td className="text-center">
-                                    {transaction?.type=="purchase"?transaction?.buyer?.userName:transaction?.seller?.userName}
+                                    {transaction?.type === "purchase"?transaction?.buyer?.userName:transaction?.seller?.userName}
                                   </td>
 
                                   <td className="text-center">

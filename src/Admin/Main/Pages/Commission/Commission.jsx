@@ -146,7 +146,7 @@ const Commission = () => {
                             {commission._id !== edit && <td className="text-center">{commission.commission ? commission.commission : 0}</td>}
                             {commission._id === edit && <td className='text-center'><input onChange={(e) => {
                               setCommissionValue(e.target.value)
-                            }} className='text-center' type='number' defaultValue={commission.commission}></input></td>}
+                            }} className='text-center' type='number' min={0} defaultValue={commission.commission}></input></td>}
 
                             <td className="text-center"><a title="Update" className="mx-2 table-icon">
                               {commission._id !== edit && <span
