@@ -136,7 +136,7 @@ export default function Sidebar({adminDetail}) {
               <li className="nav-item">
                 <NavLink to={"/panel/transactions"} className="nav-link">
                   <i className="nav-icon fas fa-exchange-alt iconsize" />
-                  <p>Transaction</p>
+                  <p>Transaction Manag..</p>
                 </NavLink>
               </li>
               <li className="nav-item">
