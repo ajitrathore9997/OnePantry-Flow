@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { React, useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { API_URL } from "../../../../Services/APIservice";
@@ -88,7 +89,7 @@ function ViewOrder() {
                       <div>
                         <strong>Date:</strong>
                          {format(
-                          parseISO(order.createdAt),
+                          parseISO(order?.createdAt),
                           "dd/MM/yyyy"
                         )}
                       </div>

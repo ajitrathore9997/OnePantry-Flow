@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { API_URL } from '../../../../Services/APIservice'
@@ -88,7 +89,7 @@ const ViewTransaction = () => {
                                     </h4>
                                     <div>
                                         <strong>Date: </strong>{format(
-                                            parseISO(transaction.createdAt),
+                                            parseISO(transaction?.createdAt),
                                             "dd/MM/yyyy"
                                         )}
                                     </div>
