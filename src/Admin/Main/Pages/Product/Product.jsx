@@ -160,7 +160,7 @@ const Product = () => {
                           productList.map((product, i) => {
                             return (
                               <tr key={i} className="ng-star-inserted">
-                                <td className="text-center">{i + 1}</td>
+                                <td className="text-center">{i + (currentPage * productLimit) + 1}</td>
                                 <td className="text-center">{product.name}</td>
                                 <td className="text-center">
                                   {product.category_id.category_name}

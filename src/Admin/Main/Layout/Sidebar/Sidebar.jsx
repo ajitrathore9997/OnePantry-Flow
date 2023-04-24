@@ -136,7 +136,7 @@ export default function Sidebar({adminDetail}) {
               <li className="nav-item">
                 <NavLink to={"/panel/transactions"} className="nav-link">
                   <i className="nav-icon fas fa-exchange-alt iconsize" />
-                  <p>Transaction Mngt..</p>
+                  <p>Transaction</p>
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -152,12 +152,12 @@ export default function Sidebar({adminDetail}) {
                 </NavLink>
               </li>
 
-              {/* <li className="nav-item">
+              <li className="nav-item">
                 <NavLink to={"/panel/content"} className="nav-link">
                   <i className="nav-icon fas fa-table iconsize" />
                   <p>Content </p>
                 </NavLink>
-              </li> */}
+              </li>
               {/* <li className="nav-item">
                 <NavLink to={"/panel/notifications"} className="nav-link">
                   <i className="nav-icon fas fa-bell iconsize" />

@@ -74,7 +74,7 @@ const API_URL = {
   GET_CONTENT_LIST: APIBaseURL + 'admin/list-content',
   CHANGE_CONTENT_STATUS: APIBaseURL + 'admin/status-update-content',
   EDIT_CONTENT: APIBaseURL + 'admin/update-content',
-
+  GET_CONTENT_BY_ID: APIBaseURL + 'admin/detail-content',
 
 
 

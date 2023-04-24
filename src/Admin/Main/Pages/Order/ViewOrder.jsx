@@ -97,7 +97,7 @@ function ViewOrder() {
                         <strong> Payment Amount:</strong> {order?.amount || "N/A"}
                       </div>
                       <div>
-                        <strong>Transaction Id:</strong> {"N/A"}
+                        {/* <strong>Transaction Id:</strong> {"N/A"} */}
                       </div>
                     </div>
                   </div>

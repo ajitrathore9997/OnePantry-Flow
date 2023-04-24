@@ -76,8 +76,9 @@ function App() {
 
 
           <Route path='content' element={<Content/> } />
-          <Route path='content/view/id' element={<ViewContent />} />
-          <Route path='content/edit/id' element={<EditContent />} />
+          <Route path='content/view/:id' element={<ViewContent />} />
+          <Route path='content/edit/:id' element={<EditContent />} />
+          
           <Route path='notifications' element={<Notifications/> } />
 
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -114,7 +115,7 @@ const Transaction = () => {
                             transactionList.map((transaction, i) => {
                               return (
                                 <tr key={i}>
-                                  <td className="text-center">{i + 1}</td>
+                                  <td className="text-center">{i + (currentPage * transactionLimit) + 1}</td>
                                   <td className="text-center">
                                     {transaction?.type === "purchase"?transaction?.buyer?.userName:transaction?.seller?.userName}
                                   </td>
@@ -140,9 +141,9 @@ const Transaction = () => {
                                     </span>
                                   </td>
                                   <td className="text-center">
-                                    {transaction.payment_mode === "card" && (
+                                    {transaction.payment_mode  && (
                                       <span className="fw-bold badge mx-1 p-1 badge-primary">
-                                        Card
+                                        {transaction.payment_mode}
                                       </span>
                                     )}
                                     {/* {/ {/ <span className="fw-bold badge mx-1 p-1 badge-info">Wallet</span> /} /} */}

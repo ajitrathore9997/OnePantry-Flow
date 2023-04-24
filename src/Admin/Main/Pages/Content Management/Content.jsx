@@ -168,14 +168,14 @@ const Content = () => {
                                   title="View"
                                   style={{ cursor: "pointer" }}
                                   className="mx-2"
-                                  to={"view/id"}
+                                  to={`view/${data?._id}`}
                                 >
                                   <i className="text-warning fas fa-eye"></i>
                                 </Link>
                                 <Link
                                   title="Update"
                                   className="mx-2 table-icon"
-                                  to={"/panel/content/edit/id"}
+                                  to={`edit/${data?._id}`}
                                 >
                                   <i className="text-dark fas fa-pen"></i>
                                 </Link>
