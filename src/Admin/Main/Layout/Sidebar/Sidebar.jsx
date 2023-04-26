@@ -155,9 +155,17 @@ export default function Sidebar({adminDetail}) {
               <li className="nav-item">
                 <NavLink to={"/panel/content"} className="nav-link">
                   <i className="nav-icon fas fa-table iconsize" />
-                  <p>Content </p>
+                  <p>Content Management</p>
                 </NavLink>
               </li>
+
+              <li className="nav-item">
+                <NavLink to={"/panel/help"} className="nav-link">
+                  <i className="fas fa-th iconsize nav-icon" />
+                  <p>Help Management</p>
+                </NavLink>
+              </li>
+
               {/* <li className="nav-item">
                 <NavLink to={"/panel/notifications"} className="nav-link">
                   <i className="nav-icon fas fa-bell iconsize" />

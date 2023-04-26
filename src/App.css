@@ -68,3 +68,8 @@
     font-weight: bolder;
     color:red;
   }
+
+  .ck.ck-editor__editable_inline {
+    text-align: left;
+    min-height: 80px;
+}

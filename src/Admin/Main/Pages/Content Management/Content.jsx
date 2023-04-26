@@ -34,7 +34,7 @@ const Content = () => {
     };
 
     PostService(API_URL.GET_CONTENT_LIST, param).then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res?.data?.status === true) {
         setContentList(res.data.data.search_data);
         SetTotalPageCount(res.data.data.total_pages);
@@ -54,7 +54,7 @@ const Content = () => {
     };
 
     PostService(API_URL.CHANGE_CONTENT_STATUS, data).then((res) => {
-      console.log(res);
+      // console.log(res);
       if (res.data.status === true) {
         toastEmmit(res?.data?.message, "success");
         getContentList();
@@ -65,7 +65,7 @@ const Content = () => {
   };
 
   const handlePageClick = (e) => {
-    console.log(e.selected);
+    // console.log(e.selected);
     setCurrentPage(e.selected);
   };
 

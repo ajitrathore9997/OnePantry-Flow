@@ -32,6 +32,9 @@ import Content from './Admin/Main/Pages/Content Management/Content';
 import ViewContent from './Admin/Main/Pages/Content Management/ViewContent';
 import EditContent from './Admin/Main/Pages/Content Management/EditContent';
 
+import Help from './Admin/Main/Pages/Help Management/Help';
+
+
 import {  useState } from 'react'; 
 
 function App() {
@@ -74,11 +77,12 @@ function App() {
           <Route path='refunds' element={<Refund />} />
           <Route path='commission' element={<Commission/> } />
 
-
           <Route path='content' element={<Content/> } />
           <Route path='content/view/:id' element={<ViewContent />} />
           <Route path='content/edit/:id' element={<EditContent />} />
           
+          <Route path='help' element={<Help/> } />
+
           <Route path='notifications' element={<Notifications/> } />
 
 
