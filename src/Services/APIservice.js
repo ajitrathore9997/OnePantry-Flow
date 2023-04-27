@@ -14,7 +14,6 @@ const API_URL = {
   CHANGE_PASSWORD: APIBaseURL + 'admin/changepassword',
 
   // USER
-
   GET_ALL_USER: APIBaseURL + 'admin/listOfusers',
   GET_USER_BY_ID: APIBaseURL + 'admin/detailofuser',
   DELETE_USER: APIBaseURL + 'admin/deleteofuser',
@@ -47,6 +46,7 @@ const API_URL = {
   UPDATE_PRODUCT: APIBaseURL + 'admin/produpdate',
   DELETE_PRODUCT: APIBaseURL + 'admin/prodDelete',
 
+
   //commission section
   GET_COMMISSION_LIST: APIBaseURL + 'admin/listCommission',
   EDIT_COMMISSION_LIST: APIBaseURL + 'admin/editCommission',
@@ -57,11 +57,13 @@ const API_URL = {
   // GET_ORDER_DETAILS: APIBaseURL + 'admin/orderDetail',
   GET_ORDER_DETAILS: APIBaseURL + 'admin/main-orderDetail',
 
+
   // Transaction Section
   // GET_TRANSACTION_LIST: APIBaseURL + 'admin/transactionList',
   GET_TRANSACTION_LIST: APIBaseURL + 'admin/main-transaction-list',
   // GET_TRANSACTION_DETAIL: APIBaseURL + 'admin/transaction-detail',
   GET_TRANSACTION_DETAIL: APIBaseURL + 'admin/main-transaction-detail',
+
 
   // Refund Section
   GET_REFUND_LIST: APIBaseURL + 'admin/listDispute',
@@ -76,7 +78,13 @@ const API_URL = {
   EDIT_CONTENT: APIBaseURL + 'admin/update-content',
   GET_CONTENT_BY_ID: APIBaseURL + 'admin/detail-content',
 
-
+// HELP Section
+GET_HELP_LIST : APIBaseURL + 'admin/ ',
+ADD_HELP : APIBaseURL + 'admin/ ',
+CHANGE_HELP_STATUS: APIBaseURL + 'admin/ ',
+EDIT_HELP: APIBaseURL + 'admin/ ',
+GET_HELP_BY_ID: APIBaseURL + 'admin/ ',
+DELETE_HELP: APIBaseURL + 'admin/ ',
 
 
 }

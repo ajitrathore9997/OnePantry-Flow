@@ -39,7 +39,7 @@ export const AddCategory = (props) => {
     // for (var value of formdata.values()) {
     //   console.log(value);
     // }
-    console.log(formdata);
+    // console.log(formdata);
 
     PostService(API_URL.ADD_CATEGORY, formdata).then(
       (res) => {
