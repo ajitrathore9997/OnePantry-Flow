@@ -60,13 +60,11 @@ export default function Order() {
   };
 
   const handlePageClick = (e) => {
-    setCurrentPage(e.selected);
-    getOrderList();
+    setCurrentPage(e.selected); 
   };
 
   function changeStatus(e) {
-    setStatus(e);
-    // getOrderList()
+    setStatus(e); 
   }
 
   return (
@@ -118,7 +116,8 @@ export default function Order() {
                   </div>
 
                   <div className="card-body table-responsive">
-                    <table className="table table-hover text-nowrap table-bordered">
+                    {!loading && 
+                    <table className="table table-hover text-nowrap">
                       <thead>
                         <tr>
                           <th className="text-center">S.No</th>
@@ -134,7 +133,7 @@ export default function Order() {
                           OrderList.map((order, i) => {
                             return (
                               <tr key={i} className="ng-star-inserted">
-                                <td className="text-center">{i + 1}</td>
+                                <td className="text-center">{i + (currentPage * OrderLimit) + 1}</td>
                                 <td className="text-center">{order?.buyerDetail?.userName || 'N/A'}</td>
                                 <td className="text-center ">
                                   {order.commission || "N/A"}
@@ -167,6 +166,7 @@ export default function Order() {
                         )}
                       </tbody>
                     </table>
+                    }
                     <div style={{ display: "flex", justifyContent: "center" }}>
                       <FadeLoader speedMultiplier={2} loading={loading} />
                     </div>

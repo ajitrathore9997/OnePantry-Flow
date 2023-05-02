@@ -9,13 +9,15 @@ import { API_URL } from "../../../../Services/APIservice";
 import { PostService } from "../../../../Services/ConstantService";
 import { toastEmmit } from "../../../../Helper/Toastr";
 import FadeLoader from "react-spinners/FadeLoader";
+import Dropdown from "react-bootstrap/Dropdown";
 
 const Product = () => {
   const [search, setSearch] = useState("");
   const [sorting, setSorting] = useState("sortingKey|desc");
   const [productList, setProductList] = useState();
   const [productId, setProductId] = useState();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
+  const [sort, setsort] = useState(false);
 
   //Pagination states
   const [currentPage, setCurrentPage] = useState(0);
@@ -24,7 +26,7 @@ const Product = () => {
   const [totalPages, setTotalPages] = useState();
 
   const getProducts = async () => {
-    setLoading(true)
+    setLoading(true);
     const data = {
       limit: productLimit,
       sorting: sorting,
@@ -37,18 +39,18 @@ const Product = () => {
         setProductList(res.data.data.search_data);
         setTotalPages(res.data.data.total_pages);
         setTotal(res.data.data.total);
-        setLoading(false)
+        setLoading(false);
       },
       (err) => {
         console.log(err);
-        setLoading(false)
+        setLoading(false);
       }
     );
   };
 
   useEffect(() => {
     getProducts();
-  }, [search,currentPage]);
+  }, [search, currentPage,sorting]);
 
   const changeStatus = (productId) => {
     const data = {
@@ -73,7 +75,7 @@ const Product = () => {
     // getProducts();
   };
 
-  const deleteProduct = async (id)=> {
+  const deleteProduct = async (id) => {
     const data = {
       product_id: id,
     };
@@ -91,9 +93,31 @@ const Product = () => {
     );
   };
 
+  const OnStatusFilter = (e) => {
+    console.log(e);
+  };
+
+  const OnCategoryFilter = (e) => {
+    console.log(sort);
+  };
+
+  const changeSorting=()=> { 
+    setsort(!sort)
+    if(sort === true){
+      setSorting('sortingKey|asc')
+    }else{
+      setSorting('sortingKey|desc')
+    }
+    console.log(sort)
+    
+    // console.log(sort.target.value)
+    // setSorting(sort);
+    // getUserList();
+  };
+
   return (
     <div>
-     < section className="content-header">
+      <section className="content-header">
         <div className="container-fluid">
           <div className="row mb-2">
             <div className="col-sm-6">
@@ -122,11 +146,68 @@ const Product = () => {
             <div className="col-12">
               <div className="card wrap cddr2">
                 <div className="card-body">
-                  <div
-                    className="row mb-4 mt-1"
-                    style={{ justifyContent: "right" }}
-                  >
-                    <div className="col-md-6">
+                  <div className="row">
+                  {/* <div className="col-md-2 pt-2"> 
+                    <div className="input-group">
+                    <span className="input-group-text bg-dark">
+                            <i className="fas fa-filter"></i>
+                          </span>
+                          <select
+                            className="form-select form-select-md cursor"
+                             
+                          >
+                            <option selected hidden disabled value="">
+                              Sort-by
+                            </option> 
+                            <option value="sortingKey|asc">
+                              Ascending
+                            </option>
+                            <option value="sortingKey|desc">
+                              Descending
+                            </option>
+                          </select>
+                          </div>
+                    </div> */}
+
+                    <div className="col-md-2 pt-2">
+                    <select
+                        className="form-select form-select-md cursor"
+                        onChange={(e) => {
+                          OnStatusFilter(e.target.value);
+                        }}
+                      >
+                        <option value="" selected hidden disabled> Status</option>
+                        <option value="active">Active</option>
+                        <option value="deactive">Deactive</option>
+                      </select>
+                      {/* <Dropdown>
+      <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+        Status
+      </Dropdown.Toggle>
+
+      <Dropdown.Menu onClick={OnStatusFilter}>
+        <Dropdown.Item value='eee' eventKey={'active'} >Active</Dropdown.Item>
+        <Dropdown.Item  eventKey={'deactive'}>Deactive</Dropdown.Item> 
+      </Dropdown.Menu>
+    </Dropdown> */}
+                    </div>
+
+                    <div className="col-md-3 pt-2"> 
+                    <select
+                        className="form-select form-select-md cursor"
+                        onChange={(e) => {
+                          OnCategoryFilter(e.target.value);
+                        }}
+                      >
+                        <option value="" selected hidden disabled>Select Category</option>
+                        <option value="Spices">Spices</option>
+                        <option value="Fruits">Fruits</option>
+                        <option value="Vegetables">Vegetables</option>
+                      </select>
+                    </div>
+                    <div className="col-md-2"></div>
+                  
+                    <div className="col-md-5">
                       <nav className="navbar">
                         <input
                           type="text"
@@ -142,132 +223,147 @@ const Product = () => {
                   </div>
 
                   <div className="card-body table-responsive">
-                    {!loading && 
-                    <table className="table table-hover text-nowrap table-bordered">
-                      <thead>
-                        <tr>
-                          <th className="text-center">S.No</th>
-                          <th className="text-center">Product</th>
-                          <th className="text-center">Category</th>
-                          <th className="text-center">Price $</th>
-                          <th className="text-center">Status</th>
-                          <th className="text-center">Seller</th>
-                          <th className="text-center">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {productList &&
-                          productList.map((product, i) => {
-                            return (
-                              <tr key={i} className="ng-star-inserted">
-                                <td className="text-center">{i + (currentPage * productLimit) + 1}</td>
-                                <td className="text-center">{product.name}</td>
-                                <td className="text-center">
-                                  {product.category_id.category_name}
-                                </td>
-                                <td className="text-center text-danger">
-                                  <strong> {product.selling_price}</strong>
-                                </td>
-                                <td className="text-center">
-                                  {product.isActive && (
-                                    <span className="fw-bold badge p-2 badge-success">
-                                      Active
-                                    </span>
-                                  )}
-                                  {!product.isActive && (
-                                    <span className="fw-bold badge p-2 badge-danger">
-                                      Deactive
-                                    </span>
-                                  )}
-                                </td>
-                                <td className="text-center">
-                                <span title="Seller Profile" className="mx-2 table-icon">
-                                    <Link
-                                      to={"/panel/user/view/" + product?.seller?._id}
-                                      className="text-warning fas fa-eye"
-                                    ></Link>
-                                  </span>
-                                </td>
-                                <td className="text-center justify-content-center">
-                                  {product.isActive && (
-                                    <span
-                                      className="form-switch pt-1"
-                                      title="Deactive"
-                                    >
-                                      <input
-                                        id="toggle-trigger"
-                                        type="checkbox"
-                                        checked
-                                        className=" form-check-input checkbox cursor"
-                                        data-toggle="toggle"
-                                        onChange={() => {
-                                          changeStatus(product._id);
-                                        }}
-                                      ></input>
-                                    </span>
-                                  )}
-                                  {!product.isActive && (
-                                    <span
-                                      className="form-switch pt-1"
-                                      title="Active"
-                                    >
-                                      <input
-                                        id="toggle-trigger"
-                                        type="checkbox"
-                                        className=" form-check-input checkbox cursor"
-                                        data-toggle="toggle"
-                                        onClick={() => {
-                                          changeStatus(product._id);
-                                        }}
-                                      ></input>
-                                    </span>
-                                  )}
-                                  <span
-                                    title="Update"
-                                    className="mx-2 table-icon"
-                                  >
-                                    <Link
-                                      to={"/panel/product/edit/" + product._id}
-                                      className="text-dark fas fa-pen"
-                                    ></Link>
-                                  </span>
-                                  <span
-                                    title="View"
-                                    className="mx-2 table-icon"
-                                  >
-                                    <Link
-                                      to={"/panel/product/view/" + product._id}
-                                      className="text-warning fas fa-eye"
-                                    ></Link>
-                                  </span>
-                                  <span
-                                    title="Delete"
-                                    className="mx-2 table-icon"
-                                    data-toggle="modal"
-                                    data-target="#exampleModal"
-                                  >
-                                    <span
-                                      className="text-danger fas fa-trash cursor"
-                                      onClick={() => {
-                                        setProductId(product._id);
-                                      }}
-                                    ></span>
-                                  </span>
-                                </td>
-                              </tr>
-                            );
-                          })}
-                        {productList && productList.length === 0 && (
+                    {!loading && (
+                      <table className="table table-hover text-nowrap table-bordered">
+                        <thead>
                           <tr>
-                            <h6> No Data Found </h6>
+                            <th className="text-center" onClick={changeSorting}>S.No <span>{sort ? <i className="fa fa-sort-up"></i> : <i className="fa fa-sort-down"></i>}</span></th>
+                            <th className="text-center">Product </th>
+                            <th className="text-center">Category</th>
+                            <th className="text-center">Price $</th>
+                            <th className="text-center">Status</th>
+                            <th className="text-center">Seller</th>
+                            <th className="text-center">Action</th>
                           </tr>
-                        )}
-                      </tbody>
-                    </table>}
+                        </thead>
+                        <tbody>
+                          {productList &&
+                            productList.map((product, i) => {
+                              return (
+                                <tr key={i} className="ng-star-inserted">
+                                  <td className="text-center">
+                                    {i + currentPage * productLimit + 1}
+                                  </td>
+                                  <td className="text-center">
+                                    {product.name}
+                                  </td>
+                                  <td className="text-center">
+                                    {product.category_id.category_name}
+                                  </td>
+                                  <td className="text-center text-danger">
+                                    <strong> {product.selling_price}</strong>
+                                  </td>
+                                  <td className="text-center">
+                                    {product.isActive && (
+                                      <span className="fw-bold badge p-2 badge-success">
+                                        Active
+                                      </span>
+                                    )}
+                                    {!product.isActive && (
+                                      <span className="fw-bold badge p-2 badge-danger">
+                                        Deactive
+                                      </span>
+                                    )}
+                                  </td>
+                                  <td className="text-center">
+                                    <span
+                                      title="Seller Profile"
+                                      className="mx-2 table-icon"
+                                    >
+                                      <Link
+                                        to={
+                                          "/panel/user/view/" +
+                                          product?.seller?._id
+                                        }
+                                        className="text-warning fas fa-eye"
+                                      ></Link>
+                                    </span>
+                                  </td>
+                                  <td className="text-center justify-content-center">
+                                    {product.isActive && (
+                                      <span
+                                        className="form-switch pt-1"
+                                        title="Deactive"
+                                      >
+                                        <input
+                                          id="toggle-trigger"
+                                          type="checkbox"
+                                          checked
+                                          className=" form-check-input checkbox cursor"
+                                          data-toggle="toggle"
+                                          onChange={() => {
+                                            changeStatus(product._id);
+                                          }}
+                                        ></input>
+                                      </span>
+                                    )}
+                                    {!product.isActive && (
+                                      <span
+                                        className="form-switch pt-1"
+                                        title="Active"
+                                      >
+                                        <input
+                                          id="toggle-trigger"
+                                          type="checkbox"
+                                          className=" form-check-input checkbox cursor"
+                                          data-toggle="toggle"
+                                          onClick={() => {
+                                            changeStatus(product._id);
+                                          }}
+                                        ></input>
+                                      </span>
+                                    )}
+                                    <span
+                                      title="Update"
+                                      className="mx-2 table-icon"
+                                    >
+                                      <Link
+                                        to={
+                                          "/panel/product/edit/" + product._id
+                                        }
+                                        className="text-dark fas fa-pen"
+                                      ></Link>
+                                    </span>
+                                    <span
+                                      title="View"
+                                      className="mx-2 table-icon"
+                                    >
+                                      <Link
+                                        to={
+                                          "/panel/product/view/" + product._id
+                                        }
+                                        className="text-warning fas fa-eye"
+                                      ></Link>
+                                    </span>
+                                    <span
+                                      title="Delete"
+                                      className="mx-2 table-icon"
+                                      data-toggle="modal"
+                                      data-target="#exampleModal"
+                                    >
+                                      <span
+                                        className="text-danger fas fa-trash cursor"
+                                        onClick={() => {
+                                          setProductId(product._id);
+                                        }}
+                                      ></span>
+                                    </span>
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          {productList && productList.length === 0 && (
+                            <tr>
+                              <h6> No Data Found </h6>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    )}
 
-<div style={{ display: 'flex', justifyContent: 'center' }}>
-  <FadeLoader speedMultiplier={0.5} loading={loading} />
-</div>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                      <FadeLoader speedMultiplier={0.5} loading={loading} />
+                    </div>
                   </div>
 
                   <Pagination
