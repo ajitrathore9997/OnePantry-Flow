@@ -75,7 +75,7 @@ export default function Sidebar({adminDetail}) {
               <li className="nav-item">
                 <NavLink to={"/panel/user"} className="nav-link">
                   <i className="nav-icon fas fa-user-shield iconsize" />
-                  <p>User Management</p>
+                  <p>User</p>
                 </NavLink>
               </li>
 
@@ -89,7 +89,7 @@ export default function Sidebar({adminDetail}) {
                 >
                   <i className="fas fa-sitemap iconsize nav-icon"></i>
                   <p>
-                    Category Management
+                    Category
                     <i className="fas fa-angle-left right rotate"></i>
                   </p>
                 </a>
@@ -117,13 +117,13 @@ export default function Sidebar({adminDetail}) {
               <li className="nav-item">
                 <NavLink to={"/panel/product"} className="nav-link">
                   <i className="fas fa-shopping-bag iconsize nav-icon" />
-                  <p>Product Management</p>
+                  <p>Product</p>
                 </NavLink>
               </li>
               <li className="nav-item">
                 <NavLink to={"/panel/order"} className="nav-link">
                   <i className="fas fa-chart-line iconsize nav-icon" />
-                  <p>Order Management</p>
+                  <p>Order</p>
                 </NavLink>
               </li>
               <li className="nav-item">
@@ -155,14 +155,14 @@ export default function Sidebar({adminDetail}) {
               <li className="nav-item">
                 <NavLink to={"/panel/content"} className="nav-link">
                   <i className="nav-icon fas fa-table iconsize" />
-                  <p>Content Management</p>
+                  <p>Content</p>
                 </NavLink>
               </li>
 
               <li className="nav-item">
                 <NavLink to={"/panel/help"} className="nav-link">
                   <i className="fas fa-th iconsize nav-icon" />
-                  <p>Help Management</p>
+                  <p>Help</p>
                 </NavLink>
               </li>
 

@@ -71,15 +71,17 @@ function ViewOrder() {
                     <div className="card-header p-4">
                       <div className="float-left col-6">
                         <h4>
-                          <strong>Buyer</strong> Detail
+                          <strong>Buyer Detail</strong>  {" "}
+                          <Link to={`/panel/user/view/${order?.buyerDetail?._id}`} className="text-warning fas fa-eye"></Link>
                         </h4>
-                        <Link
+                       
+                        {/* <Link
                           to={`/panel/user/view/${order?.buyerDetail?._id}`}
                           style={{ color: "black" }}
-                        >
+                        > */}
                           <strong>Name:</strong>{" "}
-                          {order?.buyerDetail?.userName || "N/A"}
-                        </Link>
+                          {order?.buyerDetail?.userName || "N/A"} 
+                        {/* </Link> */}
                         <div>
                           <strong> Email:</strong>{" "}
                           {order?.buyerDetail?.email || "N/A"}
@@ -90,7 +92,7 @@ function ViewOrder() {
                       </div>
                       <div className="float-right col-3">
                         <h4>
-                          <strong>Payment</strong> Detail
+                          <strong>Payment Detail</strong> 
                         </h4>
                         <div>
                           <strong>Date:</strong>{" "}
@@ -188,7 +190,7 @@ function ViewOrder() {
                     <div id="PrintInvoice">
                       <div className="float-left col-6">
                         <h4>
-                          <strong>Shipping</strong> Detail
+                          <strong>Shipping Detail</strong> 
                         </h4>
                         <div>
                           <strong>Name:</strong>{" "}

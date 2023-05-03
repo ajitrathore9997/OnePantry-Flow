@@ -2,11 +2,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../../../../Helper/Pagination";
 import { API_URL } from "../../../../Services/APIservice";
-import { PostService } from "../../../../Services/ConstantService";
+import { GetService, PostService } from "../../../../Services/ConstantService";
 import { toastEmmit } from "../../../../Helper/Toastr";
 import FadeLoader from "react-spinners/FadeLoader";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -15,15 +15,24 @@ const Product = () => {
   const [search, setSearch] = useState("");
   const [sorting, setSorting] = useState("sortingKey|desc");
   const [productList, setProductList] = useState();
+  const [categoryList, setCategoryList] = useState([]);
   const [productId, setProductId] = useState();
   const [loading, setLoading] = useState(true);
-  const [sort, setsort] = useState(false);
+  // const [sort, setsort] = useState(false);
 
   //Pagination states
   const [currentPage, setCurrentPage] = useState(0);
   const [total, setTotal] = useState();
   const [productLimit, setProductLimit] = useState(10);
   const [totalPages, setTotalPages] = useState();
+
+  const [category, setcategory] = useState("");
+  const [status, setstatus] = useState("");
+
+  const sort = useRef(false);
+  const Productsort = useRef(false);
+  const Categorysort = useRef(false);
+  const Pricesort = useRef(false);
 
   const getProducts = async () => {
     setLoading(true);
@@ -32,25 +41,43 @@ const Product = () => {
       sorting: sorting,
       page: currentPage,
       search_key: search,
+      status: status,
+      category_id: category,
     };
 
-    PostService(API_URL.GET_PRODUCT_LIST, data).then(
-      (res) => {
+    PostService(API_URL.GET_PRODUCT_LIST, data).then((res) => {
+      console.log(res);
+      if (res?.data?.status === true) {
+        // toastEmmit(res.data.message , 'success')
         setProductList(res.data.data.search_data);
         setTotalPages(res.data.data.total_pages);
         setTotal(res.data.data.total);
         setLoading(false);
-      },
-      (err) => {
-        console.log(err);
+      } else {
+        toastEmmit("server error", "error");
         setLoading(false);
       }
-    );
+    });
   };
 
   useEffect(() => {
     getProducts();
-  }, [search, currentPage,sorting]);
+  }, [search, currentPage, sorting, category, status]);
+
+  useEffect(() => {
+    getCategoryList();
+  }, []);
+
+  const getCategoryList = async () => {
+    GetService(API_URL.CATEGORY_LIST_WITHOUT_PAGINATION).then(
+      (res) => {
+        setCategoryList(res.data.data);
+      },
+      (err) => {
+        toastEmmit(err.message, "error");
+      }
+    );
+  };
 
   const changeStatus = (productId) => {
     const data = {
@@ -95,24 +122,50 @@ const Product = () => {
 
   const OnStatusFilter = (e) => {
     console.log(e);
+    setstatus(e);
   };
 
   const OnCategoryFilter = (e) => {
-    console.log(sort);
+    console.log(e);
+    setcategory(e);
   };
 
-  const changeSorting=()=> { 
-    setsort(!sort)
-    if(sort === true){
-      setSorting('sortingKey|asc')
-    }else{
-      setSorting('sortingKey|desc')
+  const changeSorting = () => {
+    // setsort(!sort)
+    sort.current = !sort.current;
+    // console.log(sort)
+    if (sort.current) {
+      setSorting("sortingKey|asc");
+    } else {
+      setSorting("sortingKey|desc");
     }
-    console.log(sort)
-    
     // console.log(sort.target.value)
     // setSorting(sort);
     // getUserList();
+  };
+  const ProductSorting = () => {
+    Productsort.current = !Productsort.current;
+    if (Productsort.current) {
+      setSorting("name|asc");
+    } else {
+      setSorting("name|desc");
+    }
+  };
+  const CategorySorting = () => {
+    Categorysort.current = !Categorysort.current;
+    if (Categorysort.current) {
+      setSorting("category_id.category_name|asc");
+    } else {
+      setSorting("category_id.category_name|desc");
+    }
+  };
+  const PriceSorting = () => {
+    Pricesort.current = !Pricesort.current;
+    if (Pricesort.current) {
+      setSorting("selling_price|asc");
+    } else {
+      setSorting("selling_price|desc");
+    }
   };
 
   return (
@@ -147,7 +200,7 @@ const Product = () => {
               <div className="card wrap cddr2">
                 <div className="card-body">
                   <div className="row">
-                  {/* <div className="col-md-2 pt-2"> 
+                    {/* <div className="col-md-2 pt-2"> 
                     <div className="input-group">
                     <span className="input-group-text bg-dark">
                             <i className="fas fa-filter"></i>
@@ -170,13 +223,13 @@ const Product = () => {
                     </div> */}
 
                     <div className="col-md-2 pt-2">
-                    <select
+                      <select
                         className="form-select form-select-md cursor"
                         onChange={(e) => {
                           OnStatusFilter(e.target.value);
                         }}
                       >
-                        <option value="" selected hidden disabled> Status</option>
+                        <option value=""> Select Status</option>
                         <option value="active">Active</option>
                         <option value="deactive">Deactive</option>
                       </select>
@@ -192,21 +245,34 @@ const Product = () => {
     </Dropdown> */}
                     </div>
 
-                    <div className="col-md-3 pt-2"> 
-                    <select
+                    <div className="col-md-3 pt-2">
+                      <select
+                        className="form-select"
+                        onChange={(e) => {
+                          OnCategoryFilter(e.target.value);
+                        }}
+                      >
+                        <option value="">Select Category</option>
+                        {categoryList?.map((category, key) => (
+                          <option key={key} value={category?._id}>
+                            {category?.category_name}
+                          </option>
+                        ))}
+                      </select>
+                      {/* <select
                         className="form-select form-select-md cursor"
                         onChange={(e) => {
                           OnCategoryFilter(e.target.value);
                         }}
                       >
-                        <option value="" selected hidden disabled>Select Category</option>
+                        <option value="">Select Category</option>
                         <option value="Spices">Spices</option>
                         <option value="Fruits">Fruits</option>
                         <option value="Vegetables">Vegetables</option>
-                      </select>
+                      </select> */}
                     </div>
                     <div className="col-md-2"></div>
-                  
+
                     <div className="col-md-5">
                       <nav className="navbar">
                         <input
@@ -227,10 +293,66 @@ const Product = () => {
                       <table className="table table-hover text-nowrap table-bordered">
                         <thead>
                           <tr>
-                            <th className="text-center" onClick={changeSorting}>S.No <span>{sort ? <i className="fa fa-sort-up"></i> : <i className="fa fa-sort-down"></i>}</span></th>
-                            <th className="text-center">Product </th>
-                            <th className="text-center">Category</th>
-                            <th className="text-center">Price $</th>
+                            <th
+                              className="text-center"
+                              onClick={() => {
+                                changeSorting();
+                              }}
+                            >
+                              S.No{" "}
+                              <span>
+                                {sort.current ? (
+                                  <i className="fa fa-sort-up"></i>
+                                ) : (
+                                  <i className="fa fa-sort-down"></i>
+                                )}
+                              </span>
+                            </th>
+                            <th
+                              className="text-center"
+                              onClick={() => {
+                                ProductSorting();
+                              }}
+                            >
+                              Product{" "}
+                              <span>
+                                {Productsort.current ? (
+                                  <i className="fa fa-sort-up"></i>
+                                ) : (
+                                  <i className="fa fa-sort-down"></i>
+                                )}
+                              </span>
+                            </th>
+                            <th
+                              className="text-center"
+                              onClick={() => {
+                                CategorySorting();
+                              }}
+                            >
+                              Category{" "}
+                              <span>
+                                {Categorysort.current ? (
+                                  <i className="fa fa-sort-up"></i>
+                                ) : (
+                                  <i className="fa fa-sort-down"></i>
+                                )}
+                              </span>
+                            </th>
+                            <th
+                              className="text-center"
+                              onClick={() => {
+                                PriceSorting();
+                              }}
+                            >
+                              Price ${" "}
+                              <span>
+                                {Pricesort.current ? (
+                                  <i className="fa fa-sort-up"></i>
+                                ) : (
+                                  <i className="fa fa-sort-down"></i>
+                                )}
+                              </span>
+                            </th>
                             <th className="text-center">Status</th>
                             <th className="text-center">Seller</th>
                             <th className="text-center">Action</th>

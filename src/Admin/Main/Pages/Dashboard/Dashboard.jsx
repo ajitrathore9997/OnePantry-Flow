@@ -162,7 +162,7 @@ export default function Dashboard() {
                 <div className="small-box bg-warning">
                   <div className="inner">
                     <h3>{DashboardCounts?.product}</h3>
-                    <p>Total Products</p>
+                    <p>Products</p>
                   </div>
                   <div className="icon">
                     <i className="fas fa-shopping-cart" />
@@ -176,7 +176,7 @@ export default function Dashboard() {
                 <div className="small-box bg-danger">
                   <div className="inner">
                     <h3>{DashboardCounts?.order}</h3>
-                    <p>Total Orders</p>
+                    <p>Orders</p>
                   </div>
                   <div className="icon">
                     <i className="ion ion-pie-graph" />
