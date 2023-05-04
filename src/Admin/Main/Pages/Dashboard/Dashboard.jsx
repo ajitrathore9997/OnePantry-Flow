@@ -213,7 +213,7 @@ export default function Dashboard() {
                       <thead>
                         <tr>
                           <th className="text-center">S.No</th>
-                          <th className="text-center">Name</th>
+                          <th className="text-center">UserName</th>
                           <th className="text-center">Email</th>
                           <th className="text-center">Status</th>
                           <th className="text-center">Action</th>
@@ -226,7 +226,7 @@ export default function Dashboard() {
                               <tr key={user._id} className="ng-star-inserted">
                                 <td className="text-center">{i + 1}</td>
                                 <td className="text-center">
-                                  {user.first_name} {user.last_name}
+                                  {user.userName}
                                 </td>
                                 <td className="text-center">{user.email}</td>
                                 <td className="text-center">

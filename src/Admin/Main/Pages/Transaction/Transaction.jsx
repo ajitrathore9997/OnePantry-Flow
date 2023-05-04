@@ -45,7 +45,7 @@ const Transaction = () => {
   };
 
   const handlePageClick = (e) => {
-    setCurrentPage(e.selected);
+    setCurrentPage(e - 1);
   };
 
   return (
@@ -105,7 +105,7 @@ const Transaction = () => {
                             <th className="text-center">Status</th>
                             <th className="text-center">Amount $</th>
                             <th className="text-center">Payment Mode</th>
-                            <th className="text-center">Transaction Id</th>
+                            {/* <th className="text-center">Transaction Id</th> */}
                             <th className="text-center">Created At</th>
                             <th className="text-center">Action</th>
                           </tr>
@@ -148,9 +148,9 @@ const Transaction = () => {
                                     )}
                                     {/* {/ {/ <span className="fw-bold badge mx-1 p-1 badge-info">Wallet</span> /} /} */}
                                   </td>
-                                  <td className="text-center">
+                                  {/* <td className="text-center">
                                     {transaction?.transactionId}{" "}
-                                  </td>
+                                  </td> */}
                                   <td className="text-center">
                                     {" "}
                                     {format(
@@ -189,6 +189,7 @@ const Transaction = () => {
                     totaldata={total}
                     pagecount={totalPages}
                     onChangePage={handlePageClick}
+                    activePage={currentPage}
                   ></Pagination>
                 </div>
               </div>

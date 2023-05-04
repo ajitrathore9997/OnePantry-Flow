@@ -44,7 +44,7 @@ const Refund = () => {
 // }
 
 // const handlePageClick = (e) => {
-//     setCurrentPage(e.selected)
+//     setCurrentPage(e - 1);
 // }
 
 
@@ -131,6 +131,7 @@ const Refund = () => {
                                         totaldata={total}
                                         pagecount={totalPages}
                                         onChangePage={handlePageClick}
+                                         activePage={currentPage}
                                     ></Pagination> */}
                                 </div>
                             </div>

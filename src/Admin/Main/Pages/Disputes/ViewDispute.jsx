@@ -76,7 +76,7 @@ const ViewDispute = () => {
                       <div className="row p-4 d-flex ">
                         <div className="col-md-4">
                           <h4>
-                            <strong>Buyer</strong> Detail
+                            <strong>Buyer Detail</strong> 
                           </h4>
                           <div>
                             <strong>Name :</strong>{" "}
@@ -92,7 +92,7 @@ const ViewDispute = () => {
                         </div>
                         <div className="col-md-4">
                           <h4>
-                            <strong>Seller</strong> Detail
+                            <strong>Seller Detail</strong> 
                           </h4>
                           <div>
                             <strong>Name :</strong>{" "}
@@ -106,7 +106,7 @@ const ViewDispute = () => {
 
                         <div className="col-md-4">
                           <h4>
-                            <strong> Product</strong> Detail
+                            <strong> Product Detail</strong> 
                           </h4>
                           <div>
                             <strong>Name :</strong>{" "}

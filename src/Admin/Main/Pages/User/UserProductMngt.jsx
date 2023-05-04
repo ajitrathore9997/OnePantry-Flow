@@ -51,7 +51,7 @@ const UserProductMngt = () => {
   }, [search,currentPage]);
 
   const handlePageClick = (e) => {
-    setCurrentPage(e.selected);
+    setCurrentPage(e - 1);
     setLoading(true);
     // getProductList();
   };
@@ -186,6 +186,7 @@ const UserProductMngt = () => {
                     totaldata={total}
                     pagecount={totalPages}
                     onChangePage={handlePageClick}
+                    activePage={currentPage}
                   ></Pagination>
                 </div>
               </div>

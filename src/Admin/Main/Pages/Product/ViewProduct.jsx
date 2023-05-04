@@ -197,6 +197,16 @@ const ViewProduct = () => {
               </div>
               <div className="row">
                 <div className="col-md-3 col-12 text-muted fw-bold h6">
+                  Seller
+                </div>
+                <div className="col-md-9 col-12 h6">
+                  <div className="row ms-2">
+                    <span>{product?.seller?.userName}</span>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-3 col-12 text-muted fw-bold h6">
                   Description
                 </div>
                 <div className="col-md-9 col-12 h6">

@@ -65,8 +65,7 @@ const Content = () => {
   };
 
   const handlePageClick = (e) => {
-    // console.log(e.selected);
-    setCurrentPage(e.selected);
+    setCurrentPage(e - 1);
   };
 
   const search = (e) => {
@@ -196,6 +195,7 @@ const Content = () => {
                       totaldata={TotalCount}
                       pagecount={TotalPageCount}
                       onChangePage={handlePageClick}
+                      activePage={currentPage}
                     ></Pagination>
                   </div>
                 </div>

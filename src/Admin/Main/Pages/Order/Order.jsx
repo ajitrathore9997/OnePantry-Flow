@@ -60,7 +60,8 @@ export default function Order() {
   };
 
   const handlePageClick = (e) => {
-    setCurrentPage(e.selected); 
+    // setCurrentPage(e.selected); 
+    setCurrentPage(e - 1);
   };
 
   function changeStatus(e) {
@@ -176,6 +177,7 @@ export default function Order() {
                     totaldata={total}
                     pagecount={totalPages}
                     onChangePage={handlePageClick}
+                    activePage={currentPage}
                   ></Pagination>
                 </div>
               </div>

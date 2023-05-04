@@ -73,8 +73,7 @@ const Commission = () => {
   }, [search,currentPage])
 
   const handlePageClick = (e) => {
-    setCurrentPage(e.selected)
-    // getCommissionList()
+    setCurrentPage(e - 1);
   }
 
   return (
@@ -183,6 +182,7 @@ const Commission = () => {
                     totaldata={total}
                     pagecount={totalPages}
                     onChangePage={handlePageClick}
+                    activePage={currentPage}
                   ></Pagination>
                 </div>
               </div>

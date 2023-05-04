@@ -63,7 +63,7 @@ const UserOrderMngt = () => {
         );
     };
     const handlePageClick = (e) => {
-        setCurrentPage(e.selected); 
+      setCurrentPage(e - 1);
       };
 
     return (
@@ -176,6 +176,7 @@ const UserOrderMngt = () => {
                     totaldata={total}
                     pagecount={totalPages}
                     onChangePage={handlePageClick}
+                    activePage={currentPage}
                   ></Pagination>
                 </div>
               </div>

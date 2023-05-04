@@ -58,9 +58,7 @@ const Help = () => {
   };
 
   const handlePageClick = (e) => {
-    console.log(e.selected);
-    setCurrentPage(e.selected);
-    // getHelpList()
+    setCurrentPage(e - 1);
   };
 
   const search = (e) => {
@@ -300,6 +298,7 @@ const Help = () => {
                       totaldata={TotalCount}
                       pagecount={TotalPageCount}
                       onChangePage={handlePageClick}
+                      activePage={currentPage}
                       />
                     </div>
                   </div>

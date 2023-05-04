@@ -1,8 +1,9 @@
 import React from "react";
-import ReactPaginate from "react-paginate";
+// import ReactPaginate from "react-paginate";
+import Paginations from "react-js-pagination"; 
 
 export default function Pagination(props) {
-  // console.log(props)
+  console.log(props);
 
   return (
     <div>
@@ -13,13 +14,15 @@ export default function Pagination(props) {
           role="status"
           aria-live="polite"
         >
-          Showing {props.totaldata ? (props.counting + 1) : (0)} to {props.counting + 10 < props.totaldata
+          Showing {props.totaldata ? props.counting + 1 : 0} to{" "}
+          {props.counting + 10 < props.totaldata
             ? props.counting + 10
-            : props.totaldata} of {props.totaldata} entries
+            : props.totaldata}{" "}
+          of {props.totaldata} entries
         </div>
 
         <div className="col-8 d-flex justify-content-end ">
-          <ReactPaginate
+          {/* <ReactPaginate
             previousLabel={"previous"}
             nextLabel={"next"}
             // breakLabel={'...'}
@@ -35,6 +38,20 @@ export default function Pagination(props) {
             nextClassName={"page-item"}
             nextLinkClassName={"page-link"}
             activeClassName={"active"}
+            renderOnZeroPageCount={null}
+          /> */}
+
+          <Paginations
+            itemClass="page-item"
+            linkClass="page-link"
+            prevPageText="Prev"
+            nextPageText="Next"
+            firstPageText="First"
+            lastPageText="Last"
+            // hideFirstLastPages={true}
+            activePage={props.activePage+1} 
+          totalItemsCount={props.totaldata} 
+            onChange={props.onChangePage}
           />
         </div>
       </div>

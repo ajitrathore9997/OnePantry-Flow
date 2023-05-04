@@ -10,6 +10,7 @@ import { GetService, PostService } from "../../../../Services/ConstantService";
 import { toastEmmit } from "../../../../Helper/Toastr";
 import FadeLoader from "react-spinners/FadeLoader";
 import Dropdown from "react-bootstrap/Dropdown";
+// import Pagination from "react-js-pagination";
 
 const Product = () => {
   const [search, setSearch] = useState("");
@@ -22,7 +23,7 @@ const Product = () => {
 
   //Pagination states
   const [currentPage, setCurrentPage] = useState(0);
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState(0);
   const [productLimit, setProductLimit] = useState(10);
   const [totalPages, setTotalPages] = useState();
 
@@ -33,6 +34,8 @@ const Product = () => {
   const Productsort = useRef(false);
   const Categorysort = useRef(false);
   const Pricesort = useRef(false);
+
+  const pageRef = useRef(null);
 
   const getProducts = async () => {
     setLoading(true);
@@ -98,8 +101,10 @@ const Product = () => {
   };
 
   const handlePageClick = (e) => {
-    setCurrentPage(e.selected);
-    // getProducts();
+    // console.log("..........", e);
+    setCurrentPage(e - 1);
+    // setCurrentPage(e.selected);
+     
   };
 
   const deleteProduct = async (id) => {
@@ -121,12 +126,14 @@ const Product = () => {
   };
 
   const OnStatusFilter = (e) => {
-    console.log(e);
+    // console.log(e); 
+    setCurrentPage(0);
     setstatus(e);
   };
 
   const OnCategoryFilter = (e) => {
-    console.log(e);
+    // console.log(e); 
+    setCurrentPage(0);
     setcategory(e);
   };
 
@@ -493,6 +500,7 @@ const Product = () => {
                     totaldata={total}
                     pagecount={totalPages}
                     onChangePage={handlePageClick}
+                    activePage={currentPage}
                   ></Pagination>
                 </div>
               </div>

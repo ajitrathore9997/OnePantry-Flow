@@ -96,9 +96,7 @@ export const Category = () => {
   };
 
   const handlePageClick = (e) => {
-    console.log(e.selected);
-    setCurrentPage(e.selected);
-    // getCategoryList()
+    setCurrentPage(e - 1);
   };
 
   const search = (e) => {
@@ -252,6 +250,7 @@ export const Category = () => {
                         totaldata={TotalCount}
                         pagecount={TotalPageCount}
                         onChangePage={handlePageClick}
+                        activePage={currentPage}
                       />
                     </div>
 

@@ -106,7 +106,8 @@ export const User = ({users}) => {
   };
 
   const handlePageClick = (e) => {
-    setCurrentPage(e.selected);
+    // setCurrentPage(e.selected);
+    setCurrentPage(e - 1);
     // getUserList();
   };
 
@@ -188,7 +189,7 @@ export const User = ({users}) => {
                       <thead>
                         <tr>
                           <th className="text-center">S.No</th>
-                          <th className="text-center">Name</th>
+                          <th className="text-center">UserName</th>
                           <th className="text-center">Email</th>
                           <th className="text-center">Status</th>
                           {/* <th className="text-center">Role</th> */}
@@ -203,10 +204,10 @@ export const User = ({users}) => {
                             return (
                               <tr key={i} className="ng-star-inserted">
                                 <td className="text-center">
-                                  {i + currentPage * userLimit + 1}
+                                  {i + (currentPage * userLimit) + 1}
                                 </td>
                                 <td className="text-center">
-                                  {user.first_name} {user.last_name}
+                                 {user?.userName}
                                 </td>
                                 <td className="text-center">{user.email}</td>
                                 <td className="text-center">
@@ -330,6 +331,7 @@ export const User = ({users}) => {
                     totaldata={total}
                     pagecount={totalPages}
                     onChangePage={handlePageClick}
+                    activePage={currentPage}
                   ></Pagination>
                 </div>
               </div>

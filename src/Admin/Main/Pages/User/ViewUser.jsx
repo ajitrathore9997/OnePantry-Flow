@@ -101,8 +101,8 @@ const ViewUser = () => {
                     <div className="col-md-9">
                       <div className="ms-3">
                         <h6 className="text-muted">
-                          User Name : {user && user.first_name}{" "}
-                          {user && user.last_name}
+                          User Name : {user && user.userName} 
+                           
                         </h6>
 
                         <h6 className="text-muted">

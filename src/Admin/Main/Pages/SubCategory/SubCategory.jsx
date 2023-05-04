@@ -103,9 +103,7 @@ export const SubCategory = () => {
   };
 
   const handlePageClick = (e) => {
-    console.log(e.selected);
-    setCurrentPage(e.selected);
-    // getSub_CategoryList()
+    setCurrentPage(e - 1);
   };
 
   const search = (e) => {
@@ -346,6 +344,7 @@ export const SubCategory = () => {
                         totaldata={TotalCount}
                         pagecount={TotalPageCount}
                         onChangePage={handlePageClick}
+                        activePage={currentPage}
                       />
                     </div>
 
