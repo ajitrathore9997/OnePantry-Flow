@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { API_URL } from '../../../../Services/APIservice';
 import { PostService } from '../../../../Services/ConstantService'; 
@@ -20,13 +20,18 @@ const Commission = () => {
   //pagination states 
   const [commissionLimit,setCommissionLimit] = useState(10)
   const [currentPage,setCurrentPage] = useState(0)
-  const [total,setTotal] = useState()
+  const [total,setTotal] = useState(0)
   const [totalPages,setTotalPages] = useState()
-
+  const [sorting, setSorting] = useState("sortingKey|desc");
+  const sort = useRef(false);
+  const Commissionsort = useRef(false);
 
   const getCommissionList = async () => {
     setLoading(true)
-    const data = {
+    const data = { 
+      limit: commissionLimit,
+      page: currentPage,
+      sorting: sorting,
       search_key: search,
     }
     PostService(API_URL.GET_COMMISSION_LIST, data).then((res) => {
@@ -70,11 +75,29 @@ const Commission = () => {
   }
   useEffect(() => {
     getCommissionList()
-  }, [search,currentPage])
+  }, [search,currentPage,sorting])
 
   const handlePageClick = (e) => {
     setCurrentPage(e - 1);
   }
+
+  const changeSorting = () => { 
+    sort.current = !sort.current; 
+    if (sort.current) {
+      setSorting("sortingKey|asc");
+    } else {
+      setSorting("sortingKey|desc");
+    } 
+  };
+
+  const commissionSort = () => {
+    Commissionsort.current = !Commissionsort.current;
+    if (Commissionsort.current) {
+      setSorting("commission|asc");
+    } else {
+      setSorting("commission|desc");
+    }
+  };
 
   return (
     <div>
@@ -111,7 +134,7 @@ const Commission = () => {
                     className="row mb-4 mt-1"
                     style={{ justifyContent: "right" }}
                   >
-                    <div className="col-md-6">
+                    <div className="col-md-4">
                       <nav className="navbar">
                         <input
                           type="text"
@@ -119,7 +142,7 @@ const Commission = () => {
                           placeholder="search by keyword"
                           className="form-control ng-pristine ng-valid ng-touched"
                           onChange={(e) => {
-                            setSearch(e.target.value);
+                            setSearch(e.target.value); setCurrentPage(0);
                           }}
                         />
                       </nav>
@@ -127,12 +150,36 @@ const Commission = () => {
                   </div>
 
                   <div className="card-body table-responsive">
-                    {!loading && <table className="table table-hover text-nowrap table-border ">
+                    {!loading && <table className="table table-hover text-nowrap table-bordered">
                       <thead>
                         <tr>
-                          <th className="text-center">S.No</th>
+                        <th
+                              className="text-center"
+                              onClick={() => {
+                                changeSorting();
+                              }}
+                            >
+                              S.No{" "}
+                              <span>
+                                {sort.current ? (
+                                  <i className="fa fa-sort-up"></i>
+                                ) : (
+                                  <i className="fa fa-sort-down"></i>
+                                )}
+                              </span>
+                            </th>
                           <th className="text-center">Category</th>
-                          <th className="text-center">Commission <span className='text-danger'>%</span></th>
+                          <th className="text-center" onClick={() => {
+                                commissionSort();
+                              }}>Commission <span className='text-danger'>%</span> {" "}
+                              <span>
+                                {Commissionsort.current ? (
+                                  <i className="fa fa-sort-up"></i>
+                                ) : (
+                                  <i className="fa fa-sort-down"></i>
+                                )}
+                              </span>
+                              </th>
                           <th className="text-center">Action</th> 
 
                         </tr>
@@ -140,7 +187,7 @@ const Commission = () => {
                       <tbody>
                         {commissionList?.map((commission, i) => {
                           return <tr key={i}>
-                            <td className="text-center">{i + 1}</td>
+                            <td className="text-center">{i +(commissionLimit * currentPage)+ 1}</td>
                             <td className="text-center">{commission.category_name}</td>
                             {commission._id !== edit && <td className="text-center">{commission.commission ? commission.commission : 0}</td>}
                             {commission._id === edit && <td className='text-center'><input onChange={(e) => {

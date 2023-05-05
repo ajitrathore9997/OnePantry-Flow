@@ -1,0 +1,9 @@
+.userImage{
+    width: 140px;
+    height:150px;
+    cursor: pointer;
+    object-fit: contain;
+    border-radius: 10px;
+    box-sizing: border-box;
+  }
+  

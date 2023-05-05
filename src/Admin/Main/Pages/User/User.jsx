@@ -13,7 +13,7 @@ import FadeLoader from "react-spinners/FadeLoader";
 export const User = ({users}) => {
   const [userData, setUserData] = useState();
   const [totalPages, setTotalPages] = useState();
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(0);
   const [id, setId] = useState();
   const [userLimit, setUserLimit] = useState(10);
@@ -176,7 +176,7 @@ export const User = ({users}) => {
                           placeholder="search by keyword"
                           className="form-control ng-pristine ng-valid ng-touched"
                           onChange={(e) => {
-                            setSearch(e.target.value);
+                            setSearch(e.target.value);setCurrentPage(0);
                           }}
                         />
                       </nav>

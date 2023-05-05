@@ -9,6 +9,7 @@ import { ImageURL } from "../../../../Environment/Environment";
 import no_user from "../../../../assets/img/no_user.jpg";
 import FadeLoader from "react-spinners/FadeLoader";
 import { toastEmmit } from "../../../../Helper/Toastr";
+import "./User.css"
 
 const ViewUser = () => {
   const [loading, setLoading] = useState(false);
@@ -88,8 +89,7 @@ const ViewUser = () => {
                       <div className="img_box">
                         <img
                           alt="userImage"
-                          className="profile_img rounded-circle"
-                          style={{ cursor: "pointer",height:'100px',width:'100px',objectFit:'contain' }}
+                          className="userImage" 
                           src={
                             user && user.image ? ImageURL + user.image : no_user
                           }

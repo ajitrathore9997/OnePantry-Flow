@@ -288,7 +288,7 @@ const Product = () => {
                           placeholder="search by keyword"
                           className="form-control ng-pristine ng-valid ng-touched"
                           onChange={(e) => {
-                            setSearch(e.target.value);
+                            setSearch(e.target.value);setCurrentPage(0);
                           }}
                         />
                       </nav>

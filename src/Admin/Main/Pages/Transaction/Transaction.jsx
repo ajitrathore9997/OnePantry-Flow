@@ -19,15 +19,16 @@ const Transaction = () => {
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState();
 
-
-  const Pricesort = useRef(false);
   const [sorting, setSorting] = useState("sortingKey|desc");
   const [status, setstatus] = useState("");
   const [type, setType] = useState("");
 
+  const Pricesort = useRef(false);
+  const sort = useRef(false);
+
   useEffect(() => {
     getTransactionList();
-  }, [currentPage, search, sorting, status]);
+  }, [currentPage, search, sorting, status,type]);
 
   const getTransactionList = () => {
     setLoading(true);
@@ -69,6 +70,15 @@ const Transaction = () => {
     // console.log(e); 
     setCurrentPage(0);
     setType(e);
+  };
+
+  const changeSorting = () => { 
+    sort.current = !sort.current; 
+    if (sort.current) {
+      setSorting("sortingKey|asc");
+    } else {
+      setSorting("sortingKey|desc");
+    } 
   };
 
   const PriceSorting = () => {
@@ -119,8 +129,8 @@ const Transaction = () => {
                         }}
                       >
                         <option value=""> Select Status</option>
-                        <option value="succeeded">Complete</option>
-                        <option value="unsucceeded">Incomplete</option>
+                        <option value="success">Success</option>
+                        <option value="failed">Failed</option>
                       </select>
                     </div>
                     <div className="col-md-2">
@@ -144,7 +154,7 @@ const Transaction = () => {
                           placeholder="search by keyword"
                           className="form-control ng-pristine ng-valid ng-touched"
                           onChange={(e) => {
-                            setSearch(e.target.value);
+                            setSearch(e.target.value);setCurrentPage(0);
                           }}
                         />
                       </nav>
@@ -156,7 +166,22 @@ const Transaction = () => {
                       <table className="table table-hover text-nowrap table-bordered">
                         <thead>
                           <tr>
-                            <th className="text-center">S.No</th>
+                          <th
+                              className="text-center"
+                              onClick={() => {
+                                changeSorting();
+                              }}
+                            >
+                              S.No{" "}
+                              <span>
+                                {sort.current ? (
+                                  <i className="fa fa-sort-up"></i>
+                                ) : (
+                                  <i className="fa fa-sort-down"></i>
+                                )}
+                              </span>
+                            </th>
+                            {/* <th className="text-center">S.No</th> */}
                             {/* {/ {/ <th className="text-center">Seller</th> /} /} */}
                             <th className="text-center">User</th>
                             <th className="text-center">Type</th>
@@ -198,7 +223,7 @@ const Transaction = () => {
                                   <td className="text-center">
                                     {transaction.status === "succeeded" && (
                                       <span className="fw-bold badge mx-1 p-1 badge-success">
-                                        Completed
+                                        Success
                                       </span>
                                     )}
                                     {transaction.status !== "succeeded" && (
