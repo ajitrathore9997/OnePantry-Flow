@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FadeLoader } from "react-spinners";
 import Pagination from "../../../../Helper/Pagination";
@@ -9,24 +9,35 @@ import { PostService } from "../../../../Services/ConstantService";
 import { format, parseISO } from "date-fns";
 
 const Transaction = () => {
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [transactionList, setTransactionList] = useState();
 
   //Pagination States
   const [currentPage, setCurrentPage] = useState(0);
   const [transactionLimit, setTransactionLimit] = useState(10);
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState();
+
+
+  const Pricesort = useRef(false);
+  const [sorting, setSorting] = useState("sortingKey|desc");
+  const [status, setstatus] = useState("");
+  const [type, setType] = useState("");
 
   useEffect(() => {
     getTransactionList();
-  }, [currentPage]);
+  }, [currentPage, search, sorting, status]);
 
   const getTransactionList = () => {
     setLoading(true);
     const data = {
       limit: transactionLimit,
       page: currentPage,
+      sorting: sorting,
+      search_key: search,
+      status: status,
+      type: type
     };
 
     PostService(API_URL.GET_TRANSACTION_LIST, data).then(
@@ -46,6 +57,27 @@ const Transaction = () => {
 
   const handlePageClick = (e) => {
     setCurrentPage(e - 1);
+  };
+
+    const OnStatusFilter = (e) => {
+    // console.log(e); 
+    setCurrentPage(0);
+    setstatus(e);
+  };
+
+  const OnTypeFilter = (e) => {
+    // console.log(e); 
+    setCurrentPage(0);
+    setType(e);
+  };
+
+  const PriceSorting = () => {
+    Pricesort.current = !Pricesort.current;
+    if (Pricesort.current) {
+      setSorting("total_amount|asc");
+    } else {
+      setSorting("total_amount|desc");
+    }
   };
 
   return (
@@ -78,18 +110,44 @@ const Transaction = () => {
             <div className="col-12">
               <div className="card wrap cddr2">
                 <div className="card-body">
-                  <div className="row mb-3">
-                    <div className="col-md-6 offset-md-6">
-                      {/* <div className="d-flex justify-content-end">
-                                                <div className="me-3">
-                                                    <label >From </label>
-                                                    <input type="date" className="form-control ng-untouched ng-pristine ng-valid" max="2023-02-24" />
-                                                </div>
-                                                <div>
-                                                    <label>To </label>
-                                                    <input type="date" className="form-control ng-untouched ng-pristine ng-valid" min="" max="2023-02-24" />
-                                                </div>
-                                            </div> */}
+                  <div className="row mb-3 align-items-center">
+                    <div className="col-md-2">
+                    <select
+                        className="form-select form-select-md cursor"
+                        onChange={(e) => {
+                          OnStatusFilter(e.target.value);
+                        }}
+                      >
+                        <option value=""> Select Status</option>
+                        <option value="succeeded">Complete</option>
+                        <option value="unsucceeded">Incomplete</option>
+                      </select>
+                    </div>
+                    <div className="col-md-2">
+                    <select
+                        className="form-select form-select-md cursor"
+                        onChange={(e) => {
+                          OnTypeFilter(e.target.value);
+                        }}
+                      >
+                        <option value=""> Select Type</option>
+                        <option value="sale">Sale</option>
+                        <option value="purchase">Purchase</option>
+                      </select>
+                    </div>
+                    <div className="col-md-4"></div>
+                    <div className="col-md-4">
+                      <nav className="navbar">
+                        <input
+                          type="text"
+                          name="firstnamesearch"
+                          placeholder="search by keyword"
+                          className="form-control ng-pristine ng-valid ng-touched"
+                          onChange={(e) => {
+                            setSearch(e.target.value);
+                          }}
+                        />
+                      </nav>
                     </div>
                   </div>
 
@@ -103,7 +161,21 @@ const Transaction = () => {
                             <th className="text-center">User</th>
                             <th className="text-center">Type</th>
                             <th className="text-center">Status</th>
-                            <th className="text-center">Amount $</th>
+                            <th
+                              className="text-center"
+                              onClick={() => {
+                                PriceSorting();
+                              }}
+                            >
+                              Amount ${" "}
+                              <span>
+                                {Pricesort.current ? (
+                                  <i className="fa fa-sort-up"></i>
+                                ) : (
+                                  <i className="fa fa-sort-down"></i>
+                                )}
+                              </span>
+                            </th>
                             <th className="text-center">Payment Mode</th>
                             {/* <th className="text-center">Transaction Id</th> */}
                             <th className="text-center">Created At</th>
