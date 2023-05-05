@@ -3,7 +3,7 @@ import React from "react";
 import Paginations from "react-js-pagination"; 
 
 export default function Pagination(props) {
-  console.log(props);
+  // console.log(props);
 
   return (
     <div>
