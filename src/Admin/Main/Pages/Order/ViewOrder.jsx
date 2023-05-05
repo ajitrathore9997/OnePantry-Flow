@@ -110,7 +110,7 @@ function ViewOrder() {
                         </div>
                         <div>
                           <strong> Status:</strong>{" "}
-                          {order?.status || "N/A"}
+                          <span className="text-capitalize badge p-2 badge-warning">{order?.status || "N/A"}</span>
                         </div>
                         <div>
                           {/* <strong>Transaction Id:</strong> {"N/A"} */}
@@ -151,8 +151,16 @@ function ViewOrder() {
                                       {order?.productDetail?.name || "N/A"}
                                     </Link>
                                   </td>
-                                  <td className="text-center strong">
+
+                                  <td className="text-center">
+                                  <Link
+                                  style={{
+                                    color: "black", 
+                                  }}
+                              to={`/panel/user/view/${order?.sellerDetail?._id}`} 
+                          >
                                     {order?.sellerDetail?.userName || "N/A"}
+                          </Link>
                                   </td>
                                   {/* <td className="text-center strong">
                                     {order?.productDetail?.description || "N/A"}

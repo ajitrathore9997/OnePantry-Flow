@@ -25,6 +25,7 @@ export default function Order() {
   const sort = useRef(false);
   const Commissionsort = useRef(false);
   const Billsort = useRef(false);
+  const Buyersort = useRef(false);
 
   useEffect(() => {
     // const Ddate = new Date("2023-02-22T07:09:42.229Z").toLocaleDateString();
@@ -102,6 +103,15 @@ export default function Order() {
     }
   };
 
+  const BuyerSorting = () => {
+    Buyersort.current = !Buyersort.current;
+    if (Buyersort.current) {
+      setSorting("user_name|asc");
+    } else {
+      setSorting("user_name|desc");
+    }
+  };
+
   return ( 
     <>
       <section className="content-header">
@@ -173,20 +183,32 @@ export default function Order() {
                           <tr>
                             <th
                               className="text-center"
-                              onClick={() => {
-                                changeSorting();
-                              }}
+                              // onClick={() => {
+                              //   changeSorting();
+                              // }}
                             >
                               S.No{" "}
-                              <span>
+                              {/* <span>
                                 {sort.current ? (
                                   <i className="fa fa-sort-up"></i>
                                 ) : (
                                   <i className="fa fa-sort-down"></i>
                                 )}
-                              </span>
+                              </span> */}
                             </th>
-                            <th className="text-center">Buyer</th>
+                            <th className="text-center"
+                             onClick={() => {
+                                BuyerSorting();
+                              }}>
+                                Buyer{" "}
+                              <span>
+                                {Buyersort.current ? (
+                                  <i className="fa fa-sort-up"></i>
+                                ) : (
+                                  <i className="fa fa-sort-down"></i>
+                                )}
+                              </span>
+                                </th>
                             <th
                               className="text-center"
                               onClick={() => {
@@ -215,6 +237,7 @@ export default function Order() {
                                 )}
                               </span>
                               </th>
+                            <th className="text-center">Status</th>
                             <th className="text-center">Created At</th>
                             <th className="text-center">Action</th>
                           </tr>
@@ -227,15 +250,50 @@ export default function Order() {
                                   <td className="text-center">
                                     {i + currentPage * OrderLimit + 1}
                                   </td>
-                                  <td className="text-center">
+                                  <td className="text-center" >
+                                  <Link
+                                      style={{
+                                        color: "black", 
+                                      }}
+                                      to={`/panel/user/view/${order?.buyerDetail?._id}`}
+                                    >
                                     {order?.buyerDetail?.userName || "N/A"}
+                                    </Link>
+                                
                                   </td>
+                                   
+                                      {/* {order?.productDetail?.name || "N/A"} */}
+                              
+
                                   <td className="text-center ">
                                     {order.commission || "N/A"}
                                   </td>
                                   <td className="text-center">
                                     {order.amount || "N/A"}
                                   </td>
+
+                                  <td className="text-center text-capitalize">
+                                  {order.status === "pending" && (
+                                      <span className="fw-bold badge mx-1 p-1 badge-warning">
+                                        Pending
+                                      </span>
+                                        )}
+                                    {order.status === "succeeded" && (
+                                      <span className="fw-bold badge mx-1 p-1 badge-success">
+                                        Success
+                                      </span>
+                                    )}
+                                    {order.status === "failed" && (
+                                      <span class="fw-bold badge mx-1 p-1 badge-danger">
+                                        Failed
+                                      </span>
+                                    )}
+                                  </td>
+
+
+                                  {/* <td className="text-center text-capitalize">
+                                    {order.status || "N/A"}
+                                  </td> */}
                                   <td className="text-center">
                                     {format(
                                       parseISO(order.createdAt),

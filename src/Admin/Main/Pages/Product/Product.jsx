@@ -302,18 +302,18 @@ const Product = () => {
                           <tr>
                             <th
                               className="text-center"
-                              onClick={() => {
-                                changeSorting();
-                              }}
+                              // onClick={() => {
+                              //   changeSorting();
+                              // }}
                             >
                               S.No{" "}
-                              <span>
+                              {/* <span>
                                 {sort.current ? (
                                   <i className="fa fa-sort-up"></i>
                                 ) : (
                                   <i className="fa fa-sort-down"></i>
                                 )}
-                              </span>
+                              </span> */}
                             </th>
                             <th
                               className="text-center"

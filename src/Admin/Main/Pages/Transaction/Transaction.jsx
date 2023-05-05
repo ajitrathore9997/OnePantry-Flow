@@ -130,6 +130,7 @@ const Transaction = () => {
                       >
                         <option value=""> Select Status</option>
                         <option value="success">Success</option>
+                        <option value="pending">Pending</option>
                         <option value="failed">Failed</option>
                       </select>
                     </div>
@@ -168,18 +169,18 @@ const Transaction = () => {
                           <tr>
                           <th
                               className="text-center"
-                              onClick={() => {
-                                changeSorting();
-                              }}
+                              // onClick={() => {
+                              //   changeSorting();
+                              // }}
                             >
                               S.No{" "}
-                              <span>
+                              {/* <span>
                                 {sort.current ? (
                                   <i className="fa fa-sort-up"></i>
                                 ) : (
                                   <i className="fa fa-sort-down"></i>
                                 )}
-                              </span>
+                              </span> */}
                             </th>
                             {/* <th className="text-center">S.No</th> */}
                             {/* {/ {/ <th className="text-center">Seller</th> /} /} */}
@@ -214,7 +215,18 @@ const Transaction = () => {
                                 <tr key={i}>
                                   <td className="text-center">{i + (currentPage * transactionLimit) + 1}</td>
                                   <td className="text-center">
-                                    {transaction?.type === "purchase"?transaction?.buyer?.userName:transaction?.seller?.userName}
+
+                                  <Link
+                                      style={{
+                                        color: "black", 
+                                      }}
+                                      to={transaction?.type === "purchase"? `/panel/user/view/${transaction?.buyer?._id}` : `/panel/user/view/${transaction?.seller?._id}`}
+                                    >
+                                     {transaction?.type === "purchase"?transaction?.buyer?.userName:transaction?.seller?.userName}
+                                    </Link>
+
+
+                                    {/* {transaction?.type === "purchase"?transaction?.buyer?.userName:transaction?.seller?.userName} */}
                                   </td>
 
                                   <td className="text-center">
