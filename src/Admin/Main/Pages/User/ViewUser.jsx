@@ -89,8 +89,7 @@ const ViewUser = () => {
                         <img
                           alt="userImage"
                           className="profile_img rounded-circle"
-                          height={100}
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: "pointer",height:'100px',width:'100px',objectFit:'contain' }}
                           src={
                             user && user.image ? ImageURL + user.image : no_user
                           }
